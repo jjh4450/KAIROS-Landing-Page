@@ -1,12 +1,13 @@
 node_modules
 
-# Output
-.output
-.vercel
-.netlify
-.wrangler
-/.svelte-kit
-/build
+# SvelteKit / build outputs
+.svelte-kit
+web/.svelte-kit
+web/build
+web/.output
+web/.vercel
+web/.netlify
+web/.wrangler
 
 # OS
 .DS_Store
@@ -21,6 +22,7 @@ Thumbs.db
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
-# Paraglide
-src/lib/paraglide
-project.inlang/cache/
+
+# Paraglide (generated)
+web/src/lib/paraglide
+web/project.inlang/cache/

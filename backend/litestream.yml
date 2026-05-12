@@ -1,0 +1,26 @@
+# Litestream v0.5.x. 자격증명은 LITESTREAM_*/AWS_* env에서 자동 인식,
+# 그 외 ${VAR}는 config 파싱 전 expansion.
+
+logging:
+  level: info
+  type: text
+
+addr: ":9091"   # Prometheus metrics, 외부 노출 금지
+
+snapshot:
+  interval: 24h
+  retention: 720h    # 30일
+
+dbs:
+  - path: /pb/pb_data/data.db
+    monitor-interval: 1s
+    checkpoint-interval: 1m
+    busy-timeout: 5s
+    replica:
+      type: s3
+      bucket:   ${LITESTREAM_BUCKET}
+      path:     ${LITESTREAM_PATH}
+      endpoint: ${LITESTREAM_ENDPOINT}
+      region:   ${LITESTREAM_REGION}
+      sync-interval: 1s
+      auto-recover: false

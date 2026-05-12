@@ -1,42 +1,31 @@
-# sv
+# KAIROS Landing Page
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+경북대학교 정보보호 동아리 KAIROS 랜딩 페이지 + 게시판.
 
-## Creating a project
+## 구성
 
-If you're seeing this, you've probably already done this step. Congrats!
-
-```sh
-# create a new project
-npx sv create my-app
+```
+.
+├── web/        SvelteKit 프론트엔드 (TypeScript, Tailwind, paraglide i18n, shadcn-svelte)
+└── backend/    PocketBase 백엔드 (게시물·댓글·카테고리 + JS hooks)
 ```
 
-To recreate this project with the same configuration:
+프론트와 백엔드는 **분리 배포**합니다. 자세한 사용법은 각 하위 폴더의 README 참고:
 
-```sh
-# recreate this project
-pnpm dlx sv@0.15.3 create --template minimal --types ts --add prettier eslint tailwindcss="plugins:typography,forms" sveltekit-adapter="adapter:auto" paraglide="languageTags:ko, en+demo:yes" mdsvex mcp="ide:claude-code,cursor+setup:remote" --install pnpm KAIROS_landing_page
+- [web/README.md](web/README.md) — 개발 서버 실행, 빌드
+- [backend/README.md](backend/README.md) — PocketBase 바이너리 설치, 마이그레이션, 권한 모델
+
+## 빠른 시작
+
+```powershell
+# 프론트
+cd web
+pnpm install
+pnpm dev          # http://localhost:5173
+
+# 백엔드 (별도 터미널)
+cd backend
+.\pocketbase.exe serve   # http://127.0.0.1:8090
 ```
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+`web/.env`에 `PUBLIC_PB_URL=http://127.0.0.1:8090` 설정 필요.

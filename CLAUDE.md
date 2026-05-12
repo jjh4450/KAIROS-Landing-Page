@@ -1,31 +1,21 @@
-## Project Configuration
+# Repo Overview for Claude Code
 
-- **Language**: TypeScript
-- **Package Manager**: pnpm
-- **Add-ons**: prettier, eslint, tailwindcss, sveltekit-adapter, paraglide, mdsvex, mcp
+이 레포는 단일 git repo 안에 두 개의 독립 프로젝트를 담고 있습니다.
 
----
+```
+web/        SvelteKit 프론트엔드. node 프로젝트(pnpm).
+backend/    PocketBase 백엔드. Go 바이너리 + JS hooks/migrations. node 의존성 없음.
+```
 
-You are able to use the Svelte MCP server, where you have access to comprehensive Svelte 5 and SvelteKit documentation. Here's how to use the available tools effectively:
+워크스페이스(`pnpm-workspace.yaml`)는 의도적으로 사용하지 않습니다 — node 패키지가 `web/` 하나뿐이라 워크스페이스 추상화가 추가 비용일 뿐입니다. 두 번째 node 패키지가 생기면 그때 도입.
 
-## Available Svelte MCP Tools:
+## 작업 위치별 가이드
 
-### 1. list-sections
+- 프론트엔드 작업: `cd web` 후 진행. `web/CLAUDE.md`의 Svelte MCP 사용 규칙을 따르세요.
+- 백엔드 작업: `cd backend` 후 진행. 스키마는 `pb_migrations/`, 비즈니스 로직은 `pb_hooks/`.
+- 양쪽을 동시에 건드리는 PR은 한 커밋에 묶지 말고 가능하면 분리.
 
-Use this FIRST to discover all available documentation sections. Returns a structured list with titles, use_cases, and paths.
-When asked about Svelte or SvelteKit topics, ALWAYS use this tool at the start of the chat to find relevant sections.
+## 일반 규칙
 
-### 2. get-documentation
-
-Retrieves full documentation content for specific sections. Accepts single or multiple sections.
-After calling the list-sections tool, you MUST analyze the returned documentation sections (especially the use_cases field) and then use the get-documentation tool to fetch ALL documentation sections that are relevant for the user's task.
-
-### 3. svelte-autofixer
-
-Analyzes Svelte code and returns issues and suggestions.
-You MUST use this tool whenever writing Svelte code before sending it to the user. Keep calling it until no issues or suggestions are returned.
-
-### 4. playground-link
-
-Generates a Svelte Playground link with the provided code.
-After completing the code, ask the user if they want a playground link. Only call this tool after user confirmation and NEVER if code was written to files in their project.
+- 패키지 매니저는 `pnpm` (web/ 내에서만).
+- 백엔드 데이터(`backend/pb_data/`)와 바이너리는 `.gitignore`. 마이그레이션/훅 JS만 커밋.

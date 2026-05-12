@@ -29,3 +29,11 @@ You MUST use this tool whenever writing Svelte code before sending it to the use
 
 Generates a Svelte Playground link with the provided code.
 After completing the code, ask the user if they want a playground link. Only call this tool after user confirmation and NEVER if code was written to files in their project.
+
+---
+
+## shadcn-svelte MCP
+
+이 프로젝트는 `shadcn-svelte`를 UI 컴포넌트로 씁니다. 컴포넌트 사용법·props·예제 코드·설치 명령이 필요할 때 `shadcn-svelte` MCP 서버 (Michael-Obele / Mastra Cloud 호스팅, `web/.mcp.json`에 정의)를 활용하세요.
+
+`Button`, `Dialog`, `DropdownMenu` 등의 정확한 import 경로와 사용 패턴을 묻거나, 새 컴포넌트를 추가할 때 (`pnpm dlx shadcn-svelte@latest add <component>`) 먼저 이 MCP로 컴포넌트가 어떻게 구성되는지 확인하면 토큰을 아끼면서 정확한 결과를 얻을 수 있습니다.

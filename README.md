@@ -1,6 +1,6 @@
 # KAIROS Landing Page
 
-경북대학교 정보보호 동아리 KAIROS 랜딩 페이지 + 게시판.
+강원대학교 보안 동아리 KAIROS 랜딩 페이지 + 게시판.
 
 ## 구성
 

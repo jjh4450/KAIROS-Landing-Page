@@ -7,7 +7,11 @@ web/        SvelteKit 프론트엔드. node 프로젝트(pnpm).
 backend/    PocketBase 백엔드. Go 바이너리 + JS hooks/migrations. node 의존성 없음.
 ```
 
-워크스페이스(`pnpm-workspace.yaml`)는 의도적으로 사용하지 않습니다 — node 패키지가 `web/` 하나뿐이라 워크스페이스 추상화가 추가 비용일 뿐입니다. 두 번째 node 패키지가 생기면 그때 도입.
+node 프로젝트는 `web/` 하나뿐이라 **pnpm 워크스페이스 구조는 쓰지 않습니다** (루트에 `pnpm-workspace.yaml` 없음, 루트 `package.json` 없음, 모든 `pnpm` 명령은 `cd web` 후 실행).
+
+단, `web/pnpm-workspace.yaml`은 존재합니다 — 이건 워크스페이스 선언이 아니라 **pnpm 설정 파일**입니다. pnpm v11부터 `package.json`의 `pnpm` 필드를 읽지 않기 때문에 `onlyBuiltDependencies`(Tailwind oxide / esbuild postinstall 허용) 같은 설정을 여기 둡니다. `packages:` 키가 없으므로 워크스페이스로 동작하지 않음.
+
+두 번째 node 패키지가 생기면 그때 진짜 워크스페이스(루트로 승격 + `packages:` 추가)로 전환을 고려.
 
 ## 작업 위치별 가이드
 

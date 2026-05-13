@@ -7,6 +7,11 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 		<meta name="text-scale" content="scale" />
+
+		<!-- 위협 지구본 텍스처 preload — hero 캔버스 첫 페인트 가속 (저우선) -->
+		<link rel="preload" as="image" href="/textures/earth-night.jpg" fetchpriority="low" />
+		<link rel="preload" as="image" href="/textures/earth-topology.png" fetchpriority="low" />
+
 		%sveltekit.head%
 	</head>
 

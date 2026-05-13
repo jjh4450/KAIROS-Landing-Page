@@ -54,6 +54,7 @@
 	"dependencies": {
 		"@threlte/core": "^8.5.14",
 		"@threlte/extras": "^9.17.1",
+		"csv-parse": "^6.2.1",
 		"d3-geo": "^3.1.1",
 		"geoip-lite": "^2.0.2",
 		"globe.gl": "^2.45.3",

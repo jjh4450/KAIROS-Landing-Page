@@ -35,11 +35,13 @@
 	const maxCount = $derived(Math.max(1, ...dots.map((d) => d.count)));
 
 	function dotAltitude(count: number) {
-		return 0.04 + (count / maxCount) * 0.28;
+		// 우주엘리베이터 방지 — 최대 ~0.12, 비선형으로 큰 값에서 더 완만하게
+		return 0.02 + Math.pow(count / maxCount, 0.6) * 0.1;
 	}
 	function dotRadius(count: number, isSelected: boolean) {
-		const base = 0.35 + Math.sqrt(count / maxCount) * 0.8;
-		return isSelected ? base * 1.6 : base;
+		// 막대 굵기도 count 와 함께 — 키 큰 막대만큼 굵게
+		const base = 0.5 + Math.sqrt(count / maxCount) * 2.0;
+		return isSelected ? base * 1.35 : base;
 	}
 	function dotColor(d: Dot) {
 		if (selectedCountry && d.country === selectedCountry) return '#fb7185'; // rose-400

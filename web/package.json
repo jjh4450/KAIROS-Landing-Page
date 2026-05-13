@@ -11,7 +11,8 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check . && eslint .",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"verify": "pnpm run lint && pnpm run check"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^2.1.0",
@@ -26,9 +27,12 @@
 		"@tailwindcss/typography": "^0.5.19",
 		"@tailwindcss/vite": "^4.2.2",
 		"@types/d3-geo": "^3.1.0",
+		"@types/geoip-lite": "^1.4.4",
+		"@types/geojson": "^7946.0.16",
 		"@types/node": "^22",
 		"@types/three": "^0.184.1",
 		"@types/topojson-client": "^3.1.5",
+		"@types/topojson-specification": "^1.0.5",
 		"bits-ui": "^2.18.1",
 		"clsx": "^2.1.1",
 		"eslint": "^10.2.0",

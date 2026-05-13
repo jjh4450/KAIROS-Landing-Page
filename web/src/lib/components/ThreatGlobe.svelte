@@ -25,8 +25,10 @@
 	let { dots, onHover, onSelect, selectedCountry = null, class: extra = '' }: Props = $props();
 
 	let containerEl: HTMLDivElement | undefined = $state();
-	type GlobeInstance = ReturnType<NonNullable<Awaited<typeof globeModule>>['default']>;
-	let globe: GlobeInstance | null = null;
+	// globe.gl 은 chainable factory 인데 패키지 타입 정의가 class 로 잘못 노출돼 있어
+	// 정확한 typing 이 어려움. 동작은 런타임으로 검증됨.
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	let globe: any = null;
 	let globeModule: Promise<typeof import('globe.gl')> | null = null;
 	let resizeObs: ResizeObserver | null = null;
 	let disposed = false;
@@ -69,7 +71,9 @@
 		globeModule = import('globe.gl');
 		globeModule.then((mod) => {
 			if (disposed || !containerEl) return;
-			const Globe = mod.default;
+			// types 가 class 처럼 노출되지만 실제로는 factory: `Globe()(domEl)` 가 정상 호출 패턴
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			const Globe = mod.default as any;
 			globe = Globe()(containerEl)
 				.backgroundColor('rgba(0,0,0,0)')
 				.globeImageUrl('/textures/earth-night.jpg')

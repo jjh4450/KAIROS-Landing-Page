@@ -45,6 +45,9 @@ export type Achievement = {
 	members?: string[];
 	description?: string;
 	sortOrder?: number;
+	expand?: {
+		members?: { id: string; nickname?: string }[];
+	};
 };
 
 export type EventRecord = {

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -6,10 +7,12 @@
 	import AmbientBackdrop from '$lib/components/AmbientBackdrop.svelte';
 	import SiteHeader from '$lib/components/SiteHeader.svelte';
 	import SiteFooter from '$lib/components/SiteFooter.svelte';
+	import MarkdownView from '$lib/components/MarkdownView.svelte';
 	import ArrowLeft from 'phosphor-svelte/lib/ArrowLeft';
 	import Eye from 'phosphor-svelte/lib/Eye';
 	import PushPin from 'phosphor-svelte/lib/PushPin';
 	import Trash from 'phosphor-svelte/lib/Trash';
+	import PencilSimple from 'phosphor-svelte/lib/PencilSimple';
 	import { fmtLongDateTime } from '$lib/format';
 	import type { PageData } from './$types';
 
@@ -22,7 +25,7 @@
 </svelte:head>
 
 <AmbientBackdrop />
-<SiteHeader settings={null} />
+<SiteHeader settings={null} user={data.user} />
 
 <main class="relative mx-auto w-full max-w-4xl px-6 pt-32 pb-16 lg:pt-40">
 	<Button href="/posts" variant="ghost" size="sm" class="mb-8 font-mono">
@@ -63,24 +66,77 @@
 		</header>
 
 		<Card.Root>
-			<Card.Content
-				class="prose prose-invert prose-headings:text-foreground prose-p:text-foreground/85 prose-a:text-kairos-cyan prose-strong:text-foreground prose-code:text-kairos-cyan max-w-none py-8 text-base leading-relaxed"
-			>
-				{@html p.content}
+			<Card.Content class="py-8 text-base leading-relaxed">
+				<MarkdownView html={data.renderedContent} />
 			</Card.Content>
 		</Card.Root>
 
+		{#if data.attachments.length > 0}
+			<section class="mt-8">
+				<h2 class="text-muted-foreground mb-3 font-mono text-[11px] tracking-[0.18em] uppercase">
+					// attachments ({data.attachments.length})
+				</h2>
+				<div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+					{#each data.attachments as att (att.name)}
+						<a
+							href={att.url}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="border-border/60 hover:border-kairos-cyan/60 group relative block aspect-square overflow-hidden rounded-md border bg-black/20"
+						>
+							<img
+								src={att.url}
+								alt={att.name}
+								loading="lazy"
+								class="h-full w-full object-cover transition-transform group-hover:scale-105"
+								onerror={(e) => ((e.currentTarget as HTMLImageElement).style.display = 'none')}
+							/>
+							<span class="absolute inset-x-0 bottom-0 truncate bg-black/60 px-2 py-1 font-mono text-[10px] text-white/80">
+								{att.name}
+							</span>
+						</a>
+					{/each}
+				</div>
+			</section>
+		{/if}
+
 		<Separator class="my-10" />
 
-		<!-- Author actions (login-gated TBD) -->
 		<div class="flex items-center justify-between gap-4">
 			<div class="text-muted-foreground font-mono text-[11px]">
 				{p.id}
 			</div>
 			<div class="flex items-center gap-2">
-				<Button variant="ghost" size="sm" disabled class="font-mono" title="로그인 시스템 도입 후 활성화">
-					<Trash /> delete
-				</Button>
+				{#if data.canEdit}
+					<Button href={`/posts/${p.id}/edit`} variant="outline" size="sm" class="font-mono">
+						<PencilSimple /> edit
+					</Button>
+				{/if}
+				{#if data.canDelete}
+					<form
+						method="POST"
+						action={`/posts/${p.id}/edit?/delete`}
+						use:enhance={() => {
+							return async ({ result, update }) => {
+								if (result.type === 'redirect') {
+									await update();
+								}
+							};
+						}}
+					>
+						<Button
+							type="submit"
+							variant="ghost"
+							size="sm"
+							class="font-mono text-destructive hover:text-destructive"
+							onclick={(e) => {
+								if (!confirm('정말 삭제하시겠습니까?')) e.preventDefault();
+							}}
+						>
+							<Trash /> delete
+						</Button>
+					</form>
+				{/if}
 			</div>
 		</div>
 	</article>

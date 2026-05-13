@@ -1,18 +1,18 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button/index.js';
-	import type { SiteSettings } from '$lib/types';
+	import type { SiteSettings, User } from '$lib/types';
 	import { magnetic } from '$lib/motion/actions';
 	import ArrowUpRight from 'phosphor-svelte/lib/ArrowUpRight';
+	import UserMenu from '$lib/components/UserMenu.svelte';
 
-	type Props = { settings?: SiteSettings | null };
-	let { settings }: Props = $props();
+	type Props = { settings?: SiteSettings | null; user?: User | null };
+	let { settings, user = null }: Props = $props();
 
 	const navItems = [
 		{ href: '/#about', label: 'about' },
 		{ href: '/posts', label: 'posts' },
-		{ href: '/#activities', label: 'activities' },
-		{ href: '/#achievements', label: 'achievements' },
-		{ href: '/#members', label: 'members' }
+		{ href: '/achievements', label: 'achievements' },
+		{ href: '/members', label: 'members' }
 	];
 
 	const recruiting = $derived(!!settings?.recruitmentOpen && !!settings?.recruitmentFormUrl);
@@ -41,14 +41,21 @@
 			{/each}
 		</ul>
 
-		{#if recruiting}
-			<div use:magnetic={{ strength: 0.22 }}>
-				<Button href={settings?.recruitmentFormUrl} variant="default" size="sm" class="font-mono">
-					apply <ArrowUpRight />
-				</Button>
-			</div>
-		{:else}
-			<Button href="#join" variant="outline" size="sm" class="font-mono">join</Button>
-		{/if}
+		<div class="flex items-center gap-2">
+			{#if recruiting}
+				<div use:magnetic={{ strength: 0.22 }}>
+					<Button href={settings?.recruitmentFormUrl} variant="default" size="sm" class="font-mono">
+						apply <ArrowUpRight />
+					</Button>
+				</div>
+			{:else}
+				<Button href="#join" variant="outline" size="sm" class="font-mono">join</Button>
+			{/if}
+			{#if user}
+				<UserMenu {user} />
+			{:else}
+				<Button href="/login" variant="ghost" size="sm" class="font-mono">sign in</Button>
+			{/if}
+		</div>
 	</nav>
 </header>

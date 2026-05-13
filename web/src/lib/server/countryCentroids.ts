@@ -1,78 +1,42 @@
-// 주요 국가 alpha-2 → [경도, 위도] 중심점.
-// 사이트 표시용 근사값 (대륙 중앙)이므로 정확도는 ±수 도 범위.
-// 데이터 출처: 일반 공개된 country-centroid 표를 줄여 재작성.
+/**
+ * Alpha-2 ISO 코드 → [lon, lat] 중심점 lookup.
+ *
+ * 구현: world-atlas/countries-110m TopoJSON 의 각 국가 feature 에 대해
+ * d3-geo.geoCentroid 로 중심점을 계산하고, ISO numeric → alpha-2 매핑으로
+ * 키를 만든다. 모듈 로드 시 1회 수행 (server-only).
+ *
+ * countries-110m 가 표시하지 않는 군소 영토(예: 일부 의존지역, 마이크로국가)는
+ * 매핑되지 않아 lookup miss 가 가능 — getThreatFeed 가 unmappedIocs 로 카운팅.
+ */
+import { feature } from 'topojson-client';
+import { geoCentroid } from 'd3-geo';
+import worldData from 'world-atlas/countries-110m.json';
+import { NUMERIC_TO_ALPHA2 } from './isoNumericToAlpha2';
+import type { Topology } from 'topojson-specification';
+import type { Feature, FeatureCollection, Geometry } from 'geojson';
 
-export const COUNTRY_CENTROIDS: Record<string, [number, number]> = {
-	AE: [54.0, 24.0],
-	AF: [66.0, 33.0],
-	AR: [-64.0, -34.0],
-	AT: [13.3, 47.5],
-	AU: [134.0, -27.0],
-	BD: [90.0, 24.0],
-	BE: [4.6, 50.6],
-	BG: [25.0, 43.0],
-	BR: [-53.0, -10.0],
-	BY: [28.0, 53.7],
-	CA: [-100.0, 56.0],
-	CH: [8.2, 46.8],
-	CL: [-71.0, -30.0],
-	CN: [104.0, 35.0],
-	CO: [-72.0, 4.0],
-	CZ: [15.5, 49.8],
-	DE: [10.4, 51.2],
-	DK: [10.0, 56.0],
-	EG: [30.0, 27.0],
-	ES: [-3.7, 40.4],
-	FI: [26.0, 64.0],
-	FR: [2.0, 46.0],
-	GB: [-1.0, 53.0],
-	GR: [22.0, 39.0],
-	HK: [114.1, 22.4],
-	HR: [15.5, 45.1],
-	HU: [19.5, 47.2],
-	ID: [113.0, -2.5],
-	IE: [-8.0, 53.0],
-	IL: [34.8, 31.5],
-	IN: [78.0, 21.0],
-	IR: [53.0, 32.0],
-	IT: [12.5, 42.8],
-	JP: [138.0, 36.0],
-	KP: [127.0, 40.0],
-	KR: [127.8, 36.5],
-	KZ: [67.0, 48.0],
-	LT: [24.0, 55.3],
-	LU: [6.1, 49.6],
-	LV: [25.0, 56.9],
-	MX: [-102.0, 23.0],
-	MY: [102.5, 4.2],
-	NG: [8.0, 9.0],
-	NL: [5.5, 52.2],
-	NO: [10.0, 62.0],
-	NZ: [172.0, -41.0],
-	PA: [-80.0, 9.0],
-	PE: [-75.0, -10.0],
-	PH: [122.0, 12.0],
-	PK: [70.0, 30.0],
-	PL: [19.4, 51.9],
-	PT: [-8.0, 39.4],
-	RO: [25.0, 46.0],
-	RS: [21.0, 44.0],
-	RU: [100.0, 60.0],
-	SA: [45.0, 24.0],
-	SE: [15.0, 62.0],
-	SG: [103.8, 1.4],
-	SK: [19.7, 48.7],
-	TH: [101.0, 15.5],
-	TR: [35.0, 39.0],
-	TW: [121.0, 23.7],
-	UA: [32.0, 49.0],
-	US: [-98.0, 39.5],
-	VE: [-66.5, 8.0],
-	VN: [108.0, 16.0],
-	ZA: [25.0, -29.0]
-};
+const topology = worldData as unknown as Topology;
+const fc = feature(
+	topology,
+	topology.objects.countries as never
+) as unknown as FeatureCollection<Geometry, { name: string }>;
+
+const CENTROIDS: Record<string, [number, number]> = {};
+
+for (const f of fc.features as Feature<Geometry, { name: string }>[]) {
+	const numericId = String(f.id ?? '').padStart(3, '0');
+	const alpha2 = NUMERIC_TO_ALPHA2[numericId];
+	if (!alpha2) continue;
+	const c = geoCentroid(f);
+	if (!Number.isFinite(c[0]) || !Number.isFinite(c[1])) continue;
+	CENTROIDS[alpha2] = [c[0], c[1]];
+}
 
 export function centroidOf(alpha2: string | null | undefined): [number, number] | null {
 	if (!alpha2) return null;
-	return COUNTRY_CENTROIDS[alpha2.toUpperCase()] ?? null;
+	return CENTROIDS[alpha2.toUpperCase()] ?? null;
+}
+
+export function knownCountryCount(): number {
+	return Object.keys(CENTROIDS).length;
 }

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import type { ThreatDot } from '$lib/server/threatFeed';
+	import type { ThreatDot } from '$lib/types/threat';
 
 	// 노드 크기/색상 튜닝 상수
 	const DOT_ALTITUDE_MIN = 0.02;
@@ -78,8 +78,8 @@
 			const Globe = mod.default;
 			globe = Globe()(containerEl)
 				.backgroundColor('rgba(0,0,0,0)')
-				.globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
-				.bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
+				.globeImageUrl('/textures/earth-night.jpg')
+				.bumpImageUrl('/textures/earth-topology.png')
 				.showAtmosphere(true)
 				.atmosphereColor('#67e8f9')
 				.atmosphereAltitude(0.25)

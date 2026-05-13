@@ -8,7 +8,7 @@
 	import ArrowDown from 'phosphor-svelte/lib/ArrowDown';
 	import ArrowUpRight from 'phosphor-svelte/lib/ArrowUpRight';
 
-	import type { ThreatFeed } from '$lib/server/threatFeed';
+	import type { ThreatFeed } from '$lib/types/threat';
 
 	type Props = {
 		settings?: SiteSettings | null;
@@ -30,8 +30,8 @@
 		const target = document.getElementById('about');
 		if (!target) return;
 		target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-		// 해시 URL 동기화 (브라우저 history 에는 push 하지 않음)
-		history.replaceState(null, '', '#about');
+		// URL 해시는 변경하지 않음 — 뒤로가기 시 의도치 않은 history 점프 방지.
+		// 사용자가 URL 공유로 #about 진입은 여전히 정상 동작 (브라우저 기본 anchor).
 	}
 
 	onMount(() => {

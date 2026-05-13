@@ -4,7 +4,7 @@
 	import ThreatGlobe from './ThreatGlobe.svelte';
 	import X from 'phosphor-svelte/lib/X';
 	import ArrowSquareOut from 'phosphor-svelte/lib/ArrowSquareOut';
-	import type { IocSample, ThreatDot, ThreatFeed } from '$lib/server/threatFeed';
+	import type { IocSample, ThreatDot, ThreatFeed } from '$lib/types/threat';
 
 	type Props = { feed: ThreatFeed };
 	let { feed: initial }: Props = $props();
@@ -58,7 +58,13 @@
 	>
 		<div class="flex items-center gap-2">
 			<span class="inline-block size-1.5 animate-pulse rounded-full bg-rose-400 shadow-[0_0_8px_rgba(251,113,133,0.8)]"></span>
-			<span class="text-foreground/85">// threat · {feed.totalIocs} ioc · {feed.dots.length} cc</span>
+			<span class="text-foreground/85">
+				// threat · {feed.totalIocs} ioc · {feed.dots.length} cc{#if feed.unmappedIocs > 0}
+					<span class="text-muted-foreground/60" title="좌표 매핑이 없는 군소 지역">
+						(+{feed.unmappedIocs} unmapped)</span
+					>
+				{/if}
+			</span>
 		</div>
 		<span class="text-muted-foreground">{fmtRelative(feed.updatedAt)}</span>
 	</div>

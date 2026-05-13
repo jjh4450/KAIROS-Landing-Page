@@ -19,8 +19,8 @@
 		pointer-events: none;
 		overflow: hidden;
 		background:
-			radial-gradient(ellipse at 20% 0%, oklch(0.22 0.07 230 / 0.55), transparent 60%),
-			radial-gradient(ellipse at 80% 100%, oklch(0.22 0.07 290 / 0.45), transparent 60%),
+			radial-gradient(ellipse at 20% 0%, oklch(0.22 0.07 230 / 0.25), transparent 60%),
+			radial-gradient(ellipse at 80% 100%, oklch(0.22 0.07 290 / 0.2), transparent 60%),
 			var(--background);
 	}
 
@@ -33,30 +33,30 @@
 		animation: drift 28s ease-in-out infinite alternate;
 	}
 	.aurora__blob--cyan {
-		width: 70vw;
-		height: 70vw;
-		top: -18vw;
-		left: -18vw;
+		width: 55vw;
+		height: 55vw;
+		top: -20vw;
+		left: -20vw;
 		background: var(--kairos-cyan);
-		opacity: 0.58;
+		opacity: 0.22;
 		animation-delay: 0s;
 	}
 	.aurora__blob--violet {
-		width: 65vw;
-		height: 65vw;
-		top: 20vh;
-		right: -18vw;
+		width: 50vw;
+		height: 50vw;
+		top: 25vh;
+		right: -20vw;
 		background: var(--kairos-violet);
-		opacity: 0.52;
+		opacity: 0.18;
 		animation-delay: -9s;
 	}
 	.aurora__blob--magenta {
-		width: 55vw;
-		height: 55vw;
-		bottom: -12vw;
-		left: 18vw;
+		width: 45vw;
+		height: 45vw;
+		bottom: -15vw;
+		left: 20vw;
 		background: var(--kairos-magenta);
-		opacity: 0.4;
+		opacity: 0.12;
 		animation-delay: -17s;
 	}
 
@@ -94,7 +94,7 @@
 	.aurora__vignette {
 		position: absolute;
 		inset: 0;
-		background: radial-gradient(ellipse at center, transparent 45%, oklch(0 0 0 / 40%) 100%);
+		background: radial-gradient(ellipse at center, transparent 35%, oklch(0 0 0 / 55%) 100%);
 	}
 
 	@media (prefers-reduced-motion: reduce) {

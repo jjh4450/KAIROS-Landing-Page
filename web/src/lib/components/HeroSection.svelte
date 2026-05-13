@@ -145,7 +145,10 @@
 		</div>
 	</div>
 
-	<div bind:this={sceneEl} class="reveal relative z-10 w-full lg:col-span-5">
+	<div
+		bind:this={sceneEl}
+		class="reveal @container relative z-10 h-[420px] w-full lg:col-span-5 lg:h-[560px]"
+	>
 		<ThreatDashboard feed={threatFeed} />
 	</div>
 </section>

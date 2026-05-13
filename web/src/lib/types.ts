@@ -2,6 +2,22 @@
  * KAIROS PocketBase 레코드 타입 (랜딩 페이지에서 쓰는 것만 추림)
  */
 
+export type UserRole = 'admin' | 'staff' | 'member';
+
+export type User = {
+	id: string;
+	collectionId: string;
+	collectionName: 'users';
+	email: string;
+	emailVisibility: boolean;
+	verified: boolean;
+	nickname?: string;
+	role: UserRole;
+	avatar?: string;
+	created: string;
+	updated: string;
+};
+
 export type SiteSettings = {
 	id: string;
 	key: string;

@@ -24,7 +24,7 @@
 </svelte:head>
 
 <AmbientBackdrop />
-<SiteHeader settings={data.settings} />
+<SiteHeader settings={data.settings} user={data.user} />
 
 <main class="relative">
 	<HeroSection settings={data.settings} />

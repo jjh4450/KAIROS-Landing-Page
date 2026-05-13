@@ -61,7 +61,7 @@
 </svelte:head>
 
 <AmbientBackdrop />
-<SiteHeader settings={null} />
+<SiteHeader settings={null} user={data.user} />
 
 <main class="relative mx-auto w-full max-w-7xl px-6 pt-32 pb-16 lg:pt-40">
 	<header class="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">

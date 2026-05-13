@@ -78,12 +78,11 @@
 			const Globe = mod.default;
 			globe = Globe()(containerEl)
 				.backgroundColor('rgba(0,0,0,0)')
-				.backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
 				.globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
 				.bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
 				.showAtmosphere(true)
 				.atmosphereColor('#67e8f9')
-				.atmosphereAltitude(0.22)
+				.atmosphereAltitude(0.25)
 				.width(containerEl.clientWidth)
 				.height(containerEl.clientHeight);
 

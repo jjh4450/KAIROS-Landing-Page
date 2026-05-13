@@ -33,30 +33,30 @@
 		animation: drift 28s ease-in-out infinite alternate;
 	}
 	.aurora__blob--cyan {
-		width: 65vw;
-		height: 65vw;
-		top: -15vw;
-		left: -15vw;
+		width: 70vw;
+		height: 70vw;
+		top: -18vw;
+		left: -18vw;
 		background: var(--kairos-cyan);
-		opacity: 0.45;
+		opacity: 0.58;
 		animation-delay: 0s;
 	}
 	.aurora__blob--violet {
-		width: 60vw;
-		height: 60vw;
-		top: 25vh;
-		right: -15vw;
+		width: 65vw;
+		height: 65vw;
+		top: 20vh;
+		right: -18vw;
 		background: var(--kairos-violet);
-		opacity: 0.4;
+		opacity: 0.52;
 		animation-delay: -9s;
 	}
 	.aurora__blob--magenta {
-		width: 50vw;
-		height: 50vw;
-		bottom: -10vw;
-		left: 20vw;
+		width: 55vw;
+		height: 55vw;
+		bottom: -12vw;
+		left: 18vw;
 		background: var(--kairos-magenta);
-		opacity: 0.3;
+		opacity: 0.4;
 		animation-delay: -17s;
 	}
 
@@ -64,11 +64,17 @@
 		0% {
 			transform: translate3d(0, 0, 0) scale(1);
 		}
+		25% {
+			transform: translate3d(6vw, -4vw, 0) scale(1.1);
+		}
 		50% {
-			transform: translate3d(4vw, -3vw, 0) scale(1.08);
+			transform: translate3d(-2vw, 6vw, 0) scale(0.95);
+		}
+		75% {
+			transform: translate3d(-5vw, -3vw, 0) scale(1.06);
 		}
 		100% {
-			transform: translate3d(-3vw, 5vw, 0) scale(0.94);
+			transform: translate3d(3vw, 5vw, 0) scale(1);
 		}
 	}
 

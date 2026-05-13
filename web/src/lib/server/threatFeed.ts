@@ -1,13 +1,22 @@
 import geoip from 'geoip-lite';
 import { centroidOf } from './countryCentroids';
-import { project } from './worldMap';
+
+export type IocSample = {
+	ioc: string;
+	iocType: 'ip:port' | 'ip' | 'domain' | 'url';
+	malware: string;
+	firstSeen: string;
+	iocId: string | null;
+};
 
 export type ThreatDot = {
 	country: string;
 	count: number;
-	x: number;
-	y: number;
+	lat: number;
+	lon: number;
 	topMalware: string;
+	malwareTally: { name: string; count: number }[];
+	samples: IocSample[];
 };
 
 export type CveItem = {
@@ -28,11 +37,11 @@ export type ThreatFeed = {
 
 const TTL_MS = 5 * 60 * 1000;
 const FETCH_TIMEOUT_MS = 8_000;
+const KEV_TTL_MS = 12 * 60 * 60 * 1000;
+const MAX_SAMPLES_PER_COUNTRY = 12;
 
 let cache: { data: ThreatFeed; expires: number } | null = null;
 let kevCache: { set: Set<string>; expires: number } | null = null;
-
-const KEV_TTL_MS = 12 * 60 * 60 * 1000;
 
 async function fetchWithTimeout(url: string, init?: RequestInit): Promise<Response | null> {
 	const ctrl = new AbortController();
@@ -47,13 +56,25 @@ async function fetchWithTimeout(url: string, init?: RequestInit): Promise<Respon
 	}
 }
 
-type Bucket = { count: number; malwareTally: Map<string, number> };
+type Bucket = {
+	count: number;
+	malwareTally: Map<string, number>;
+	samples: IocSample[];
+};
 
-function tally(map: Map<string, Bucket>, cc: string, malware?: string) {
-	const slot = map.get(cc) ?? { count: 0, malwareTally: new Map() };
-	slot.count++;
-	if (malware) slot.malwareTally.set(malware, (slot.malwareTally.get(malware) ?? 0) + 1);
-	map.set(cc, slot);
+function bucketFor(map: Map<string, Bucket>, cc: string): Bucket {
+	let b = map.get(cc);
+	if (!b) {
+		b = { count: 0, malwareTally: new Map(), samples: [] };
+		map.set(cc, b);
+	}
+	return b;
+}
+
+function tally(b: Bucket, malware: string | undefined, sample: IocSample | null) {
+	b.count++;
+	if (malware) b.malwareTally.set(malware, (b.malwareTally.get(malware) ?? 0) + 1);
+	if (sample && b.samples.length < MAX_SAMPLES_PER_COUNTRY) b.samples.push(sample);
 }
 
 async function fetchFeodo(byCountry: Map<string, Bucket>): Promise<number> {
@@ -62,7 +83,13 @@ async function fetchFeodo(byCountry: Map<string, Bucket>): Promise<number> {
 	});
 	if (!res) return 0;
 
-	type FeodoRow = { country?: string; malware?: string; status?: string; last_online?: string };
+	type FeodoRow = {
+		country?: string;
+		malware?: string;
+		ip_address?: string;
+		port?: number;
+		first_seen?: string;
+	};
 	let rows: FeodoRow[] = [];
 	try {
 		rows = (await res.json()) as FeodoRow[];
@@ -74,7 +101,17 @@ async function fetchFeodo(byCountry: Map<string, Bucket>): Promise<number> {
 	for (const row of rows) {
 		const cc = row.country?.toUpperCase();
 		if (!cc) continue;
-		tally(byCountry, cc, row.malware);
+		const b = bucketFor(byCountry, cc);
+		const sample: IocSample | null = row.ip_address
+			? {
+					ioc: row.port ? `${row.ip_address}:${row.port}` : row.ip_address,
+					iocType: 'ip:port',
+					malware: row.malware ?? 'unknown',
+					firstSeen: row.first_seen ?? '',
+					iocId: null
+				}
+			: null;
+		tally(b, row.malware, sample);
 		included++;
 	}
 	return included;
@@ -83,20 +120,16 @@ async function fetchFeodo(byCountry: Map<string, Bucket>): Promise<number> {
 const IP_RE = /^(\d{1,3}\.){3}\d{1,3}/;
 
 function parseCsvLine(line: string): string[] {
-	// 단순 CSV 파서 — abuse.ch CSV 는 `"a", "b", "c"` 형식 (쉼표+공백 구분, 모든 필드가 따옴표)
 	const out: string[] = [];
 	let cur = '';
 	let inQuote = false;
 	for (let i = 0; i < line.length; i++) {
 		const ch = line[i];
-		if (ch === '"') {
-			inQuote = !inQuote;
-		} else if (ch === ',' && !inQuote) {
+		if (ch === '"') inQuote = !inQuote;
+		else if (ch === ',' && !inQuote) {
 			out.push(cur.trim());
 			cur = '';
-		} else {
-			cur += ch;
-		}
+		} else cur += ch;
 	}
 	out.push(cur.trim());
 	return out;
@@ -120,14 +153,23 @@ async function fetchThreatFox(byCountry: Map<string, Bucket>): Promise<number> {
 		const line = raw.trim();
 		if (!line || line.startsWith('#')) continue;
 		const cols = parseCsvLine(line);
-		// 컬럼: 0 first_seen, 2 ioc_value, 3 ioc_type, 7 malware_printable
+		// 0 first_seen, 1 ioc_id, 2 ioc_value, 3 ioc_type, 7 malware_printable
 		const iocType = cols[3];
 		if (iocType !== 'ip:port' && iocType !== 'ip') continue;
 		const m = cols[2]?.match(IP_RE);
 		if (!m) continue;
 		const lookup = geoip.lookup(m[0]);
 		if (!lookup?.country) continue;
-		tally(byCountry, lookup.country, cols[7] || cols[5] || 'unknown');
+		const malware = cols[7] || cols[5] || 'unknown';
+		const sample: IocSample = {
+			ioc: cols[2],
+			iocType: 'ip:port',
+			malware,
+			firstSeen: cols[0],
+			iocId: cols[1] || null
+		};
+		const b = bucketFor(byCountry, lookup.country);
+		tally(b, malware, sample);
 		included++;
 	}
 	return included;
@@ -135,14 +177,21 @@ async function fetchThreatFox(byCountry: Map<string, Bucket>): Promise<number> {
 
 function bucketsToDots(byCountry: Map<string, Bucket>): ThreatDot[] {
 	const dots: ThreatDot[] = [];
-	for (const [cc, { count, malwareTally }] of byCountry) {
+	for (const [cc, { count, malwareTally, samples }] of byCountry) {
 		const centroid = centroidOf(cc);
 		if (!centroid) continue;
-		const projected = project(centroid[0], centroid[1]);
-		if (!projected) continue;
-		const topMalware =
-			[...malwareTally.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? 'unknown';
-		dots.push({ country: cc, count, x: projected[0], y: projected[1], topMalware });
+		const tally = [...malwareTally.entries()]
+			.map(([name, count]) => ({ name, count }))
+			.sort((a, b) => b.count - a.count);
+		dots.push({
+			country: cc,
+			count,
+			lon: centroid[0],
+			lat: centroid[1],
+			topMalware: tally[0]?.name ?? 'unknown',
+			malwareTally: tally.slice(0, 5),
+			samples
+		});
 	}
 	dots.sort((a, b) => b.count - a.count);
 	return dots;
@@ -181,12 +230,8 @@ async function fetchCves(exploitedSet: Set<string>): Promise<CveItem[]> {
 				published: string;
 				descriptions?: { lang: string; value: string }[];
 				metrics?: {
-					cvssMetricV31?: {
-						cvssData?: { baseScore?: number; baseSeverity?: string };
-					}[];
-					cvssMetricV30?: {
-						cvssData?: { baseScore?: number; baseSeverity?: string };
-					}[];
+					cvssMetricV31?: { cvssData?: { baseScore?: number; baseSeverity?: string } }[];
+					cvssMetricV30?: { cvssData?: { baseScore?: number; baseSeverity?: string } }[];
 				};
 			};
 		}[];

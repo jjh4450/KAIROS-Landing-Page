@@ -8,8 +8,23 @@
 	import ArrowDown from 'phosphor-svelte/lib/ArrowDown';
 	import ArrowUpRight from 'phosphor-svelte/lib/ArrowUpRight';
 
+	type Sample = {
+		ioc: string;
+		iocType: string;
+		malware: string;
+		firstSeen: string;
+		iocId: string | null;
+	};
 	type ThreatFeed = {
-		dots: { country: string; count: number; x: number; y: number; topMalware: string }[];
+		dots: {
+			country: string;
+			count: number;
+			lat: number;
+			lon: number;
+			topMalware: string;
+			malwareTally: { name: string; count: number }[];
+			samples: Sample[];
+		}[];
 		cves: {
 			id: string;
 			score: number | null;
@@ -21,14 +36,12 @@
 		updatedAt: string;
 		totalIocs: number;
 	};
-	type World = { paths: string[]; width: number; height: number };
 
 	type Props = {
 		settings?: SiteSettings | null;
 		threatFeed: ThreatFeed;
-		world: World;
 	};
-	let { settings, threatFeed, world }: Props = $props();
+	let { settings, threatFeed }: Props = $props();
 
 	const subtitle = $derived(
 		settings?.heroSubtitle ?? '함께 배우고, 함께 공격하고, 함께 방어합니다.'
@@ -133,6 +146,6 @@
 	</div>
 
 	<div bind:this={sceneEl} class="reveal relative z-10 w-full lg:col-span-5">
-		<ThreatDashboard feed={threatFeed} {world} />
+		<ThreatDashboard feed={threatFeed} />
 	</div>
 </section>

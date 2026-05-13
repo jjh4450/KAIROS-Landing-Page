@@ -27,7 +27,7 @@
 <SiteHeader settings={data.settings} user={data.user} />
 
 <main class="relative">
-	<HeroSection settings={data.settings} threatFeed={data.threatFeed} world={data.world} />
+	<HeroSection settings={data.settings} threatFeed={data.threatFeed} />
 	<AboutSection />
 	<PostsSection posts={data.posts} />
 	<ActivitiesSection events={data.events} />

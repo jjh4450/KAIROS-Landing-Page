@@ -1,6 +1,5 @@
 import type { PageServerLoad } from './$types';
 import { getThreatFeed } from '$lib/server/threatFeed';
-import { WORLD_HEIGHT, WORLD_PATHS, WORLD_WIDTH } from '$lib/server/worldMap';
 import type {
 	Achievement,
 	Category,
@@ -69,7 +68,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 			members: membersRes.totalItems ?? membersRes.items.length,
 			achievements: achievementsRes.totalItems ?? achievementsRes.items.length
 		},
-		threatFeed,
-		world: { paths: WORLD_PATHS, width: WORLD_WIDTH, height: WORLD_HEIGHT }
+		threatFeed
 	};
 };

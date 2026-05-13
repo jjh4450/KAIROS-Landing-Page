@@ -4,6 +4,8 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import Eyebrow from './Eyebrow.svelte';
 	import HeroScene from './HeroScene.svelte';
+	import KairosSigil from './KairosSigil.svelte';
+	import HeroContours from './HeroContours.svelte';
 	import type { SiteSettings } from '$lib/types';
 	import { magnetic } from '$lib/motion/actions';
 	import ArrowDown from 'phosphor-svelte/lib/ArrowDown';
@@ -120,8 +122,15 @@
 		class="reveal relative h-[420px] w-full lg:col-span-5 lg:h-[560px]"
 		aria-hidden="true"
 	>
+		<HeroContours class="text-kairos-cyan absolute inset-0 h-full w-full" />
+
 		<Canvas>
 			<HeroScene />
 		</Canvas>
+
+		<KairosSigil
+			size={42}
+			class="text-kairos-cyan absolute top-4 left-4 z-10 drop-shadow-[0_0_8px_var(--kairos-cyan)]"
+		/>
 	</div>
 </section>

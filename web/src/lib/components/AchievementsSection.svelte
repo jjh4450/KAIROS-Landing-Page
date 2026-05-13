@@ -4,6 +4,7 @@
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import Eyebrow from './Eyebrow.svelte';
 	import { cardTilt } from '$lib/motion/actions';
+	import { fmtYear } from '$lib/format';
 	import type { Achievement } from '$lib/types';
 
 	type Props = { achievements: Achievement[] };
@@ -47,10 +48,6 @@
 		};
 	});
 
-	function year(d?: string): string {
-		if (!d) return '—';
-		return String(new Date(d).getFullYear());
-	}
 </script>
 
 <section
@@ -114,7 +111,7 @@
 											{a.rank}
 										</Badge>
 									{/if}
-									<span class="text-muted-foreground">{year(a.date)}</span>
+									<span class="text-muted-foreground">{fmtYear(a.date)}</span>
 								</div>
 							</Card.Content>
 						</Card.Root>

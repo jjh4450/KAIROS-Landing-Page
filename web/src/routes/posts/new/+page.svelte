@@ -21,7 +21,8 @@
 	let categorySlug = $state('');
 	let content = $state('');
 
-	const isLoggedIn = $derived(false); // TODO: 인증 시스템 도입 시 교체
+	// TODO: 인증 시스템 도입 시 실제 세션에서 가져오기
+	const isLoggedIn = false;
 
 	function onSubmit(e: SubmitEvent) {
 		e.preventDefault();

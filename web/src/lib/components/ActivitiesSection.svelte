@@ -3,19 +3,11 @@
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import Eyebrow from './Eyebrow.svelte';
 	import { cardTilt } from '$lib/motion/actions';
+	import { fmtNumericDate } from '$lib/format';
 	import type { EventRecord } from '$lib/types';
 
 	type Props = { events: EventRecord[] };
 	let { events }: Props = $props();
-
-	const typeLabel: Record<EventRecord['type'], string> = {
-		seminar: 'seminar',
-		study: 'study',
-		ctf: 'ctf',
-		conference: 'conference',
-		social: 'social',
-		other: 'other'
-	};
 
 	const typeColor: Record<EventRecord['type'], string> = {
 		seminar: 'var(--kairos-cyan)',
@@ -25,12 +17,6 @@
 		social: 'var(--muted-foreground)',
 		other: 'var(--muted-foreground)'
 	};
-
-	function fmtDate(d?: string): string {
-		if (!d) return '—';
-		const dt = new Date(d);
-		return dt.toLocaleDateString('ko-KR', { month: '2-digit', day: '2-digit' });
-	}
 </script>
 
 <section id="activities" class="relative mx-auto w-full max-w-7xl px-6 py-24 lg:py-32">
@@ -72,10 +58,10 @@
 											ev.type
 										]} 35%, transparent);"
 									>
-										{typeLabel[ev.type]}
+										{ev.type}
 									</Badge>
 									<span class="text-muted-foreground font-mono text-[11px]">
-										{fmtDate(ev.startsAt)}
+										{fmtNumericDate(ev.startsAt)}
 									</span>
 								</div>
 								<Card.Title class="tilt-3d-layer-deep font-mono text-base">{ev.title}</Card.Title>

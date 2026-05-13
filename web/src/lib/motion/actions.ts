@@ -87,12 +87,11 @@ export const magnetic: Action<HTMLElement, { strength?: number; radius?: number 
  * ============================================================ */
 export const cardTilt: Action<
 	HTMLElement,
-	{ max?: number; perspective?: number; scale?: number; reset?: number } | undefined
+	{ max?: number; scale?: number } | undefined
 > = (node, params) => {
 	const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 	let max = params?.max ?? 8;
 	let scale = params?.scale ?? 1.02;
-	let reset = params?.reset ?? 0.18;
 
 	let raf = 0;
 	let target = { rx: 0, ry: 0, mx: 50, my: 50, s: 1 };
@@ -159,7 +158,6 @@ export const cardTilt: Action<
 		update(next) {
 			max = next?.max ?? 8;
 			scale = next?.scale ?? 1.02;
-			reset = next?.reset ?? 0.18;
 		},
 		destroy() {
 			node.removeEventListener('pointermove', move);

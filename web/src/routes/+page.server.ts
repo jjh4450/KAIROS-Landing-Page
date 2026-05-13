@@ -1,5 +1,4 @@
-import PocketBase from 'pocketbase';
-import { PUBLIC_PB_URL } from '$env/static/public';
+import { pb } from '$lib/pb';
 import type { PageServerLoad } from './$types';
 import type {
 	Achievement,
@@ -12,8 +11,6 @@ import type {
 } from '$lib/types';
 
 export const load: PageServerLoad = async () => {
-	const pb = new PocketBase(PUBLIC_PB_URL);
-
 	const emptyList = <T>() => ({ items: [] as T[], totalItems: 0, totalPages: 0, page: 1, perPage: 0 });
 
 	const [settings, achievementsRes, eventsRes, sponsorsRes, membersRes, postsRes, categoriesRes] =

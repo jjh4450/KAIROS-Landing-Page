@@ -5,6 +5,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import Eyebrow from './Eyebrow.svelte';
 	import { cardTilt } from '$lib/motion/actions';
+	import { excerpt, fmtRelative } from '$lib/format';
 	import type { Post } from '$lib/types';
 	import ArrowUpRight from 'phosphor-svelte/lib/ArrowUpRight';
 	import Eye from 'phosphor-svelte/lib/Eye';
@@ -76,28 +77,6 @@
 		};
 	});
 
-	function stripHtml(html: string): string {
-		return html
-			.replace(/<[^>]*>/g, ' ')
-			.replace(/\s+/g, ' ')
-			.trim();
-	}
-
-	function excerpt(content: string, max = 140): string {
-		const t = stripHtml(content);
-		return t.length > max ? t.slice(0, max).trim() + '…' : t;
-	}
-
-	function fmtRelative(d: string): string {
-		const dt = new Date(d);
-		const now = Date.now();
-		const diff = (now - dt.getTime()) / 1000;
-		if (diff < 60) return '방금';
-		if (diff < 3600) return Math.floor(diff / 60) + '분 전';
-		if (diff < 86400) return Math.floor(diff / 3600) + '시간 전';
-		if (diff < 86400 * 7) return Math.floor(diff / 86400) + '일 전';
-		return dt.toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' });
-	}
 </script>
 
 <section

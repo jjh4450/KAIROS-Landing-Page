@@ -1,13 +1,10 @@
-import PocketBase from 'pocketbase';
-import { PUBLIC_PB_URL } from '$env/static/public';
+import { pb } from '$lib/pb';
 import type { PageServerLoad } from './$types';
 import type { Category, Post } from '$lib/types';
 
 const PER_PAGE = 12;
 
 export const load: PageServerLoad = async ({ url }) => {
-	const pb = new PocketBase(PUBLIC_PB_URL);
-
 	const q = url.searchParams.get('q')?.trim() ?? '';
 	const categorySlug = url.searchParams.get('category')?.trim() ?? '';
 	const page = Math.max(1, Number(url.searchParams.get('page') ?? '1'));

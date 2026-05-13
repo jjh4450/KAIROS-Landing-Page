@@ -1,12 +1,9 @@
-import PocketBase from 'pocketbase';
-import { PUBLIC_PB_URL } from '$env/static/public';
+import { pb } from '$lib/pb';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import type { Post } from '$lib/types';
 
 export const load: PageServerLoad = async ({ params }) => {
-	const pb = new PocketBase(PUBLIC_PB_URL);
-
 	let post: Post;
 	try {
 		post = await pb.collection('posts').getOne<Post>(params.id, {

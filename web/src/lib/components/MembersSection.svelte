@@ -10,15 +10,6 @@
 	type Props = { members: Member[] };
 	let { members }: Props = $props();
 
-	const positionLabel: Record<Member['position'], string> = {
-		president: 'president',
-		'vice-president': 'vice-president',
-		officer: 'officer',
-		member: 'member',
-		alumni: 'alumni',
-		advisor: 'advisor'
-	};
-
 	const positionOrder: Record<Member['position'], number> = {
 		president: 0,
 		'vice-president': 1,
@@ -93,7 +84,7 @@
 								</Avatar.Root>
 								<Card.Title class="mt-2 truncate text-sm">{name}</Card.Title>
 								<Card.Description class="text-kairos-cyan font-mono text-[10px] tracking-[0.18em] uppercase">
-									{positionLabel[m.position]}{m.year ? ` · ${m.year}` : ''}
+									{m.position}{m.year ? ` · ${m.year}` : ''}
 								</Card.Description>
 							</Card.Header>
 							{#if m.tracks && m.tracks.length}

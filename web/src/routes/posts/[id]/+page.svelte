@@ -10,20 +10,11 @@
 	import Eye from 'phosphor-svelte/lib/Eye';
 	import PushPin from 'phosphor-svelte/lib/PushPin';
 	import Trash from 'phosphor-svelte/lib/Trash';
+	import { fmtLongDateTime } from '$lib/format';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 	const p = $derived(data.post);
-
-	function fmt(d: string): string {
-		return new Date(d).toLocaleString('ko-KR', {
-			year: 'numeric',
-			month: 'long',
-			day: 'numeric',
-			hour: '2-digit',
-			minute: '2-digit'
-		});
-	}
 </script>
 
 <svelte:head>
@@ -59,10 +50,10 @@
 			<div class="text-muted-foreground mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-xs">
 				<span>by <span class="text-foreground">{p.expand?.author?.nickname ?? 'anon'}</span></span>
 				<span>·</span>
-				<span>{fmt(p.created)}</span>
+				<span>{fmtLongDateTime(p.created)}</span>
 				{#if p.updated !== p.created}
 					<span>·</span>
-					<span>(updated {fmt(p.updated)})</span>
+					<span>(updated {fmtLongDateTime(p.updated)})</span>
 				{/if}
 				{#if p.viewCount !== undefined}
 					<span>·</span>

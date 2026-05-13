@@ -125,16 +125,6 @@
 			<HeroScene />
 		</Canvas>
 
-		<div class="glass pointer-events-none absolute right-4 bottom-4 px-3 py-2">
-			<div class="flex items-center gap-2 font-mono text-[10px]">
-				<span
-					class="bg-kairos-lime inline-block h-1.5 w-1.5 rounded-full"
-					style="box-shadow: 0 0 8px var(--kairos-lime)"
-				></span>
-				<span class="text-kairos-lime tracking-widest uppercase">live</span>
-				<span class="text-muted-foreground">· 60fps</span>
-			</div>
-		</div>
 		<Badge variant="outline" class="absolute top-4 left-4 z-10 font-mono backdrop-blur-md">
 			[ kairos.core ]
 		</Badge>

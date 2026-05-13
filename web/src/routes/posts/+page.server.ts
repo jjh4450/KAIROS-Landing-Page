@@ -9,49 +9,38 @@ export const load: PageServerLoad = async ({ url }) => {
 	const categorySlug = url.searchParams.get('category')?.trim() ?? '';
 	const page = Math.max(1, Number(url.searchParams.get('page') ?? '1'));
 
-	// Build PocketBase filter
+	// 카테고리 전체를 먼저 가져온 뒤 슬러그→id 매핑을 in-memory 로 해결
+	// (예전엔 getFirstListItem 으로 별도 round-trip 했음)
+	const categories = await pb
+		.collection('categories')
+		.getFullList<Category>({ sort: 'sortOrder' })
+		.catch(() => [] as Category[]);
+
 	const filterParts: string[] = ['isPrivate = false'];
 	if (q) {
 		const safe = q.replace(/"/g, '\\"');
 		filterParts.push(`(title ~ "${safe}" || content ~ "${safe}")`);
 	}
-
-	// 카테고리 슬러그로 들어오므로 먼저 id 변환
-	let categoryId = '';
 	if (categorySlug) {
-		try {
-			const cat = await pb
-				.collection('categories')
-				.getFirstListItem<Category>(`slug='${categorySlug}'`);
-			categoryId = cat.id;
-			filterParts.push(`category = "${categoryId}"`);
-		} catch {
-			// unknown slug — ignore filter
-		}
+		const cat = categories.find((c) => c.slug === categorySlug);
+		if (cat) filterParts.push(`category = "${cat.id}"`);
+		// unknown slug → filter dropped, treat as "all"
 	}
 
-	const filter = filterParts.join(' && ');
-
-	const [postsRes, categories] = await Promise.all([
-		pb
-			.collection('posts')
-			.getList<Post>(page, PER_PAGE, {
-				sort: '-isPinned,-created',
-				filter,
-				expand: 'author,category,tags'
-			})
-			.catch(() => ({
-				items: [] as Post[],
-				totalItems: 0,
-				totalPages: 0,
-				page: 1,
-				perPage: PER_PAGE
-			})),
-		pb
-			.collection('categories')
-			.getFullList<Category>({ sort: 'sortOrder' })
-			.catch(() => [] as Category[])
-	]);
+	const postsRes = await pb
+		.collection('posts')
+		.getList<Post>(page, PER_PAGE, {
+			sort: '-isPinned,-created',
+			filter: filterParts.join(' && '),
+			expand: 'author,category,tags'
+		})
+		.catch(() => ({
+			items: [] as Post[],
+			totalItems: 0,
+			totalPages: 0,
+			page: 1,
+			perPage: PER_PAGE
+		}));
 
 	return {
 		posts: postsRes.items,

@@ -88,7 +88,7 @@
 		<Eyebrow>// posts</Eyebrow>
 		<h2>최근 글.</h2>
 		<p class="text-base text-muted-foreground md:text-lg">
-			동아리원이 직접 쓴 공지, 풀이(write-up), 자료, 뉴스 중 최근 세 편입니다.
+			공지, 풀이(write-up), 자료, 뉴스가 올라옵니다.
 		</p>
 	</header>
 

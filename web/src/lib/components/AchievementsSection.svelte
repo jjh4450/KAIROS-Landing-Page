@@ -59,7 +59,7 @@
 		<Eyebrow>// wall of fame</Eyebrow>
 		<h2>학기별 활동 기록.</h2>
 		<p class="text-base text-muted-foreground md:text-lg">
-			대회 입상, CVE 발견, 외부 발표 등 동아리 활동 중에 남긴 기록을 정리해 두었습니다.
+			대회 입상, CVE 발견, 외부 발표 기록입니다.
 		</p>
 	</header>
 

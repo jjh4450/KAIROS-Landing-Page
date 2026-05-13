@@ -51,9 +51,7 @@
 	<header class="reveal mb-12 flex max-w-3xl flex-col gap-4 md:mb-16">
 		<Eyebrow>// roster</Eyebrow>
 		<h2>공개 명단.</h2>
-		<p class="text-base text-muted-foreground md:text-lg">
-			공개에 동의한 운영진과 멤버만 표시됩니다. 모든 부원이 여기 등장하지는 않습니다.
-		</p>
+		<p class="text-base text-muted-foreground md:text-lg">공개에 동의한 운영진과 멤버입니다.</p>
 	</header>
 
 	{#if sorted.length === 0}

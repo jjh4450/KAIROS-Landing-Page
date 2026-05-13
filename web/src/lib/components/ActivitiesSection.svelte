@@ -25,7 +25,7 @@
 		<Eyebrow>// activities</Eyebrow>
 		<h2>이번 학기 활동.</h2>
 		<p class="text-base text-muted-foreground md:text-lg">
-			정기 스터디, CTF, 세미나, 외부 행사 일정을 모아 두었습니다.
+			정기 스터디, CTF, 세미나, 외부 행사 일정입니다.
 		</p>
 	</header>
 

@@ -4,6 +4,7 @@
 	import Eyebrow from './Eyebrow.svelte';
 	import { cardTilt } from '$lib/motion/actions';
 	import { fmtNumericDate } from '$lib/format';
+	import EmptyStateCard from './EmptyStateCard.svelte';
 	import type { EventRecord } from '$lib/types';
 
 	type Props = { events: EventRecord[] };
@@ -29,19 +30,7 @@
 	</header>
 
 	{#if events.length === 0}
-		<div class="tilt-3d">
-			<div use:cardTilt={{ max: 4, scale: 1.01 }} class="tilt-3d-card">
-				<Card.Root class="relative overflow-hidden">
-					<div class="tilt-3d-glare"></div>
-					<Card.Content class="tilt-3d-layer relative">
-						<p class="text-muted-foreground font-mono text-sm">
-							$ no events scheduled.
-							<span class="text-kairos-cyan">(coming soon)</span>
-						</p>
-					</Card.Content>
-				</Card.Root>
-			</div>
-		</div>
+		<EmptyStateCard message="$ no events scheduled." hint="(coming soon)" />
 	{:else}
 		<div class="reveal-children grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 			{#each events as ev (ev.id)}

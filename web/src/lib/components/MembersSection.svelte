@@ -4,6 +4,7 @@
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import Eyebrow from './Eyebrow.svelte';
 	import { cardTilt } from '$lib/motion/actions';
+	import EmptyStateCard from './EmptyStateCard.svelte';
 	import type { Member } from '$lib/types';
 	import { PUBLIC_PB_URL } from '$env/static/public';
 
@@ -56,19 +57,7 @@
 	</header>
 
 	{#if sorted.length === 0}
-		<div class="tilt-3d">
-			<div use:cardTilt={{ max: 4, scale: 1.01 }} class="tilt-3d-card">
-				<Card.Root class="relative overflow-hidden">
-					<div class="tilt-3d-glare"></div>
-					<Card.Content class="tilt-3d-layer relative">
-						<p class="text-muted-foreground font-mono text-sm">
-							$ no public profiles yet.
-							<span class="text-kairos-cyan">(첫 멤버 등록 대기)</span>
-						</p>
-					</Card.Content>
-				</Card.Root>
-			</div>
-		</div>
+		<EmptyStateCard message="$ no public profiles yet." hint="(첫 멤버 등록 대기)" />
 	{:else}
 		<div class="reveal-children grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
 			{#each sorted as m (m.id)}

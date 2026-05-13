@@ -5,6 +5,7 @@
 	import Eyebrow from './Eyebrow.svelte';
 	import { cardTilt } from '$lib/motion/actions';
 	import { fmtYear } from '$lib/format';
+	import EmptyStateCard from './EmptyStateCard.svelte';
 	import type { Achievement } from '$lib/types';
 
 	type Props = { achievements: Achievement[] };
@@ -64,19 +65,7 @@
 	</header>
 
 	{#if achievements.length === 0}
-		<div class="tilt-3d">
-			<div use:cardTilt={{ max: 4, scale: 1.01 }} class="tilt-3d-card">
-				<Card.Root class="relative overflow-hidden">
-					<div class="tilt-3d-glare"></div>
-					<Card.Content class="tilt-3d-layer relative">
-						<p class="text-muted-foreground font-mono text-sm">
-							$ no entries yet.
-							<span class="text-kairos-cyan">(첫 수상까지 진행 중)</span>
-						</p>
-					</Card.Content>
-				</Card.Root>
-			</div>
-		</div>
+		<EmptyStateCard message="$ no entries yet." hint="(첫 수상까지 진행 중)" />
 	{:else}
 		<ol
 			class="reveal-children border-border/40 relative space-y-3 border-l pl-6 md:pl-8"

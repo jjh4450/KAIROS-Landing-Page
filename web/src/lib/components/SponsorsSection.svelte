@@ -3,6 +3,7 @@
 	import { Separator } from '$lib/components/ui/separator/index.js';
 	import Eyebrow from './Eyebrow.svelte';
 	import { cardTilt } from '$lib/motion/actions';
+	import EmptyStateCard from './EmptyStateCard.svelte';
 	import type { Sponsor } from '$lib/types';
 	import { PUBLIC_PB_URL } from '$env/static/public';
 
@@ -38,19 +39,7 @@
 	</header>
 
 	{#if sorted.length === 0}
-		<div class="tilt-3d">
-			<div use:cardTilt={{ max: 4, scale: 1.01 }} class="tilt-3d-card">
-				<Card.Root class="relative overflow-hidden">
-					<div class="tilt-3d-glare"></div>
-					<Card.Content class="tilt-3d-layer relative">
-						<p class="text-muted-foreground font-mono text-sm">
-							$ awaiting partners.
-							<span class="text-kairos-cyan">동아리 후원 / 협력 문의 환영.</span>
-						</p>
-					</Card.Content>
-				</Card.Root>
-			</div>
-		</div>
+		<EmptyStateCard message="$ awaiting partners." hint="동아리 후원 / 협력 문의 환영." />
 	{:else}
 		<div class="reveal flex flex-wrap items-center justify-start gap-x-2 gap-y-4">
 			{#each sorted as s, i (s.id)}

@@ -12,6 +12,7 @@
 	import Eyebrow from '$lib/components/Eyebrow.svelte';
 	import { cardTilt } from '$lib/motion/actions';
 	import { excerpt, fmtRelative } from '$lib/format';
+	import EmptyStateCard from '$lib/components/EmptyStateCard.svelte';
 	import MagnifyingGlass from 'phosphor-svelte/lib/MagnifyingGlass';
 	import Plus from 'phosphor-svelte/lib/Plus';
 	import ArrowLeft from 'phosphor-svelte/lib/ArrowLeft';
@@ -127,18 +128,10 @@
 
 	<!-- Results -->
 	{#if data.posts.length === 0}
-		<Card.Root>
-			<Card.Content class="py-12 text-center">
-				<p class="text-muted-foreground font-mono text-sm">
-					$ no matches.
-					{#if data.q}
-						<span class="text-kairos-cyan">("{data.q}" 검색 결과 없음)</span>
-					{:else}
-						<span class="text-kairos-cyan">(아직 게시물이 없습니다)</span>
-					{/if}
-				</p>
-			</Card.Content>
-		</Card.Root>
+		<EmptyStateCard
+			message="$ no matches."
+			hint={data.q ? `("${data.q}" 검색 결과 없음)` : '(아직 게시물이 없습니다)'}
+		/>
 	{:else}
 		<div class="text-muted-foreground mb-4 font-mono text-xs">
 			$ found <span class="text-foreground">{data.totalItems}</span> entries

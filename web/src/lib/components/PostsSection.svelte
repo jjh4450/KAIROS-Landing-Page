@@ -6,6 +6,7 @@
 	import Eyebrow from './Eyebrow.svelte';
 	import { cardTilt } from '$lib/motion/actions';
 	import { excerpt, fmtRelative } from '$lib/format';
+	import EmptyStateCard from './EmptyStateCard.svelte';
 	import type { Post } from '$lib/types';
 	import ArrowUpRight from 'phosphor-svelte/lib/ArrowUpRight';
 	import Eye from 'phosphor-svelte/lib/Eye';
@@ -93,13 +94,7 @@
 	</header>
 
 	{#if highlights.length === 0}
-		<Card.Root>
-			<Card.Content>
-				<p class="text-muted-foreground font-mono text-sm">
-					$ no public posts yet. <span class="text-kairos-cyan">(첫 글까지 진행 중)</span>
-				</p>
-			</Card.Content>
-		</Card.Root>
+		<EmptyStateCard message="$ no public posts yet." hint="(첫 글까지 진행 중)" />
 	{:else}
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-3">
 			{#each highlights as p, i (p.id)}

@@ -118,10 +118,15 @@
 	* {
 		@apply border-border outline-ring/50;
 	}
-	html,
-	body {
+	html {
 		@apply bg-background text-foreground;
 		font-family: var(--font-sans);
+	}
+	body {
+		/* AmbientBackdrop(z:-10)가 보이도록 body 배경은 투명 — html이 대신 색상 담당 */
+		@apply text-foreground;
+		font-family: var(--font-sans);
+		background: transparent;
 	}
 	body {
 		min-height: 100dvh;

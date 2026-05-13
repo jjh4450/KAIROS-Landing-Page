@@ -64,17 +64,11 @@
 		0% {
 			transform: translate3d(0, 0, 0) scale(1);
 		}
-		25% {
-			transform: translate3d(6vw, -4vw, 0) scale(1.1);
-		}
 		50% {
-			transform: translate3d(-2vw, 6vw, 0) scale(0.95);
-		}
-		75% {
-			transform: translate3d(-5vw, -3vw, 0) scale(1.06);
+			transform: translate3d(4vw, -3vw, 0) scale(1.08);
 		}
 		100% {
-			transform: translate3d(3vw, 5vw, 0) scale(1);
+			transform: translate3d(-3vw, 5vw, 0) scale(0.94);
 		}
 	}
 

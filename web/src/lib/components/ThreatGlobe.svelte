@@ -78,10 +78,12 @@
 			const Globe = mod.default;
 			globe = Globe()(containerEl)
 				.backgroundColor('rgba(0,0,0,0)')
-				.globeImageUrl('//unpkg.com/three-globe/example/img/earth-dark.jpg')
+				.backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
+				.globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
+				.bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
 				.showAtmosphere(true)
-				.atmosphereColor('#38bdf8')
-				.atmosphereAltitude(0.18)
+				.atmosphereColor('#67e8f9')
+				.atmosphereAltitude(0.22)
 				.width(containerEl.clientWidth)
 				.height(containerEl.clientHeight);
 

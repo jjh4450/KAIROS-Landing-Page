@@ -43,6 +43,14 @@
 		return `https://feodotracker.abuse.ch/browse/${ip}/`;
 	}
 
+	// 표시용 defang — 실제 IOC에 의도치 않은 접속/auto-link 방지 (업계 표준)
+	function defang(ioc: string): string {
+		return ioc
+			.replace(/\./g, '[.]')
+			.replace(/^http:\/\//i, 'hxxp://')
+			.replace(/^https:\/\//i, 'hxxps://');
+	}
+
 	let refreshTimer: ReturnType<typeof setInterval> | undefined;
 	async function refresh() {
 		try {
@@ -113,6 +121,13 @@
 				{/each}
 			</div>
 
+			<!-- 경고 — 실제 활성 IOC -->
+			<div
+				class="border-rose-400/30 bg-rose-400/5 text-rose-300/90 mb-1.5 rounded border px-1.5 py-1 font-mono text-[9px] tracking-widest uppercase"
+			>
+				⚠ live ioc · defanged · do not connect
+			</div>
+
 			<!-- sample IOC -->
 			<div class="max-h-[200px] space-y-0.5 overflow-y-auto font-mono text-[10px]">
 				{#each selected.samples as s (s.ioc)}
@@ -121,8 +136,9 @@
 						target="_blank"
 						rel="noopener noreferrer"
 						class="hover:bg-kairos-cyan/10 flex items-center justify-between gap-2 rounded px-1 py-0.5"
+						title="abuse.ch 상세로 이동 (IOC 자체로는 접속하지 마세요)"
 					>
-						<span class="text-foreground truncate" title={s.ioc}>{s.ioc}</span>
+						<span class="text-foreground truncate">{defang(s.ioc)}</span>
 						<span class="text-muted-foreground shrink-0">{s.malware}</span>
 						<ArrowSquareOut class="text-muted-foreground size-3 shrink-0" />
 					</a>

@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import { Canvas } from '@threlte/core';
 	import { Button } from '$lib/components/ui/button/index.js';
-	import { Badge } from '$lib/components/ui/badge/index.js';
 	import Eyebrow from './Eyebrow.svelte';
 	import HeroScene from './HeroScene.svelte';
 	import type { SiteSettings } from '$lib/types';
@@ -124,9 +123,5 @@
 		<Canvas>
 			<HeroScene />
 		</Canvas>
-
-		<Badge variant="outline" class="absolute top-4 left-4 z-10 font-mono backdrop-blur-md">
-			[ kairos.core ]
-		</Badge>
 	</div>
 </section>

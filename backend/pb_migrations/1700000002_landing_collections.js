@@ -196,7 +196,7 @@ migrate(
     settingsRec.set("heroTitle", "KAIROS — KAIROS");
     settingsRec.set(
       "heroSubtitle",
-      "강원대학교 보안 동아리. 함께 배우고, 함께 공격하고, 함께 방어합니다.",
+      "강원대학교 학생 보안 동아리입니다. 함께 공부하고, 활동을 기록으로 남깁니다.",
     );
     settingsRec.set("recruitmentOpen", false);
     settingsRec.set("footerCopy", "© KAIROS · KAIROS");

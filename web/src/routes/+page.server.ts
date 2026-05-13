@@ -1,4 +1,6 @@
 import type { PageServerLoad } from './$types';
+import { getThreatFeed } from '$lib/server/threatFeed';
+import { WORLD_HEIGHT, WORLD_PATHS, WORLD_WIDTH } from '$lib/server/worldMap';
 import type {
 	Achievement,
 	Category,
@@ -12,7 +14,7 @@ import type {
 export const load: PageServerLoad = async ({ locals }) => {
 	const emptyList = <T>() => ({ items: [] as T[], totalItems: 0, totalPages: 0, page: 1, perPage: 0 });
 
-	const [settings, achievementsRes, eventsRes, sponsorsRes, membersRes, postsRes, categoriesRes] =
+	const [settings, achievementsRes, eventsRes, sponsorsRes, membersRes, postsRes, categoriesRes, threatFeed] =
 		await Promise.all([
 			locals.pb
 				.collection('siteSettings')
@@ -45,7 +47,13 @@ export const load: PageServerLoad = async ({ locals }) => {
 			locals.pb
 				.collection('categories')
 				.getFullList<Category>({ sort: 'sortOrder' })
-				.catch(() => [] as Category[])
+				.catch(() => [] as Category[]),
+			getThreatFeed().catch(() => ({
+				dots: [],
+				cves: [],
+				updatedAt: new Date().toISOString(),
+				totalIocs: 0
+			}))
 		]);
 
 	return {
@@ -60,6 +68,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 			posts: postsRes.totalItems ?? postsRes.items.length,
 			members: membersRes.totalItems ?? membersRes.items.length,
 			achievements: achievementsRes.totalItems ?? achievementsRes.items.length
-		}
+		},
+		threatFeed,
+		world: { paths: WORLD_PATHS, width: WORLD_WIDTH, height: WORLD_HEIGHT }
 	};
 };

@@ -1,18 +1,34 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { Canvas } from '@threlte/core';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import Eyebrow from './Eyebrow.svelte';
-	import HeroScene from './HeroScene.svelte';
-	import KairosSigil from './KairosSigil.svelte';
-	import HeroContours from './HeroContours.svelte';
+	import ThreatDashboard from './ThreatDashboard.svelte';
 	import type { SiteSettings } from '$lib/types';
 	import { magnetic } from '$lib/motion/actions';
 	import ArrowDown from 'phosphor-svelte/lib/ArrowDown';
 	import ArrowUpRight from 'phosphor-svelte/lib/ArrowUpRight';
 
-	type Props = { settings?: SiteSettings | null };
-	let { settings }: Props = $props();
+	type ThreatFeed = {
+		dots: { country: string; count: number; x: number; y: number; topMalware: string }[];
+		cves: {
+			id: string;
+			score: number | null;
+			severity: string | null;
+			description: string;
+			published: string;
+			exploited: boolean;
+		}[];
+		updatedAt: string;
+		totalIocs: number;
+	};
+	type World = { paths: string[]; width: number; height: number };
+
+	type Props = {
+		settings?: SiteSettings | null;
+		threatFeed: ThreatFeed;
+		world: World;
+	};
+	let { settings, threatFeed, world }: Props = $props();
 
 	const subtitle = $derived(
 		settings?.heroSubtitle ?? '함께 배우고, 함께 공격하고, 함께 방어합니다.'
@@ -57,14 +73,13 @@
 						}
 					});
 
-					// 3D 씬 줌인 + 살짝 기울임
+					// 대시보드 패럴랙스 (살짝 위로 + 약간 축소)
 					gsap.fromTo(
 						sceneEl!,
-						{ y: 0, scale: 1, rotate: 0 },
+						{ y: 0, scale: 1 },
 						{
-							y: 40,
-							scale: 1.1,
-							rotate: -2,
+							y: 30,
+							scale: 0.98,
 							ease: 'none',
 							scrollTrigger: {
 								trigger: sectionEl!,
@@ -117,20 +132,7 @@
 		</div>
 	</div>
 
-	<div
-		bind:this={sceneEl}
-		class="reveal relative h-[420px] w-full lg:col-span-5 lg:h-[560px]"
-		aria-hidden="true"
-	>
-		<HeroContours class="text-kairos-cyan absolute inset-0 h-full w-full" />
-
-		<Canvas>
-			<HeroScene />
-		</Canvas>
-
-		<KairosSigil
-			size={42}
-			class="text-kairos-cyan absolute top-4 left-4 z-10 drop-shadow-[0_0_8px_var(--kairos-cyan)]"
-		/>
+	<div bind:this={sceneEl} class="reveal relative z-10 w-full lg:col-span-5">
+		<ThreatDashboard feed={threatFeed} {world} />
 	</div>
 </section>

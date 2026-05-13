@@ -1,12 +1,10 @@
 import { json } from '@sveltejs/kit';
-import { getThreatFeed, invalidateThreatFeedCache } from '$lib/server/threatFeed';
+import { getThreatFeed } from '$lib/server/threatFeed';
 
-export async function GET({ url }) {
-	if (url.searchParams.get('refresh') === '1') invalidateThreatFeedCache();
+export async function GET() {
 	const data = await getThreatFeed();
 	return json(data, {
-		headers: {
-			'cache-control': 'public, max-age=60'
-		}
+		// 서버 TTL(5분)과 정합 — 짧은 max-age는 캐시 효과를 깎고 백엔드 요청만 늘림
+		headers: { 'cache-control': 'public, max-age=300' }
 	});
 }

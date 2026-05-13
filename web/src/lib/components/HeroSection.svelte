@@ -8,34 +8,7 @@
 	import ArrowDown from 'phosphor-svelte/lib/ArrowDown';
 	import ArrowUpRight from 'phosphor-svelte/lib/ArrowUpRight';
 
-	type Sample = {
-		ioc: string;
-		iocType: string;
-		malware: string;
-		firstSeen: string;
-		iocId: string | null;
-	};
-	type ThreatFeed = {
-		dots: {
-			country: string;
-			count: number;
-			lat: number;
-			lon: number;
-			topMalware: string;
-			malwareTally: { name: string; count: number }[];
-			samples: Sample[];
-		}[];
-		cves: {
-			id: string;
-			score: number | null;
-			severity: string | null;
-			description: string;
-			published: string;
-			exploited: boolean;
-		}[];
-		updatedAt: string;
-		totalIocs: number;
-	};
+	import type { ThreatFeed } from '$lib/server/threatFeed';
 
 	type Props = {
 		settings?: SiteSettings | null;

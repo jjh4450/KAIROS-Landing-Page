@@ -1,18 +1,23 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
+	import type { ThreatDot } from '$lib/server/threatFeed';
 
-	type Dot = {
-		country: string;
-		count: number;
-		lat: number;
-		lon: number;
-		topMalware: string;
-	};
+	// 노드 크기/색상 튜닝 상수
+	const DOT_ALTITUDE_MIN = 0.02;
+	const DOT_ALTITUDE_SCALE = 0.1; // 비선형(pow 0.6) 후 곱해질 max 증분
+	const DOT_ALTITUDE_POWER = 0.6; // 큰 값 완만화 (우주엘리베이터 방지)
+	const DOT_RADIUS_BASE = 0.5;
+	const DOT_RADIUS_SCALE = 2.0;
+	const DOT_SELECTED_MULT = 1.35;
+	const SELECTED_COLOR = '#fb7185'; // rose-400
+	const DOT_HUE = 190; // 사이안 톤
+	const DOT_LIGHTNESS_MIN = 55;
+	const DOT_LIGHTNESS_RANGE = 25;
 
 	type Props = {
-		dots: Dot[];
-		onHover?: (d: Dot | null) => void;
-		onSelect?: (d: Dot | null) => void;
+		dots: ThreatDot[];
+		onHover?: (d: ThreatDot | null) => void;
+		onSelect?: (d: ThreatDot | null) => void;
 		selectedCountry?: string | null;
 		class?: string;
 	};
@@ -35,39 +40,34 @@
 	const maxCount = $derived(Math.max(1, ...dots.map((d) => d.count)));
 
 	function dotAltitude(count: number) {
-		// 우주엘리베이터 방지 — 최대 ~0.12, 비선형으로 큰 값에서 더 완만하게
-		return 0.02 + Math.pow(count / maxCount, 0.6) * 0.1;
+		return DOT_ALTITUDE_MIN + Math.pow(count / maxCount, DOT_ALTITUDE_POWER) * DOT_ALTITUDE_SCALE;
 	}
 	function dotRadius(count: number, isSelected: boolean) {
-		// 막대 굵기도 count 와 함께 — 키 큰 막대만큼 굵게
-		const base = 0.5 + Math.sqrt(count / maxCount) * 2.0;
-		return isSelected ? base * 1.35 : base;
+		const base = DOT_RADIUS_BASE + Math.sqrt(count / maxCount) * DOT_RADIUS_SCALE;
+		return isSelected ? base * DOT_SELECTED_MULT : base;
 	}
-	function dotColor(d: Dot) {
-		if (selectedCountry && d.country === selectedCountry) return '#fb7185'; // rose-400
-		// 사이안 톤 그라데이션 (count 비율에 따라 밝기)
-		const ratio = d.count / maxCount;
-		const lightness = 55 + ratio * 25;
-		return `hsl(190, 95%, ${lightness}%)`;
+	function dotColor(d: ThreatDot) {
+		if (selectedCountry && d.country === selectedCountry) return SELECTED_COLOR;
+		const lightness = DOT_LIGHTNESS_MIN + (d.count / maxCount) * DOT_LIGHTNESS_RANGE;
+		return `hsl(${DOT_HUE}, 95%, ${lightness}%)`;
 	}
 
 	function setData() {
 		if (!globe) return;
+		const asDot = (d: object) => d as ThreatDot;
 		globe
 			.pointsData(dots as unknown as Record<string, unknown>[])
 			.pointLat('lat')
 			.pointLng('lon')
-			.pointAltitude((d: object) => dotAltitude((d as Dot).count))
-			.pointRadius((d: object) =>
-				dotRadius((d as Dot).count, (d as Dot).country === selectedCountry)
-			)
-			.pointColor((d: object) => dotColor(d as Dot))
+			.pointAltitude((d: object) => dotAltitude(asDot(d).count))
+			.pointRadius((d: object) => dotRadius(asDot(d).count, asDot(d).country === selectedCountry))
+			.pointColor((d: object) => dotColor(asDot(d)))
 			.pointLabel((d: object) => {
-				const dot = d as Dot;
+				const dot = asDot(d);
 				return `<div style="font-family:ui-monospace,SFMono-Regular,monospace;font-size:11px;padding:6px 8px;background:rgba(0,0,0,0.85);border:1px solid rgba(56,189,248,0.4);border-radius:4px;color:white;line-height:1.5"><div style="color:#67e8f9"><b>${dot.country}</b> · ${dot.count} IOC</div><div style="opacity:0.7">top: ${dot.topMalware}</div><div style="opacity:0.5;font-size:9px;margin-top:2px">click for details</div></div>`;
 			})
-			.onPointHover((d: object | null) => onHover?.(d as Dot | null))
-			.onPointClick((d: object) => onSelect?.(d as Dot));
+			.onPointHover((d: object | null) => onHover?.(d ? asDot(d) : null))
+			.onPointClick((d: object) => onSelect?.(asDot(d)));
 	}
 
 	onMount(() => {
@@ -111,14 +111,11 @@
 		}
 	});
 
-	// reactive 데이터/선택 변경 반영
+	// dots / selectedCountry 변경 시 globe.gl 데이터 바인딩 갱신
 	$effect(() => {
-		if (globe) {
-			// referencing reactive deps so $effect re-runs
-			void dots.length;
-			void selectedCountry;
-			setData();
-		}
+		dots;
+		selectedCountry;
+		if (globe) setData();
 	});
 </script>
 

@@ -4,40 +4,15 @@
 	import ThreatGlobe from './ThreatGlobe.svelte';
 	import X from 'phosphor-svelte/lib/X';
 	import ArrowSquareOut from 'phosphor-svelte/lib/ArrowSquareOut';
+	import type { IocSample, ThreatDot, ThreatFeed } from '$lib/server/threatFeed';
 
-	type Sample = {
-		ioc: string;
-		iocType: string;
-		malware: string;
-		firstSeen: string;
-		iocId: string | null;
-	};
-	type Dot = {
-		country: string;
-		count: number;
-		lat: number;
-		lon: number;
-		topMalware: string;
-		malwareTally: { name: string; count: number }[];
-		samples: Sample[];
-	};
-	type Cve = {
-		id: string;
-		score: number | null;
-		severity: string | null;
-		description: string;
-		published: string;
-		exploited: boolean;
-	};
-	type Feed = { dots: Dot[]; cves: Cve[]; updatedAt: string; totalIocs: number };
-
-	type Props = { feed: Feed };
+	type Props = { feed: ThreatFeed };
 	let { feed: initial }: Props = $props();
 
-	let feed = $state<Feed>(initial);
-	let selected = $state<Dot | null>(null);
+	let feed = $state<ThreatFeed>(initial);
+	let selected = $state<ThreatDot | null>(null);
 
-	function iocLink(s: Sample): string {
+	function iocLink(s: IocSample): string {
 		if (s.iocId) return `https://threatfox.abuse.ch/ioc/${s.iocId}/`;
 		const ip = s.ioc.split(':')[0];
 		return `https://feodotracker.abuse.ch/browse/${ip}/`;
@@ -55,7 +30,7 @@
 	async function refresh() {
 		try {
 			const res = await fetch('/api/threat-feed');
-			if (res.ok) feed = (await res.json()) as Feed;
+			if (res.ok) feed = (await res.json()) as ThreatFeed;
 		} catch {
 			// silent
 		}

@@ -48,8 +48,13 @@ async function fetchWithTimeout(url: string, init?: RequestInit): Promise<Respon
 	const timer = setTimeout(() => ctrl.abort(), FETCH_TIMEOUT_MS);
 	try {
 		const res = await fetch(url, { ...init, signal: ctrl.signal });
-		return res.ok ? res : null;
-	} catch {
+		if (!res.ok) {
+			console.warn(`[threatFeed] ${url} → HTTP ${res.status}`);
+			return null;
+		}
+		return res;
+	} catch (err) {
+		console.warn(`[threatFeed] ${url} → ${(err as Error).message}`);
 		return null;
 	} finally {
 		clearTimeout(timer);
@@ -285,17 +290,14 @@ async function build(): Promise<ThreatFeed> {
 	};
 }
 
-export function invalidateThreatFeedCache(): void {
-	cache = null;
-}
-
 export async function getThreatFeed(): Promise<ThreatFeed> {
 	if (cache && cache.expires > Date.now()) return cache.data;
 	try {
 		const data = await build();
 		cache = { data, expires: Date.now() + TTL_MS };
 		return data;
-	} catch {
+	} catch (err) {
+		console.warn(`[threatFeed] build failed: ${(err as Error).message}`);
 		if (cache) return cache.data;
 		return { dots: [], cves: [], updatedAt: new Date().toISOString(), totalIocs: 0 };
 	}

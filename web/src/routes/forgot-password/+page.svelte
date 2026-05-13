@@ -30,7 +30,7 @@
 		<Card.Content>
 			{#if form?.sent}
 				<p class="py-4 text-center text-sm text-muted-foreground">
-					메일을 보냈습니다. 받은편지함을 확인해주세요.
+					메일을 보냈습니다. 받은편지함을 확인해 주세요.
 				</p>
 			{:else}
 				<form method="POST" use:enhance>

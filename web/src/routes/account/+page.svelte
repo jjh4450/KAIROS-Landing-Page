@@ -59,7 +59,7 @@
 	<Card.Root>
 		<Card.Header>
 			<Card.Title class="font-mono text-base">비밀번호 변경</Card.Title>
-			<Card.Description>새 비밀번호는 8자 이상.</Card.Description>
+			<Card.Description>새 비밀번호는 8자 이상이어야 합니다.</Card.Description>
 		</Card.Header>
 		<form method="POST" action="?/changePassword" use:enhance>
 			<Card.Content class="space-y-4">

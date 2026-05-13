@@ -45,11 +45,12 @@
 				<div class="max-w-2xl">
 					<Eyebrow class="mb-4">// join</Eyebrow>
 					<h2 class="mb-4">
-						{#if open}같이 부수러 갑시다.{:else}다음 기수 모집을 기다려주세요.{/if}
+						{#if open}함께 시작해 보세요.{:else}다음 기수 모집을 기다려 주세요.{/if}
 					</h2>
 					<p class="text-base text-muted-foreground md:text-lg">
 						{#if open}
-							강원대 재학생이면 누구나 지원 가능합니다. 사전 지식보다 호기심이 중요합니다.
+							강원대학교 재학생이라면 누구나 지원할 수 있습니다. 사전 지식보다 꾸준히 공부할 의지를
+							더 중요하게 봅니다.
 						{:else}
 							현재는 신규 모집을 받고 있지 않습니다. SNS를 팔로우하시면 다음 모집 공고를 가장 먼저
 							받아보실 수 있습니다.

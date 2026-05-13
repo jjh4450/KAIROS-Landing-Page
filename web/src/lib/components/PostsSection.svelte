@@ -86,14 +86,14 @@
 >
 	<header class="mb-12 flex max-w-3xl flex-col gap-4 md:mb-16">
 		<Eyebrow>// posts</Eyebrow>
-		<h2>요즘 KAIROS는.</h2>
+		<h2>최근 글.</h2>
 		<p class="text-base text-muted-foreground md:text-lg">
-			공지·write-up·자료·뉴스 — 최근 동아리원이 직접 작성한 글 셋.
+			동아리원이 직접 쓴 공지, 풀이(write-up), 자료, 뉴스 중 최근 세 편입니다.
 		</p>
 	</header>
 
 	{#if highlights.length === 0}
-		<EmptyStateCard message="$ no public posts yet." hint="(첫 글까지 진행 중)" />
+		<EmptyStateCard message="$ no public posts yet." hint="(아직 게시글이 없습니다)" />
 	{:else}
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-3">
 			{#each highlights as p, i (p.id)}

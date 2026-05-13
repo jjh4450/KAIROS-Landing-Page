@@ -19,7 +19,7 @@
 	<title>KAIROS · KAIROS</title>
 	<meta
 		name="description"
-		content="강원대학교 학생 보안 동아리 KAIROS. 함께 배우고, 함께 공격하고, 함께 방어합니다."
+		content="강원대학교 학생 보안 동아리 KAIROS. 함께 공부하고 활동을 기록으로 남깁니다."
 	/>
 </svelte:head>
 

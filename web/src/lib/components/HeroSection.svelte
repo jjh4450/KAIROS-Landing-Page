@@ -17,7 +17,8 @@
 	let { settings, threatFeed }: Props = $props();
 
 	const subtitle = $derived(
-		settings?.heroSubtitle ?? '함께 배우고, 함께 공격하고, 함께 방어합니다.'
+		settings?.heroSubtitle ??
+			'강원대학교 학생 보안 동아리입니다. 함께 공부하고, 활동을 기록으로 남깁니다.'
 	);
 	const recruiting = $derived(!!settings?.recruitmentOpen && !!settings?.recruitmentFormUrl);
 

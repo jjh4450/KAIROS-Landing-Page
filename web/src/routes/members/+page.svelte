@@ -22,7 +22,7 @@
 
 <svelte:head>
 	<title>Members · KAIROS</title>
-	<meta name="description" content="KAIROS 동아리원 명단 (공개 옵트인)." />
+	<meta name="description" content="KAIROS 동아리원 명단. 공개에 동의한 멤버만 표시됩니다." />
 </svelte:head>
 
 <AmbientBackdrop />
@@ -34,7 +34,7 @@
 			<Eyebrow class="mb-4">// members</Eyebrow>
 			<h1 class="!text-5xl md:!text-6xl">roster.</h1>
 			<p class="mt-3 text-base text-muted-foreground md:text-lg">
-				공개 동의한 멤버만 표시됩니다. 본인 프로필은 me 페이지에서 편집하세요.
+				공개에 동의한 멤버만 표시됩니다. 본인 프로필은 my profile 메뉴에서 편집할 수 있습니다.
 			</p>
 		</div>
 		{#if data.user}

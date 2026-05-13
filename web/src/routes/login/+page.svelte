@@ -94,7 +94,7 @@
 
 	{#snippet footer()}
 		<FieldDescription class="px-6 text-center">
-			KAIROS 가입 문의는 어드민(<a href="#join" class="underline">join</a>)으로.
+			KAIROS 가입은 <a href="#join" class="underline">모집 안내</a>를 참고해 주세요.
 		</FieldDescription>
 	{/snippet}
 </AuthShell>

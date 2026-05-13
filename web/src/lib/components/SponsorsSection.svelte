@@ -37,7 +37,7 @@
 	</header>
 
 	{#if sorted.length === 0}
-		<EmptyStateCard message="$ awaiting partners." hint="동아리 후원 / 협력 문의 환영." />
+		<EmptyStateCard message="$ awaiting partners." hint="후원과 협력 문의를 환영합니다." />
 	{:else}
 		<div class="reveal flex flex-wrap items-center justify-start gap-x-2 gap-y-4">
 			{#each sorted as s, i (s.id)}

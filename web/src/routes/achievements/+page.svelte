@@ -30,7 +30,7 @@
 			<Eyebrow class="mb-4">// achievements</Eyebrow>
 			<h1 class="!text-5xl md:!text-6xl">trophies.</h1>
 			<p class="mt-3 text-base text-muted-foreground md:text-lg">
-				CTF·해킹 대회 등에서 KAIROS가 거둔 입상 기록.
+				CTF, 해킹 대회 등에서 받은 입상 기록입니다.
 			</p>
 		</div>
 		{#if data.canCreate}

@@ -57,14 +57,14 @@
 >
 	<header class="reveal mb-12 flex max-w-3xl flex-col gap-4 md:mb-16">
 		<Eyebrow>// wall of fame</Eyebrow>
-		<h2>기록은 거짓말하지 않습니다.</h2>
+		<h2>학기별 활동 기록.</h2>
 		<p class="text-base text-muted-foreground md:text-lg">
-			대회 입상, CVE 발견, 외부 발표 — 한 학기씩 쌓아 올린 결과들.
+			대회 입상, CVE 발견, 외부 발표 등 동아리 활동 중에 남긴 기록을 정리해 두었습니다.
 		</p>
 	</header>
 
 	{#if achievements.length === 0}
-		<EmptyStateCard message="$ no entries yet." hint="(첫 수상까지 진행 중)" />
+		<EmptyStateCard message="$ no entries yet." hint="(아직 등록된 기록이 없습니다)" />
 	{:else}
 		<ol
 			class="reveal-children relative space-y-3 border-l border-border/40 pl-6 md:pl-8"

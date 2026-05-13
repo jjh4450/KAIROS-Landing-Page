@@ -68,7 +68,8 @@
 			<Eyebrow class="mb-4">// posts</Eyebrow>
 			<h1 class="!text-5xl md:!text-6xl">archive.</h1>
 			<p class="mt-3 text-base text-muted-foreground md:text-lg">
-				공지·write-up·자료·뉴스를 한 곳에. 카테고리로 필터링하거나 키워드로 검색하세요.
+				동아리원이 직접 쓴 공지, 풀이(write-up), 자료, 뉴스를 모았습니다. 카테고리나 검색어로 좁혀
+				볼 수 있습니다.
 			</p>
 		</div>
 		<Button href="/posts/new" variant="default" size="lg" class="font-mono">

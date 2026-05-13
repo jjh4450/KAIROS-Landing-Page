@@ -51,7 +51,7 @@
 		<Eyebrow class="mb-4">// my profile</Eyebrow>
 		<h1 class="!text-4xl md:!text-5xl">{m ? '프로필 편집' : '프로필 생성'}</h1>
 		<p class="mt-3 text-base text-muted-foreground">
-			공개 옵션을 켜야 /members 명단에 노출됩니다. 본인만 수정 가능.
+			공개 옵션을 켜야 /members 명단에 표시됩니다. 본인만 수정할 수 있습니다.
 		</p>
 	</header>
 

@@ -50,14 +50,14 @@
 <section id="members" class="relative mx-auto w-full max-w-7xl px-6 py-24 lg:py-32">
 	<header class="reveal mb-12 flex max-w-3xl flex-col gap-4 md:mb-16">
 		<Eyebrow>// roster</Eyebrow>
-		<h2>옵트인 명단.</h2>
+		<h2>공개 명단.</h2>
 		<p class="text-base text-muted-foreground md:text-lg">
-			공개를 선택한 운영진과 멤버. 모든 부원이 여기 등장하지는 않습니다.
+			공개에 동의한 운영진과 멤버만 표시됩니다. 모든 부원이 여기 등장하지는 않습니다.
 		</p>
 	</header>
 
 	{#if sorted.length === 0}
-		<EmptyStateCard message="$ no public profiles yet." hint="(첫 멤버 등록 대기)" />
+		<EmptyStateCard message="$ no public profiles yet." hint="(아직 등록된 멤버가 없습니다)" />
 	{:else}
 		<div class="reveal-children grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
 			{#each sorted as m (m.id)}

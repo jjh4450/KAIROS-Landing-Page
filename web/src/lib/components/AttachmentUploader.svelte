@@ -114,6 +114,7 @@
 		{/if}
 	</div>
 	<p class="font-mono text-[10px] text-muted-foreground">
-		tip: 업로드 후 상세 페이지의 갤러리에서 `md` 버튼으로 markdown 링크 복사해 본문에 인라인 삽입.
+		tip: 업로드한 뒤 상세 페이지 갤러리에서 `md` 버튼으로 markdown 링크를 복사해 본문에 붙여 넣을 수
+		있습니다.
 	</p>
 </div>

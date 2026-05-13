@@ -97,9 +97,32 @@
 		background: radial-gradient(ellipse at center, transparent 35%, oklch(0 0 0 / 55%) 100%);
 	}
 
+	@keyframes breathe {
+		0%,
+		100% {
+			transform: scale(1);
+			opacity: var(--blob-opacity, 0.2);
+		}
+		50% {
+			transform: scale(1.04);
+			opacity: calc(var(--blob-opacity, 0.2) * 1.25);
+		}
+	}
+
 	@media (prefers-reduced-motion: reduce) {
 		.aurora__blob {
-			animation: none;
+			/* 큰 translate 대신 천천히 호흡하는 정도만 — 모션에 민감한 사용자도 OK */
+			animation: breathe 14s ease-in-out infinite;
 		}
+	}
+
+	.aurora__blob--cyan {
+		--blob-opacity: 0.22;
+	}
+	.aurora__blob--violet {
+		--blob-opacity: 0.18;
+	}
+	.aurora__blob--magenta {
+		--blob-opacity: 0.12;
 	}
 </style>

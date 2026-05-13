@@ -6,10 +6,7 @@ export function safeNext(next: string | null | undefined, fallback = '/'): strin
 	return next;
 }
 
-export function requireUser(
-	locals: App.Locals,
-	url: { pathname: string }
-): User {
+export function requireUser(locals: App.Locals, url: { pathname: string }): User {
 	if (!locals.user) {
 		throw redirect(303, `/login?next=${encodeURIComponent(url.pathname)}`);
 	}

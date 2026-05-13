@@ -4,5 +4,5 @@
 # See: https://pnpm.io/settings
 
 onlyBuiltDependencies:
-  - "@tailwindcss/oxide"
+  - '@tailwindcss/oxide'
   - esbuild

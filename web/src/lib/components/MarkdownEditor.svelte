@@ -47,21 +47,14 @@
 	</div>
 
 	{#if tab === 'write'}
-		<Textarea
-			{id}
-			{name}
-			bind:value
-			{placeholder}
-			{rows}
-			class="font-mono text-sm"
-		/>
+		<Textarea {id} {name} bind:value {placeholder} {rows} class="font-mono text-sm" />
 	{:else}
 		<input type="hidden" {name} {value} />
-		<div class="border-border bg-card/40 rounded-md border p-4 text-sm">
+		<div class="rounded-md border border-border bg-card/40 p-4 text-sm">
 			{#if value.trim()}
 				<MarkdownView html={preview} />
 			{:else}
-				<p class="text-muted-foreground font-mono">(미리보기 — 본문을 입력하세요)</p>
+				<p class="font-mono text-muted-foreground">(미리보기 — 본문을 입력하세요)</p>
 			{/if}
 		</div>
 	{/if}

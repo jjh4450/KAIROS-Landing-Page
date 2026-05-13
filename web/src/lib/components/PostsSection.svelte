@@ -77,7 +77,6 @@
 			ctx?.revert();
 		};
 	});
-
 </script>
 
 <section
@@ -88,7 +87,7 @@
 	<header class="mb-12 flex max-w-3xl flex-col gap-4 md:mb-16">
 		<Eyebrow>// posts</Eyebrow>
 		<h2>요즘 KAIROS는.</h2>
-		<p class="text-muted-foreground text-base md:text-lg">
+		<p class="text-base text-muted-foreground md:text-lg">
 			공지·write-up·자료·뉴스 — 최근 동아리원이 직접 작성한 글 셋.
 		</p>
 	</header>
@@ -101,76 +100,75 @@
 				<a
 					href={`/posts/${p.id}`}
 					data-highlight-card
-					class="tilt-3d group block focus-visible:outline-none"
+					class="group block tilt-3d focus-visible:outline-none"
 					style="opacity: 1"
 				>
-					<div use:cardTilt={{ max: 9, scale: 1.03 }} class="tilt-3d-card h-full">
-					<Card.Root
-						class="relative h-full overflow-hidden ease-[var(--ease-brand)] group-hover:border-white/20 group-focus-visible:ring-2 group-focus-visible:ring-kairos-cyan"
-					>
-						<!-- glow accent (z 깊이 뒤로) -->
-						{#if i === 0}
-							<div
-								class="pointer-events-none absolute -top-20 -right-20 h-56 w-56 rounded-full opacity-40 blur-3xl"
-								style="background: radial-gradient(circle, var(--kairos-cyan), transparent 70%); transform: translateZ(-20px);"
-								aria-hidden="true"
-							></div>
-						{:else if i === 1}
-							<div
-								class="pointer-events-none absolute -bottom-20 -left-20 h-56 w-56 rounded-full opacity-30 blur-3xl"
-								style="background: radial-gradient(circle, var(--kairos-violet), transparent 70%); transform: translateZ(-20px);"
-								aria-hidden="true"
-							></div>
-						{:else}
-							<div
-								class="pointer-events-none absolute -bottom-20 -right-20 h-56 w-56 rounded-full opacity-30 blur-3xl"
-								style="background: radial-gradient(circle, var(--kairos-magenta), transparent 70%); transform: translateZ(-20px);"
-								aria-hidden="true"
-							></div>
-						{/if}
-
-						<!-- 마우스 추적 글로스 -->
-						<div class="tilt-3d-glare"></div>
-
-						<Card.Header class="tilt-3d-layer relative">
-							<div class="mb-1 flex flex-wrap items-center gap-1.5">
-								{#if p.isPinned}
-									<Badge variant="outline" class="text-kairos-cyan border-kairos-cyan/40 font-mono">
-										<PushPin weight="fill" /> pinned
-									</Badge>
-								{/if}
-								{#if p.expand?.category}
-									<Badge variant="outline" class="font-mono">
-										{p.expand.category.name}
-									</Badge>
-								{/if}
-							</div>
-							<Card.Title
-								class="tilt-3d-layer-deep line-clamp-2 text-balance text-base leading-snug md:text-lg"
-							>
-								{p.title}
-							</Card.Title>
-						</Card.Header>
-
-						<Card.Content class="tilt-3d-layer relative">
-							<p class="text-muted-foreground line-clamp-3 text-sm">{excerpt(p.content)}</p>
-						</Card.Content>
-
-						<Card.Footer
-							class="tilt-3d-layer relative flex items-center justify-between"
+					<div use:cardTilt={{ max: 9, scale: 1.03 }} class="h-full tilt-3d-card">
+						<Card.Root
+							class="relative h-full overflow-hidden ease-[var(--ease-brand)] group-hover:border-white/20 group-focus-visible:ring-2 group-focus-visible:ring-kairos-cyan"
 						>
-							<div class="text-muted-foreground flex items-center gap-3 font-mono text-[11px]">
-								<span>{p.expand?.author?.nickname ?? 'anon'}</span>
-								<span>·</span>
-								<span>{fmtRelative(p.created)}</span>
-							</div>
-							{#if p.viewCount !== undefined && p.viewCount > 0}
-								<span class="text-muted-foreground flex items-center gap-1 font-mono text-[11px]">
-									<Eye class="size-3" /> {p.viewCount}
-								</span>
+							<!-- glow accent (z 깊이 뒤로) -->
+							{#if i === 0}
+								<div
+									class="pointer-events-none absolute -top-20 -right-20 h-56 w-56 rounded-full opacity-40 blur-3xl"
+									style="background: radial-gradient(circle, var(--kairos-cyan), transparent 70%); transform: translateZ(-20px);"
+									aria-hidden="true"
+								></div>
+							{:else if i === 1}
+								<div
+									class="pointer-events-none absolute -bottom-20 -left-20 h-56 w-56 rounded-full opacity-30 blur-3xl"
+									style="background: radial-gradient(circle, var(--kairos-violet), transparent 70%); transform: translateZ(-20px);"
+									aria-hidden="true"
+								></div>
+							{:else}
+								<div
+									class="pointer-events-none absolute -right-20 -bottom-20 h-56 w-56 rounded-full opacity-30 blur-3xl"
+									style="background: radial-gradient(circle, var(--kairos-magenta), transparent 70%); transform: translateZ(-20px);"
+									aria-hidden="true"
+								></div>
 							{/if}
-						</Card.Footer>
-					</Card.Root>
+
+							<!-- 마우스 추적 글로스 -->
+							<div class="tilt-3d-glare"></div>
+
+							<Card.Header class="relative tilt-3d-layer">
+								<div class="mb-1 flex flex-wrap items-center gap-1.5">
+									{#if p.isPinned}
+										<Badge variant="outline" class="border-kairos-cyan/40 font-mono text-kairos-cyan">
+											<PushPin weight="fill" /> pinned
+										</Badge>
+									{/if}
+									{#if p.expand?.category}
+										<Badge variant="outline" class="font-mono">
+											{p.expand.category.name}
+										</Badge>
+									{/if}
+								</div>
+								<Card.Title
+									class="line-clamp-2 tilt-3d-layer-deep text-base leading-snug text-balance md:text-lg"
+								>
+									{p.title}
+								</Card.Title>
+							</Card.Header>
+
+							<Card.Content class="relative tilt-3d-layer">
+								<p class="line-clamp-3 text-sm text-muted-foreground">{excerpt(p.content)}</p>
+							</Card.Content>
+
+							<Card.Footer class="relative flex tilt-3d-layer items-center justify-between">
+								<div class="flex items-center gap-3 font-mono text-[11px] text-muted-foreground">
+									<span>{p.expand?.author?.nickname ?? 'anon'}</span>
+									<span>·</span>
+									<span>{fmtRelative(p.created)}</span>
+								</div>
+								{#if p.viewCount !== undefined && p.viewCount > 0}
+									<span class="flex items-center gap-1 font-mono text-[11px] text-muted-foreground">
+										<Eye class="size-3" />
+										{p.viewCount}
+									</span>
+								{/if}
+							</Card.Footer>
+						</Card.Root>
 					</div>
 				</a>
 			{/each}

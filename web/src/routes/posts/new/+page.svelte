@@ -38,7 +38,7 @@
 	<header class="mb-8">
 		<Eyebrow class="mb-4">// new post</Eyebrow>
 		<h1 class="!text-4xl md:!text-5xl">글 쓰기</h1>
-		<p class="text-muted-foreground mt-3 text-base">
+		<p class="mt-3 text-base text-muted-foreground">
 			KAIROS 멤버라면 누구나 글을 남길 수 있습니다. 본문은 Markdown을 지원합니다.
 		</p>
 	</header>
@@ -62,15 +62,8 @@
 					<FieldLabel>category</FieldLabel>
 					<div class="flex flex-wrap gap-1.5">
 						{#each data.categories as c (c.id)}
-							<button
-								type="button"
-								onclick={() => (categoryId = c.id)}
-								class="cursor-pointer"
-							>
-								<Badge
-									variant={categoryId === c.id ? 'default' : 'outline'}
-									class="font-mono"
-								>
+							<button type="button" onclick={() => (categoryId = c.id)} class="cursor-pointer">
+								<Badge variant={categoryId === c.id ? 'default' : 'outline'} class="font-mono">
 									{c.name}
 								</Badge>
 							</button>
@@ -94,21 +87,21 @@
 				</label>
 
 				{#if form?.error}
-					<p class="text-destructive font-mono text-sm">{form.error}</p>
+					<p class="font-mono text-sm text-destructive">{form.error}</p>
 				{/if}
 			</Card.Content>
 
 			<Separator />
 
 			<Card.Footer class="flex items-center justify-between gap-3 pt-6">
-				<span class="text-muted-foreground font-mono text-[11px]">
+				<span class="font-mono text-[11px] text-muted-foreground">
 					{title.length} chars · {content.length} body chars
 				</span>
 				<div class="flex gap-2">
-					<Button href="/posts" variant="ghost" size="sm" type="button" class="font-mono">cancel</Button>
-					<Button type="submit" variant="default" size="sm" class="font-mono">
-						publish
-					</Button>
+					<Button href="/posts" variant="ghost" size="sm" type="button" class="font-mono"
+						>cancel</Button
+					>
+					<Button type="submit" variant="default" size="sm" class="font-mono">publish</Button>
 				</div>
 			</Card.Footer>
 		</form>

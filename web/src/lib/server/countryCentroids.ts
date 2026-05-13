@@ -16,10 +16,10 @@ import type { Topology } from 'topojson-specification';
 import type { Feature, FeatureCollection, Geometry } from 'geojson';
 
 const topology = worldData as unknown as Topology;
-const fc = feature(
-	topology,
-	topology.objects.countries as never
-) as unknown as FeatureCollection<Geometry, { name: string }>;
+const fc = feature(topology, topology.objects.countries as never) as unknown as FeatureCollection<
+	Geometry,
+	{ name: string }
+>;
 
 const CENTROIDS: Record<string, [number, number]> = {};
 

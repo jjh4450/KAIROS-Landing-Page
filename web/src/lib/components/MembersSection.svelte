@@ -51,7 +51,7 @@
 	<header class="reveal mb-12 flex max-w-3xl flex-col gap-4 md:mb-16">
 		<Eyebrow>// roster</Eyebrow>
 		<h2>옵트인 명단.</h2>
-		<p class="text-muted-foreground text-base md:text-lg">
+		<p class="text-base text-muted-foreground md:text-lg">
 			공개를 선택한 운영진과 멤버. 모든 부원이 여기 등장하지는 않습니다.
 		</p>
 	</header>
@@ -63,21 +63,23 @@
 			{#each sorted as m (m.id)}
 				{@const name = displayName(m)}
 				<div class="tilt-3d">
-					<div use:cardTilt={{ max: 8, scale: 1.03 }} class="tilt-3d-card h-full">
+					<div use:cardTilt={{ max: 8, scale: 1.03 }} class="h-full tilt-3d-card">
 						<Card.Root size="sm" class="relative h-full overflow-hidden">
 							<div class="tilt-3d-glare"></div>
-							<Card.Header class="tilt-3d-layer-deep relative">
+							<Card.Header class="relative tilt-3d-layer-deep">
 								<Avatar.Root size="lg">
 									<Avatar.Image src={avatarUrl(m)} alt={name} />
 									<Avatar.Fallback class="font-mono text-xs">{initials(name)}</Avatar.Fallback>
 								</Avatar.Root>
 								<Card.Title class="mt-2 truncate text-sm">{name}</Card.Title>
-								<Card.Description class="text-kairos-cyan font-mono text-[10px] tracking-[0.18em] uppercase">
+								<Card.Description
+									class="font-mono text-[10px] tracking-[0.18em] text-kairos-cyan uppercase"
+								>
 									{m.position}{m.year ? ` · ${m.year}` : ''}
 								</Card.Description>
 							</Card.Header>
 							{#if m.tracks && m.tracks.length}
-								<Card.Content class="tilt-3d-layer relative flex flex-wrap gap-1">
+								<Card.Content class="relative flex tilt-3d-layer flex-wrap gap-1">
 									{#each m.tracks.slice(0, 3) as t (t)}
 										<Badge variant="outline" class="font-mono text-[10px]">{t}</Badge>
 									{/each}

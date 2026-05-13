@@ -46,14 +46,14 @@
 <div class="space-y-3">
 	{#if existing.length > 0}
 		<div>
-			<div class="text-muted-foreground mb-2 font-mono text-[10px] tracking-[0.18em] uppercase">
+			<div class="mb-2 font-mono text-[10px] tracking-[0.18em] text-muted-foreground uppercase">
 				기존 첨부 ({existing.length})
 			</div>
 			<div class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
 				{#each existing as att (att.name)}
 					{@const isRemoved = removed.includes(att.name)}
 					<div
-						class="border-border/60 group relative aspect-square overflow-hidden rounded-md border bg-black/20"
+						class="group relative aspect-square overflow-hidden rounded-md border border-border/60 bg-black/20"
 						class:opacity-30={isRemoved}
 					>
 						<img
@@ -63,11 +63,13 @@
 							class="h-full w-full object-cover"
 							onerror={(e) => ((e.currentTarget as HTMLImageElement).style.display = 'none')}
 						/>
-						<div class="absolute inset-x-0 bottom-0 flex items-center justify-between gap-1 bg-black/70 px-1.5 py-1">
+						<div
+							class="absolute inset-x-0 bottom-0 flex items-center justify-between gap-1 bg-black/70 px-1.5 py-1"
+						>
 							<button
 								type="button"
 								onclick={() => copyMarkdown(att)}
-								class="text-kairos-cyan font-mono text-[9px] hover:underline"
+								class="font-mono text-[9px] text-kairos-cyan hover:underline"
 								title="markdown 복사"
 							>
 								md
@@ -75,7 +77,7 @@
 							<button
 								type="button"
 								onclick={() => toggleRemoveExisting(att.name)}
-								class="text-destructive font-mono text-[9px] hover:underline"
+								class="font-mono text-[9px] text-destructive hover:underline"
 								title="삭제 표시"
 							>
 								{isRemoved ? 'undo' : 'rm'}
@@ -92,31 +94,26 @@
 
 	<div>
 		<label
-			class="border-border/60 hover:border-kairos-cyan/40 flex cursor-pointer items-center justify-center gap-2 rounded-md border border-dashed bg-black/10 px-4 py-6 font-mono text-xs"
+			class="flex cursor-pointer items-center justify-center gap-2 rounded-md border border-dashed border-border/60 bg-black/10 px-4 py-6 font-mono text-xs hover:border-kairos-cyan/40"
 		>
 			<Paperclip class="size-4" />
 			<span>{multiple ? '이미지 추가 (다중 선택 가능)' : '이미지 선택'}</span>
-			<input
-				type="file"
-				{name}
-				{accept}
-				{multiple}
-				onchange={onPickFiles}
-				class="hidden"
-			/>
+			<input type="file" {name} {accept} {multiple} onchange={onPickFiles} class="hidden" />
 		</label>
 
 		{#if selectedNames.length > 0}
 			<div class="mt-2 space-y-1">
 				{#each selectedNames as fname (fname)}
-					<div class="rounded bg-black/20 px-2 py-1 font-mono text-[11px] text-foreground/80 truncate">
+					<div
+						class="truncate rounded bg-black/20 px-2 py-1 font-mono text-[11px] text-foreground/80"
+					>
 						+ {fname}
 					</div>
 				{/each}
 			</div>
 		{/if}
 	</div>
-	<p class="text-muted-foreground font-mono text-[10px]">
+	<p class="font-mono text-[10px] text-muted-foreground">
 		tip: 업로드 후 상세 페이지의 갤러리에서 `md` 버튼으로 markdown 링크 복사해 본문에 인라인 삽입.
 	</p>
 </div>

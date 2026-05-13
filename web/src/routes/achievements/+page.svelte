@@ -29,7 +29,7 @@
 		<div class="max-w-2xl">
 			<Eyebrow class="mb-4">// achievements</Eyebrow>
 			<h1 class="!text-5xl md:!text-6xl">trophies.</h1>
-			<p class="text-muted-foreground mt-3 text-base md:text-lg">
+			<p class="mt-3 text-base text-muted-foreground md:text-lg">
 				CTF·해킹 대회 등에서 KAIROS가 거둔 입상 기록.
 			</p>
 		</div>
@@ -45,39 +45,40 @@
 	{:else}
 		<div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
 			{#each data.achievements as a (a.id)}
-				<a href={`/achievements/${a.id}`} class="tilt-3d group block focus-visible:outline-none">
-					<div use:cardTilt={{ max: 5, scale: 1.015 }} class="tilt-3d-card h-full">
-					<Card.Root class="relative h-full overflow-hidden">
-						<div class="tilt-3d-glare"></div>
-						{#if a.coverImage}
-							<div class="aspect-video w-full overflow-hidden bg-black/30">
-								<img
-									src={fileUrl({ id: a.id, collectionId: a.collectionId }, a.coverImage)}
-									alt={a.title}
-									loading="lazy"
-									class="h-full w-full object-cover"
-								/>
-							</div>
-						{/if}
-						<Card.Header class="tilt-3d-layer relative">
-							<div class="mb-1 flex flex-wrap items-center gap-1.5">
-								{#if a.rank}
-									<Badge variant="outline" class="text-kairos-cyan border-kairos-cyan/40 font-mono">
-										<Trophy weight="fill" /> {a.rank}
-									</Badge>
-								{/if}
-								{#if a.competition}
-									<Badge variant="outline" class="font-mono">{a.competition}</Badge>
-								{/if}
-							</div>
-							<Card.Title class="line-clamp-2 leading-snug">{a.title}</Card.Title>
-						</Card.Header>
-						<Card.Footer class="tilt-3d-layer relative">
-							<span class="text-muted-foreground font-mono text-[11px]">
-								{a.date ?? ''}
-							</span>
-						</Card.Footer>
-					</Card.Root>
+				<a href={`/achievements/${a.id}`} class="group block tilt-3d focus-visible:outline-none">
+					<div use:cardTilt={{ max: 5, scale: 1.015 }} class="h-full tilt-3d-card">
+						<Card.Root class="relative h-full overflow-hidden">
+							<div class="tilt-3d-glare"></div>
+							{#if a.coverImage}
+								<div class="aspect-video w-full overflow-hidden bg-black/30">
+									<img
+										src={fileUrl({ id: a.id, collectionId: a.collectionId }, a.coverImage)}
+										alt={a.title}
+										loading="lazy"
+										class="h-full w-full object-cover"
+									/>
+								</div>
+							{/if}
+							<Card.Header class="relative tilt-3d-layer">
+								<div class="mb-1 flex flex-wrap items-center gap-1.5">
+									{#if a.rank}
+										<Badge variant="outline" class="border-kairos-cyan/40 font-mono text-kairos-cyan">
+											<Trophy weight="fill" />
+											{a.rank}
+										</Badge>
+									{/if}
+									{#if a.competition}
+										<Badge variant="outline" class="font-mono">{a.competition}</Badge>
+									{/if}
+								</div>
+								<Card.Title class="line-clamp-2 leading-snug">{a.title}</Card.Title>
+							</Card.Header>
+							<Card.Footer class="relative tilt-3d-layer">
+								<span class="font-mono text-[11px] text-muted-foreground">
+									{a.date ?? ''}
+								</span>
+							</Card.Footer>
+						</Card.Root>
 					</div>
 				</a>
 			{/each}

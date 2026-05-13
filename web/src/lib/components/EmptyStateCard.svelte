@@ -19,11 +19,11 @@
 	<div use:cardTilt={{ max: 4, scale: 1.01 }} class="tilt-3d-card">
 		<Card.Root class="relative overflow-hidden">
 			<div class="tilt-3d-glare"></div>
-			<Card.Content class="tilt-3d-layer relative">
+			<Card.Content class="relative tilt-3d-layer">
 				{#if children}
 					{@render children()}
 				{:else}
-					<p class="text-muted-foreground font-mono text-sm">
+					<p class="font-mono text-sm text-muted-foreground">
 						{message}
 						{#if hint}
 							<span class="text-kairos-cyan">{hint}</span>

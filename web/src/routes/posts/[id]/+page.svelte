@@ -36,7 +36,7 @@
 		<header class="mb-10">
 			<div class="mb-4 flex flex-wrap items-center gap-2">
 				{#if p.isPinned}
-					<Badge variant="outline" class="text-kairos-cyan border-kairos-cyan/40 font-mono">
+					<Badge variant="outline" class="border-kairos-cyan/40 font-mono text-kairos-cyan">
 						<PushPin weight="fill" /> pinned
 					</Badge>
 				{/if}
@@ -50,7 +50,9 @@
 
 			<h1 class="!text-4xl text-balance md:!text-5xl">{p.title}</h1>
 
-			<div class="text-muted-foreground mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-xs">
+			<div
+				class="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-xs text-muted-foreground"
+			>
 				<span>by <span class="text-foreground">{p.expand?.author?.nickname ?? 'anon'}</span></span>
 				<span>·</span>
 				<span>{fmtLongDateTime(p.created)}</span>
@@ -73,7 +75,7 @@
 
 		{#if data.attachments.length > 0}
 			<section class="mt-8">
-				<h2 class="text-muted-foreground mb-3 font-mono text-[11px] tracking-[0.18em] uppercase">
+				<h2 class="mb-3 font-mono text-[11px] tracking-[0.18em] text-muted-foreground uppercase">
 					// attachments ({data.attachments.length})
 				</h2>
 				<div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
@@ -82,7 +84,7 @@
 							href={att.url}
 							target="_blank"
 							rel="noopener noreferrer"
-							class="border-border/60 hover:border-kairos-cyan/60 group relative block aspect-square overflow-hidden rounded-md border bg-black/20"
+							class="group relative block aspect-square overflow-hidden rounded-md border border-border/60 bg-black/20 hover:border-kairos-cyan/60"
 						>
 							<img
 								src={att.url}
@@ -91,7 +93,9 @@
 								class="h-full w-full object-cover transition-transform group-hover:scale-105"
 								onerror={(e) => ((e.currentTarget as HTMLImageElement).style.display = 'none')}
 							/>
-							<span class="absolute inset-x-0 bottom-0 truncate bg-black/60 px-2 py-1 font-mono text-[10px] text-white/80">
+							<span
+								class="absolute inset-x-0 bottom-0 truncate bg-black/60 px-2 py-1 font-mono text-[10px] text-white/80"
+							>
 								{att.name}
 							</span>
 						</a>
@@ -103,7 +107,7 @@
 		<Separator class="my-10" />
 
 		<div class="flex items-center justify-between gap-4">
-			<div class="text-muted-foreground font-mono text-[11px]">
+			<div class="font-mono text-[11px] text-muted-foreground">
 				{p.id}
 			</div>
 			<div class="flex items-center gap-2">

@@ -19,10 +19,10 @@
 </script>
 
 <header class="fixed inset-x-0 top-0 z-50 px-4 pt-4">
-	<nav class="glass mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-2.5">
+	<nav class="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 glass px-4 py-2.5">
 		<a href="/" class="group flex items-center gap-2">
 			<span
-				class="from-kairos-cyan to-kairos-violet inline-block h-5 w-5 bg-gradient-to-br"
+				class="inline-block h-5 w-5 bg-gradient-to-br from-kairos-cyan to-kairos-violet"
 				style="box-shadow: 0 0 18px -4px var(--kairos-cyan)"
 				aria-hidden="true"
 			></span>

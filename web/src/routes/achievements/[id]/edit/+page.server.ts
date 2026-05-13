@@ -35,7 +35,10 @@ export const actions: Actions = {
 		const membersCsv = formStr(form, 'members');
 		// reset members relation: clear then add (PB accepts duplicated key for relation arrays)
 		if (membersCsv) {
-			for (const id of membersCsv.split(',').map((s) => s.trim()).filter(Boolean)) {
+			for (const id of membersCsv
+				.split(',')
+				.map((s) => s.trim())
+				.filter(Boolean)) {
 				data.append('members', id);
 			}
 		} else {

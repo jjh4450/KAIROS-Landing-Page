@@ -52,7 +52,6 @@
 	function setPage(p: number) {
 		updateQuery({ page: String(p) });
 	}
-
 </script>
 
 <svelte:head>
@@ -68,7 +67,7 @@
 		<div class="max-w-2xl">
 			<Eyebrow class="mb-4">// posts</Eyebrow>
 			<h1 class="!text-5xl md:!text-6xl">archive.</h1>
-			<p class="text-muted-foreground mt-3 text-base md:text-lg">
+			<p class="mt-3 text-base text-muted-foreground md:text-lg">
 				공지·write-up·자료·뉴스를 한 곳에. 카테고리로 필터링하거나 키워드로 검색하세요.
 			</p>
 		</div>
@@ -81,14 +80,14 @@
 	<div class="mb-8 flex flex-col gap-4">
 		<form onsubmit={onSearchSubmit} class="relative">
 			<MagnifyingGlass
-				class="text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2"
+				class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
 			/>
 			<Input
 				bind:value={queryInput}
 				name="q"
 				type="search"
 				placeholder="검색 — 제목·본문 (e.g. SQLi, CVE, write-up)"
-				class="bg-card/50 h-11 pl-10 font-mono backdrop-blur-md"
+				class="h-11 bg-card/50 pl-10 font-mono backdrop-blur-md"
 			/>
 		</form>
 
@@ -101,7 +100,7 @@
 			>
 				<Badge
 					variant={!data.categorySlug ? 'default' : 'outline'}
-					class="font-mono uppercase tracking-wider"
+					class="font-mono tracking-wider uppercase"
 				>
 					all
 				</Badge>
@@ -113,10 +112,7 @@
 					class="cursor-pointer"
 					aria-pressed={data.categorySlug === c.slug}
 				>
-					<Badge
-						variant={data.categorySlug === c.slug ? 'default' : 'outline'}
-						class="font-mono"
-					>
+					<Badge variant={data.categorySlug === c.slug ? 'default' : 'outline'} class="font-mono">
 						{c.name}
 					</Badge>
 				</button>
@@ -133,7 +129,7 @@
 			hint={data.q ? `("${data.q}" 검색 결과 없음)` : '(아직 게시물이 없습니다)'}
 		/>
 	{:else}
-		<div class="text-muted-foreground mb-4 font-mono text-xs">
+		<div class="mb-4 font-mono text-xs text-muted-foreground">
 			$ found <span class="text-foreground">{data.totalItems}</span> entries
 			{#if data.q}
 				· q: <span class="text-kairos-cyan">{data.q}</span>
@@ -145,41 +141,42 @@
 
 		<div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
 			{#each data.posts as p (p.id)}
-				<a href={`/posts/${p.id}`} class="tilt-3d group block focus-visible:outline-none">
-					<div use:cardTilt={{ max: 5, scale: 1.015 }} class="tilt-3d-card h-full">
-					<Card.Root
-						class="relative h-full overflow-hidden ease-[var(--ease-brand)] group-hover:border-white/20 group-focus-visible:ring-2 group-focus-visible:ring-kairos-cyan"
-					>
-						<div class="tilt-3d-glare"></div>
-						<Card.Header class="tilt-3d-layer relative">
-							<div class="mb-1 flex flex-wrap items-center gap-1.5">
-								{#if p.isPinned}
-									<Badge variant="outline" class="text-kairos-cyan border-kairos-cyan/40 font-mono">
-										<PushPin weight="fill" /> pinned
-									</Badge>
-								{/if}
-								{#if p.expand?.category}
-									<Badge variant="outline" class="font-mono">{p.expand.category.name}</Badge>
-								{/if}
-							</div>
-							<Card.Title class="line-clamp-2 text-balance leading-snug">
-								{p.title}
-							</Card.Title>
-						</Card.Header>
-						<Card.Content class="tilt-3d-layer relative">
-							<p class="text-muted-foreground line-clamp-3 text-sm">{excerpt(p.content)}</p>
-						</Card.Content>
-						<Card.Footer class="tilt-3d-layer relative flex items-center justify-between">
-							<span class="text-muted-foreground font-mono text-[11px]">
-								{p.expand?.author?.nickname ?? 'anon'} · {fmtRelative(p.created)}
-							</span>
-							{#if p.viewCount !== undefined && p.viewCount > 0}
-								<span class="text-muted-foreground flex items-center gap-1 font-mono text-[11px]">
-									<Eye class="size-3" /> {p.viewCount}
+				<a href={`/posts/${p.id}`} class="group block tilt-3d focus-visible:outline-none">
+					<div use:cardTilt={{ max: 5, scale: 1.015 }} class="h-full tilt-3d-card">
+						<Card.Root
+							class="relative h-full overflow-hidden ease-[var(--ease-brand)] group-hover:border-white/20 group-focus-visible:ring-2 group-focus-visible:ring-kairos-cyan"
+						>
+							<div class="tilt-3d-glare"></div>
+							<Card.Header class="relative tilt-3d-layer">
+								<div class="mb-1 flex flex-wrap items-center gap-1.5">
+									{#if p.isPinned}
+										<Badge variant="outline" class="border-kairos-cyan/40 font-mono text-kairos-cyan">
+											<PushPin weight="fill" /> pinned
+										</Badge>
+									{/if}
+									{#if p.expand?.category}
+										<Badge variant="outline" class="font-mono">{p.expand.category.name}</Badge>
+									{/if}
+								</div>
+								<Card.Title class="line-clamp-2 leading-snug text-balance">
+									{p.title}
+								</Card.Title>
+							</Card.Header>
+							<Card.Content class="relative tilt-3d-layer">
+								<p class="line-clamp-3 text-sm text-muted-foreground">{excerpt(p.content)}</p>
+							</Card.Content>
+							<Card.Footer class="relative flex tilt-3d-layer items-center justify-between">
+								<span class="font-mono text-[11px] text-muted-foreground">
+									{p.expand?.author?.nickname ?? 'anon'} · {fmtRelative(p.created)}
 								</span>
-							{/if}
-						</Card.Footer>
-					</Card.Root>
+								{#if p.viewCount !== undefined && p.viewCount > 0}
+									<span class="flex items-center gap-1 font-mono text-[11px] text-muted-foreground">
+										<Eye class="size-3" />
+										{p.viewCount}
+									</span>
+								{/if}
+							</Card.Footer>
+						</Card.Root>
 					</div>
 				</a>
 			{/each}
@@ -196,7 +193,7 @@
 				>
 					<ArrowLeft /> prev
 				</Button>
-				<span class="text-muted-foreground px-3 font-mono text-xs">
+				<span class="px-3 font-mono text-xs text-muted-foreground">
 					{data.page} / {data.totalPages}
 				</span>
 				<Button

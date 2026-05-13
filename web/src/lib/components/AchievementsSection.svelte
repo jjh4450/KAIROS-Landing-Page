@@ -48,7 +48,6 @@
 			ctx?.revert();
 		};
 	});
-
 </script>
 
 <section
@@ -59,7 +58,7 @@
 	<header class="reveal mb-12 flex max-w-3xl flex-col gap-4 md:mb-16">
 		<Eyebrow>// wall of fame</Eyebrow>
 		<h2>기록은 거짓말하지 않습니다.</h2>
-		<p class="text-muted-foreground text-base md:text-lg">
+		<p class="text-base text-muted-foreground md:text-lg">
 			대회 입상, CVE 발견, 외부 발표 — 한 학기씩 쌓아 올린 결과들.
 		</p>
 	</header>
@@ -68,25 +67,25 @@
 		<EmptyStateCard message="$ no entries yet." hint="(첫 수상까지 진행 중)" />
 	{:else}
 		<ol
-			class="reveal-children border-border/40 relative space-y-3 border-l pl-6 md:pl-8"
+			class="reveal-children relative space-y-3 border-l border-border/40 pl-6 md:pl-8"
 			style="font-feature-settings: 'tnum'"
 		>
 			{#each achievements as a (a.id)}
 				<li class="relative tilt-3d" data-timeline-item>
 					<span
-						class="bg-kairos-cyan absolute top-4 -left-[27px] z-10 h-2 w-2 md:-left-[33px]"
+						class="absolute top-4 -left-[27px] z-10 h-2 w-2 bg-kairos-cyan md:-left-[33px]"
 						style="box-shadow: 0 0 12px var(--kairos-cyan)"
 					></span>
 					<div use:cardTilt={{ max: 5, scale: 1.015 }} class="tilt-3d-card">
 						<Card.Root size="sm" class="relative overflow-hidden">
 							<div class="tilt-3d-glare"></div>
 							<Card.Content
-								class="tilt-3d-layer relative flex flex-col gap-1.5 md:flex-row md:items-center md:justify-between"
+								class="relative flex tilt-3d-layer flex-col gap-1.5 md:flex-row md:items-center md:justify-between"
 							>
 								<div>
-									<div class="text-foreground text-sm font-medium">{a.title}</div>
+									<div class="text-sm font-medium text-foreground">{a.title}</div>
 									{#if a.competition}
-										<div class="text-muted-foreground mt-0.5 font-mono text-[11px]">
+										<div class="mt-0.5 font-mono text-[11px] text-muted-foreground">
 											{a.competition}
 										</div>
 									{/if}
@@ -95,7 +94,7 @@
 									{#if a.rank}
 										<Badge
 											variant="outline"
-											class="text-kairos-magenta border-kairos-magenta/40 font-mono uppercase"
+											class="border-kairos-magenta/40 font-mono text-kairos-magenta uppercase"
 										>
 											{a.rank}
 										</Badge>

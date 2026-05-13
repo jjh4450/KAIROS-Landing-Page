@@ -13,7 +13,10 @@
 				{ label: 'discord', url: settings?.discordUrl },
 				{ label: 'kakao', url: settings?.kakaoUrl },
 				{ label: 'instagram', url: settings?.instagramUrl },
-				{ label: 'email', url: settings?.contactEmail ? `mailto:${settings.contactEmail}` : undefined }
+				{
+					label: 'email',
+					url: settings?.contactEmail ? `mailto:${settings.contactEmail}` : undefined
+				}
 			] satisfies Channel[]
 		).filter((c) => !!c.url)
 	);
@@ -24,10 +27,10 @@
 	<div class="flex flex-col items-start justify-between gap-5 md:flex-row md:items-center">
 		<div class="flex items-center gap-2.5">
 			<span
-				class="from-kairos-cyan to-kairos-violet inline-block h-4 w-4 bg-gradient-to-br"
+				class="inline-block h-4 w-4 bg-gradient-to-br from-kairos-cyan to-kairos-violet"
 				aria-hidden="true"
 			></span>
-			<span class="text-muted-foreground font-mono text-[11px] tracking-widest">
+			<span class="font-mono text-[11px] tracking-widest text-muted-foreground">
 				KAIROS · {settings?.footerCopy ?? '© KAIROS'}
 			</span>
 		</div>
@@ -43,7 +46,7 @@
 							href={c.url}
 							target="_blank"
 							rel="noopener"
-							class="text-muted-foreground hover:text-foreground transition-colors"
+							class="text-muted-foreground transition-colors hover:text-foreground"
 						>
 							{c.label}
 						</a>

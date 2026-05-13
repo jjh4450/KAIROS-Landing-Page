@@ -24,7 +24,7 @@
 	<header class="reveal mb-12 flex max-w-3xl flex-col gap-4 md:mb-16">
 		<Eyebrow>// activities</Eyebrow>
 		<h2>이번 학기에 무엇을 하고 있나요.</h2>
-		<p class="text-muted-foreground text-base md:text-lg">
+		<p class="text-base text-muted-foreground md:text-lg">
 			정기 스터디, CTF, 세미나, 외부 행사 — 한 곳에서 모든 일정을 봅니다.
 		</p>
 	</header>
@@ -35,21 +35,21 @@
 		<div class="reveal-children grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 			{#each events as ev (ev.id)}
 				<div class="tilt-3d">
-					<div use:cardTilt={{ max: 6, scale: 1.02 }} class="tilt-3d-card h-full">
+					<div use:cardTilt={{ max: 6, scale: 1.02 }} class="h-full tilt-3d-card">
 						<Card.Root class="relative h-full overflow-hidden">
 							<div class="tilt-3d-glare"></div>
-							<Card.Header class="tilt-3d-layer relative">
+							<Card.Header class="relative tilt-3d-layer">
 								<div class="flex items-center justify-between">
 									<Badge
 										variant="outline"
 										class="font-mono"
-										style="color: {typeColor[ev.type]}; border-color: color-mix(in oklch, {typeColor[
+										style="color: {typeColor[
 											ev.type
-										]} 35%, transparent);"
+										]}; border-color: color-mix(in oklch, {typeColor[ev.type]} 35%, transparent);"
 									>
 										{ev.type}
 									</Badge>
-									<span class="text-muted-foreground font-mono text-[11px]">
+									<span class="font-mono text-[11px] text-muted-foreground">
 										{fmtNumericDate(ev.startsAt)}
 									</span>
 								</div>

@@ -22,8 +22,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	const renderedContent = renderMarkdown(post.content);
 	const attachments = fileUrls(post, post.attachments);
 
-	const canEdit =
-		!!locals.user && (locals.user.id === post.author || isStaff(locals.user));
+	const canEdit = !!locals.user && (locals.user.id === post.author || isStaff(locals.user));
 	const canDelete =
 		!!locals.user && (locals.user.id === post.author || locals.user.role === 'admin');
 

@@ -24,7 +24,8 @@ export const actions: Actions = {
 		const isPrivate = formBool(form, 'isPrivate');
 
 		if (!title) return fail(400, { title, content, categoryId, error: '제목을 입력해주세요.' });
-		if (!categoryId) return fail(400, { title, content, categoryId, error: '카테고리를 선택해주세요.' });
+		if (!categoryId)
+			return fail(400, { title, content, categoryId, error: '카테고리를 선택해주세요.' });
 		if (!content) return fail(400, { title, content, categoryId, error: '본문을 입력해주세요.' });
 
 		const data = new FormData();

@@ -20,9 +20,7 @@
 
 	const sorted = $derived(
 		[...sponsors].sort(
-			(a, b) =>
-				tierOrder[a.tier] - tierOrder[b.tier] ||
-				(a.sortOrder ?? 999) - (b.sortOrder ?? 999)
+			(a, b) => tierOrder[a.tier] - tierOrder[b.tier] || (a.sortOrder ?? 999) - (b.sortOrder ?? 999)
 		)
 	);
 
@@ -53,7 +51,7 @@
 								href={s.link}
 								target="_blank"
 								rel="noopener"
-								class="ring-foreground/10 hover:ring-foreground/25 relative inline-flex h-16 min-w-[140px] items-center justify-center overflow-hidden rounded-[var(--radius-md)] px-5 ring-1 transition-all"
+								class="relative inline-flex h-16 min-w-[140px] items-center justify-center overflow-hidden rounded-[var(--radius-md)] px-5 ring-1 ring-foreground/10 transition-all hover:ring-foreground/25"
 								title={s.name}
 							>
 								<span class="tilt-3d-glare"></span>
@@ -67,7 +65,7 @@
 							</a>
 						{:else}
 							<div
-								class="ring-foreground/10 relative inline-flex h-16 min-w-[140px] items-center justify-center overflow-hidden rounded-[var(--radius-md)] px-5 ring-1"
+								class="relative inline-flex h-16 min-w-[140px] items-center justify-center overflow-hidden rounded-[var(--radius-md)] px-5 ring-1 ring-foreground/10"
 							>
 								<span class="tilt-3d-glare"></span>
 								<span class="tilt-3d-layer">

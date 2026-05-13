@@ -45,7 +45,7 @@
 						/>
 					</Field>
 					{#if form?.error}
-						<p class="text-destructive font-mono text-sm">{form.error}</p>
+						<p class="font-mono text-sm text-destructive">{form.error}</p>
 					{/if}
 					<Field>
 						<Button type="submit">비밀번호 변경</Button>

@@ -31,7 +31,10 @@ export const actions: Actions = {
 		if (link) data.set('link', link);
 		if (description) data.set('description', description);
 		if (membersCsv) {
-			for (const id of membersCsv.split(',').map((s) => s.trim()).filter(Boolean)) {
+			for (const id of membersCsv
+				.split(',')
+				.map((s) => s.trim())
+				.filter(Boolean)) {
 				data.append('members', id);
 			}
 		}

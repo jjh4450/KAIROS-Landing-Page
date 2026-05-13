@@ -10,9 +10,9 @@
 	let { class: klass, children }: Props = $props();
 </script>
 
-<div class={['eyebrow flex items-center gap-2.5', klass]}>
+<div class={['flex items-center gap-2.5 eyebrow', klass]}>
 	<span
-		class="bg-kairos-cyan inline-block h-1.5 w-1.5 rounded-full"
+		class="inline-block h-1.5 w-1.5 rounded-full bg-kairos-cyan"
 		style="box-shadow: 0 0 12px var(--kairos-cyan)"
 	></span>
 	{@render children()}

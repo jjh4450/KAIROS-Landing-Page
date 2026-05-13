@@ -15,9 +15,7 @@ export const actions: Actions = {
 		const form = await request.formData();
 		const email = String(form.get('email') ?? '').trim();
 		const password = String(form.get('password') ?? '');
-		const next = safeNext(
-			String(form.get('next') ?? '') || url.searchParams.get('next')
-		);
+		const next = safeNext(String(form.get('next') ?? '') || url.searchParams.get('next'));
 
 		if (!email || !password) {
 			return fail(400, { email, error: '이메일과 비밀번호를 입력해주세요.' });

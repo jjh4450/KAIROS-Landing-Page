@@ -16,13 +16,15 @@
 	const m = $derived(data.member);
 	const displayName = $derived(m.displayName ?? m.expand?.user?.nickname ?? '—');
 
-	const socials = $derived([
-		{ label: 'github', url: m.githubUrl },
-		{ label: 'blog', url: m.blogUrl },
-		{ label: 'linkedin', url: m.linkedinUrl },
-		{ label: 'twitter', url: m.twitterUrl },
-		{ label: 'site', url: m.personalUrl }
-	].filter((s) => !!s.url));
+	const socials = $derived(
+		[
+			{ label: 'github', url: m.githubUrl },
+			{ label: 'blog', url: m.blogUrl },
+			{ label: 'linkedin', url: m.linkedinUrl },
+			{ label: 'twitter', url: m.twitterUrl },
+			{ label: 'site', url: m.personalUrl }
+		].filter((s) => !!s.url)
+	);
 </script>
 
 <svelte:head><title>{displayName} · KAIROS</title></svelte:head>
@@ -42,13 +44,15 @@
 					{#if data.avatarUrl}
 						<Avatar.Image src={data.avatarUrl} alt={displayName} />
 					{/if}
-					<Avatar.Fallback class="bg-kairos-cyan/20 text-kairos-cyan font-mono text-2xl">
+					<Avatar.Fallback class="bg-kairos-cyan/20 font-mono text-2xl text-kairos-cyan">
 						{displayName.charAt(0).toUpperCase()}
 					</Avatar.Fallback>
 				</Avatar.Root>
 				<div>
 					<h1 class="!text-3xl">{displayName}</h1>
-					<div class="text-muted-foreground mt-1 flex flex-wrap items-center gap-2 font-mono text-xs">
+					<div
+						class="mt-1 flex flex-wrap items-center gap-2 font-mono text-xs text-muted-foreground"
+					>
 						<span>{m.position}</span>
 						{#if m.year}<span>· {m.year}</span>{/if}
 					</div>
@@ -70,7 +74,12 @@
 			{#if socials.length > 0}
 				<div class="flex flex-wrap gap-2">
 					{#each socials as s (s.label)}
-						<a href={s.url} target="_blank" rel="noopener noreferrer" class="text-kairos-cyan font-mono text-xs hover:underline">
+						<a
+							href={s.url}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="font-mono text-xs text-kairos-cyan hover:underline"
+						>
 							{s.label} ↗
 						</a>
 					{/each}

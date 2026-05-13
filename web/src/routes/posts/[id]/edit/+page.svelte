@@ -79,18 +79,24 @@
 				</label>
 
 				{#if form?.error}
-					<p class="text-destructive font-mono text-sm">{form.error}</p>
+					<p class="font-mono text-sm text-destructive">{form.error}</p>
 				{/if}
 			</Card.Content>
 
 			<Separator />
 
 			<Card.Footer class="flex items-center justify-between gap-3 pt-6">
-				<span class="text-muted-foreground font-mono text-[11px]">
+				<span class="font-mono text-[11px] text-muted-foreground">
 					{content.length} body chars
 				</span>
 				<div class="flex gap-2">
-					<Button href={`/posts/${data.post.id}`} variant="ghost" size="sm" type="button" class="font-mono">
+					<Button
+						href={`/posts/${data.post.id}`}
+						variant="ghost"
+						size="sm"
+						type="button"
+						class="font-mono"
+					>
 						cancel
 					</Button>
 					<Button type="submit" variant="default" size="sm" class="font-mono">save</Button>

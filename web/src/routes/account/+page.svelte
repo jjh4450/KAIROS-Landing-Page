@@ -34,15 +34,21 @@
 		</Card.Header>
 		<Card.Content class="space-y-3 pb-6">
 			<div class="grid grid-cols-3 gap-2">
-				<span class="text-muted-foreground font-mono text-[11px] tracking-[0.18em] uppercase">email</span>
+				<span class="font-mono text-[11px] tracking-[0.18em] text-muted-foreground uppercase"
+					>email</span
+				>
 				<span class="col-span-2 font-mono text-sm">{data.user?.email}</span>
 			</div>
 			<div class="grid grid-cols-3 gap-2">
-				<span class="text-muted-foreground font-mono text-[11px] tracking-[0.18em] uppercase">nickname</span>
+				<span class="font-mono text-[11px] tracking-[0.18em] text-muted-foreground uppercase"
+					>nickname</span
+				>
 				<span class="col-span-2 font-mono text-sm">{data.user?.nickname ?? '—'}</span>
 			</div>
 			<div class="grid grid-cols-3 gap-2">
-				<span class="text-muted-foreground font-mono text-[11px] tracking-[0.18em] uppercase">role</span>
+				<span class="font-mono text-[11px] tracking-[0.18em] text-muted-foreground uppercase"
+					>role</span
+				>
 				<span class="col-span-2">
 					<Badge variant="outline" class="font-mono">{data.user?.role}</Badge>
 				</span>
@@ -58,22 +64,34 @@
 		<form method="POST" action="?/changePassword" use:enhance>
 			<Card.Content class="space-y-4">
 				<div class="space-y-2">
-					<Label for="oldPassword" class="font-mono text-[11px] tracking-[0.18em] uppercase">current password</Label>
+					<Label for="oldPassword" class="font-mono text-[11px] tracking-[0.18em] uppercase"
+						>current password</Label
+					>
 					<Input id="oldPassword" name="oldPassword" type="password" required />
 				</div>
 				<div class="space-y-2">
-					<Label for="password" class="font-mono text-[11px] tracking-[0.18em] uppercase">new password</Label>
+					<Label for="password" class="font-mono text-[11px] tracking-[0.18em] uppercase"
+						>new password</Label
+					>
 					<Input id="password" name="password" type="password" required minlength={8} />
 				</div>
 				<div class="space-y-2">
-					<Label for="passwordConfirm" class="font-mono text-[11px] tracking-[0.18em] uppercase">confirm new</Label>
-					<Input id="passwordConfirm" name="passwordConfirm" type="password" required minlength={8} />
+					<Label for="passwordConfirm" class="font-mono text-[11px] tracking-[0.18em] uppercase"
+						>confirm new</Label
+					>
+					<Input
+						id="passwordConfirm"
+						name="passwordConfirm"
+						type="password"
+						required
+						minlength={8}
+					/>
 				</div>
 				{#if form?.error}
-					<p class="text-destructive font-mono text-sm">{form.error}</p>
+					<p class="font-mono text-sm text-destructive">{form.error}</p>
 				{/if}
 				{#if form?.success}
-					<p class="text-kairos-cyan font-mono text-sm">{form.success}</p>
+					<p class="font-mono text-sm text-kairos-cyan">{form.success}</p>
 				{/if}
 			</Card.Content>
 			<Separator />

@@ -65,11 +65,7 @@ type Bucket = {
 	centroid: [number, number];
 };
 
-function bucketFor(
-	map: Map<string, Bucket>,
-	cc: string,
-	centroid: [number, number]
-): Bucket {
+function bucketFor(map: Map<string, Bucket>, cc: string, centroid: [number, number]): Bucket {
 	let b = map.get(cc);
 	if (!b) {
 		b = { count: 0, malwareTally: new Map(), samples: [], centroid };

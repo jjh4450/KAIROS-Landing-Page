@@ -30,7 +30,9 @@
 
 	<article>
 		{#if data.coverUrl}
-			<div class="border-border/60 mb-8 aspect-video w-full overflow-hidden rounded-md border bg-black/30">
+			<div
+				class="mb-8 aspect-video w-full overflow-hidden rounded-md border border-border/60 bg-black/30"
+			>
 				<img src={data.coverUrl} alt={a.title} class="h-full w-full object-cover" />
 			</div>
 		{/if}
@@ -38,20 +40,26 @@
 		<header class="mb-8">
 			<div class="mb-4 flex flex-wrap items-center gap-2">
 				{#if a.rank}
-					<Badge variant="outline" class="text-kairos-cyan border-kairos-cyan/40 font-mono">
-						<Trophy weight="fill" /> {a.rank}
+					<Badge variant="outline" class="border-kairos-cyan/40 font-mono text-kairos-cyan">
+						<Trophy weight="fill" />
+						{a.rank}
 					</Badge>
 				{/if}
 				{#if a.competition}
 					<Badge variant="outline" class="font-mono">{a.competition}</Badge>
 				{/if}
 				{#if a.date}
-					<span class="text-muted-foreground font-mono text-xs">· {a.date}</span>
+					<span class="font-mono text-xs text-muted-foreground">· {a.date}</span>
 				{/if}
 			</div>
 			<h1 class="!text-4xl text-balance md:!text-5xl">{a.title}</h1>
 			{#if a.link}
-				<a href={a.link} target="_blank" rel="noopener noreferrer" class="text-kairos-cyan mt-3 inline-block font-mono text-sm hover:underline">
+				<a
+					href={a.link}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="mt-3 inline-block font-mono text-sm text-kairos-cyan hover:underline"
+				>
 					{a.link} ↗
 				</a>
 			{/if}
@@ -67,7 +75,7 @@
 
 		{#if a.expand?.members && a.expand.members.length > 0}
 			<section class="mt-8">
-				<h2 class="text-muted-foreground mb-3 font-mono text-[11px] tracking-[0.18em] uppercase">
+				<h2 class="mb-3 font-mono text-[11px] tracking-[0.18em] text-muted-foreground uppercase">
 					// members
 				</h2>
 				<div class="flex flex-wrap gap-2">

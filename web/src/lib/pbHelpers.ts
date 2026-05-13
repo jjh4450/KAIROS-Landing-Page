@@ -9,7 +9,10 @@ export function fileUrl(record: FileRecord, filename: string, thumb?: string): s
 	return `${PUBLIC_PB_URL}/api/files/${collection}/${record.id}/${filename}${qs}`;
 }
 
-export function fileUrls(record: FileRecord, filenames: string[] | undefined): { name: string; url: string }[] {
+export function fileUrls(
+	record: FileRecord,
+	filenames: string[] | undefined
+): { name: string; url: string }[] {
 	if (!filenames?.length) return [];
 	return filenames.map((name) => ({ name, url: fileUrl(record, name) }));
 }

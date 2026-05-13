@@ -18,17 +18,17 @@
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger
-		class="ring-offset-background focus-visible:ring-ring rounded-full outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+		class="rounded-full ring-offset-background outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
 		aria-label="user menu"
 	>
 		<Avatar.Root class="size-8">
-			<Avatar.Fallback class="bg-kairos-cyan/20 text-kairos-cyan font-mono text-xs">
+			<Avatar.Fallback class="bg-kairos-cyan/20 font-mono text-xs text-kairos-cyan">
 				{initial}
 			</Avatar.Fallback>
 		</Avatar.Root>
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content align="end" class="w-48 font-mono">
-		<DropdownMenu.Label class="text-muted-foreground text-[11px] tracking-[0.18em] uppercase">
+		<DropdownMenu.Label class="text-[11px] tracking-[0.18em] text-muted-foreground uppercase">
 			{user.nickname ?? user.email}
 		</DropdownMenu.Label>
 		<DropdownMenu.Separator />

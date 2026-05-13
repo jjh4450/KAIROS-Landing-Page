@@ -104,14 +104,14 @@
 		</Eyebrow>
 
 		<h1 class="mb-10 max-w-[14ch]">
-			<span class="text-foreground inline-block" data-hero-word>we</span>
-			<span class="text-foreground inline-block" data-hero-word>hack</span>
-			<span class="text-foreground inline-block" data-hero-word>to</span>
+			<span class="inline-block text-foreground" data-hero-word>we</span>
+			<span class="inline-block text-foreground" data-hero-word>hack</span>
+			<span class="inline-block text-foreground" data-hero-word>to</span>
 			<br />
-			<span class="text-gradient-aurora inline-block" data-hero-word>understand.</span>
+			<span class="inline-block text-gradient-aurora" data-hero-word>understand.</span>
 		</h1>
 
-		<p class="text-muted-foreground max-w-2xl text-base md:text-lg">{subtitle}</p>
+		<p class="max-w-2xl text-base text-muted-foreground md:text-lg">{subtitle}</p>
 
 		<div class="mt-10 flex flex-wrap items-center gap-3">
 			<Button href="#about" variant="outline" size="lg" class="font-mono" onclick={scrollToAbout}>

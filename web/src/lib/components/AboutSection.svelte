@@ -31,7 +31,7 @@
 	<header class="reveal mb-12 max-w-3xl md:mb-16">
 		<Eyebrow class="mb-4">// about</Eyebrow>
 		<h2>강원대의 공격적 보안 커뮤니티.</h2>
-		<p class="text-muted-foreground mt-5 max-w-2xl text-base md:text-lg">
+		<p class="mt-5 max-w-2xl text-base text-muted-foreground md:text-lg">
 			KAIROS는 강원대학교 학생 보안 동아리입니다. 공격을 통해 방어를 이해하고, 결과물을 기록으로
 			남깁니다.
 		</p>
@@ -40,15 +40,15 @@
 	<div class="reveal-children grid grid-cols-1 gap-4 md:grid-cols-2">
 		{#each pillars as p (p.idx)}
 			<div class="tilt-3d">
-				<div use:cardTilt={{ max: 7, scale: 1.02 }} class="tilt-3d-card h-full">
+				<div use:cardTilt={{ max: 7, scale: 1.02 }} class="h-full tilt-3d-card">
 					<Card.Root class="relative h-full overflow-hidden">
 						<div class="tilt-3d-glare"></div>
-						<Card.Header class="tilt-3d-layer relative">
-							<Card.Description class="text-kairos-cyan/80 font-mono">{p.idx}</Card.Description>
+						<Card.Header class="relative tilt-3d-layer">
+							<Card.Description class="font-mono text-kairos-cyan/80">{p.idx}</Card.Description>
 							<Card.Title class="font-mono text-base">{p.title}</Card.Title>
 						</Card.Header>
-						<Card.Content class="tilt-3d-layer relative">
-							<p class="text-muted-foreground text-sm">{p.body}</p>
+						<Card.Content class="relative tilt-3d-layer">
+							<p class="text-sm text-muted-foreground">{p.body}</p>
 						</Card.Content>
 					</Card.Root>
 				</div>

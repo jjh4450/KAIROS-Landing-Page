@@ -22,13 +22,7 @@
 		class?: string;
 	};
 
-	let {
-		dots,
-		onHover,
-		onSelect,
-		selectedCountry = null,
-		class: extra = ''
-	}: Props = $props();
+	let { dots, onHover, onSelect, selectedCountry = null, class: extra = '' }: Props = $props();
 
 	let containerEl: HTMLDivElement | undefined = $state();
 	type GlobeInstance = ReturnType<NonNullable<Awaited<typeof globeModule>>['default']>;
@@ -119,4 +113,8 @@
 	});
 </script>
 
-<div bind:this={containerEl} class={['relative h-full w-full', extra]} aria-label="Global threat globe"></div>
+<div
+	bind:this={containerEl}
+	class={['relative h-full w-full', extra]}
+	aria-label="Global threat globe"
+></div>

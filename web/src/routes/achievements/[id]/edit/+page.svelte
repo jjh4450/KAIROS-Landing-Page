@@ -69,7 +69,11 @@
 				<div class="space-y-2">
 					<FieldLabel>cover image</FieldLabel>
 					{#if data.coverUrl}
-						<img src={data.coverUrl} alt="cover" class="border-border/60 mb-2 max-h-40 rounded-md border" />
+						<img
+							src={data.coverUrl}
+							alt="cover"
+							class="mb-2 max-h-40 rounded-md border border-border/60"
+						/>
 						<label class="flex items-center gap-2 font-mono text-xs">
 							<input type="checkbox" name="removeCover" />
 							<span>현재 cover 제거</span>
@@ -87,12 +91,18 @@
 				</div>
 
 				{#if form?.error}
-					<p class="text-destructive font-mono text-sm">{form.error}</p>
+					<p class="font-mono text-sm text-destructive">{form.error}</p>
 				{/if}
 			</Card.Content>
 			<Separator />
 			<Card.Footer class="flex justify-end gap-2 pt-6">
-				<Button href={`/achievements/${a.id}`} variant="ghost" size="sm" type="button" class="font-mono">cancel</Button>
+				<Button
+					href={`/achievements/${a.id}`}
+					variant="ghost"
+					size="sm"
+					type="button"
+					class="font-mono">cancel</Button
+				>
 				<Button type="submit" size="sm" class="font-mono">save</Button>
 			</Card.Footer>
 		</form>

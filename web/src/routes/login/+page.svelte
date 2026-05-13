@@ -75,17 +75,14 @@
 					<Field>
 						<div class="flex items-center">
 							<FieldLabel for="password-{id}">Password</FieldLabel>
-							<a
-								href="/forgot-password"
-								class="ms-auto text-sm underline-offset-4 hover:underline"
-							>
+							<a href="/forgot-password" class="ms-auto text-sm underline-offset-4 hover:underline">
 								Forgot your password?
 							</a>
 						</div>
 						<Input id="password-{id}" name="password" type="password" required />
 					</Field>
 					{#if form?.error}
-						<p class="text-destructive font-mono text-sm">{form.error}</p>
+						<p class="font-mono text-sm text-destructive">{form.error}</p>
 					{/if}
 					<Field>
 						<Button type="submit">Login</Button>

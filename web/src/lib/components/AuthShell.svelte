@@ -11,7 +11,7 @@
 	<div class="flex w-full max-w-sm flex-col gap-6">
 		<a href="/" class="flex items-center gap-2 self-center font-mono font-medium">
 			<span
-				class="from-kairos-cyan to-kairos-violet inline-block h-5 w-5 bg-gradient-to-br"
+				class="inline-block h-5 w-5 bg-gradient-to-br from-kairos-cyan to-kairos-violet"
 				style="box-shadow: 0 0 18px -4px var(--kairos-cyan)"
 				aria-hidden="true"
 			></span>

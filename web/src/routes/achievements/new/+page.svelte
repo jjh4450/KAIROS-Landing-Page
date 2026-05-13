@@ -71,12 +71,14 @@
 				</div>
 
 				{#if form?.error}
-					<p class="text-destructive font-mono text-sm">{form.error}</p>
+					<p class="font-mono text-sm text-destructive">{form.error}</p>
 				{/if}
 			</Card.Content>
 			<Separator />
 			<Card.Footer class="flex justify-end gap-2 pt-6">
-				<Button href="/achievements" variant="ghost" size="sm" type="button" class="font-mono">cancel</Button>
+				<Button href="/achievements" variant="ghost" size="sm" type="button" class="font-mono"
+					>cancel</Button
+				>
 				<Button type="submit" size="sm" class="font-mono">create</Button>
 			</Card.Footer>
 		</form>

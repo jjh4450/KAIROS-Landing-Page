@@ -50,7 +50,7 @@
 	<header class="mb-8">
 		<Eyebrow class="mb-4">// my profile</Eyebrow>
 		<h1 class="!text-4xl md:!text-5xl">{m ? '프로필 편집' : '프로필 생성'}</h1>
-		<p class="text-muted-foreground mt-3 text-base">
+		<p class="mt-3 text-base text-muted-foreground">
 			공개 옵션을 켜야 /members 명단에 노출됩니다. 본인만 수정 가능.
 		</p>
 	</header>
@@ -73,7 +73,12 @@
 					</div>
 					<div class="space-y-2">
 						<FieldLabel for="position">position</FieldLabel>
-						<select id="position" name="position" bind:value={position} class="border-input bg-background h-9 w-full rounded-md border px-3 font-mono text-sm">
+						<select
+							id="position"
+							name="position"
+							bind:value={position}
+							class="h-9 w-full rounded-md border border-input bg-background px-3 font-mono text-sm"
+						>
 							{#each POSITIONS as p (p)}
 								<option value={p}>{p}</option>
 							{/each}
@@ -90,7 +95,9 @@
 					<div class="flex flex-wrap gap-1.5">
 						{#each TRACKS as t (t)}
 							<button type="button" onclick={() => toggleTrack(t)} class="cursor-pointer">
-								<Badge variant={tracks.includes(t) ? 'default' : 'outline'} class="font-mono">{t}</Badge>
+								<Badge variant={tracks.includes(t) ? 'default' : 'outline'} class="font-mono"
+									>{t}</Badge
+								>
 							</button>
 						{/each}
 					</div>
@@ -99,7 +106,11 @@
 				<div class="space-y-2">
 					<FieldLabel>avatar</FieldLabel>
 					{#if data.avatarUrl}
-						<img src={data.avatarUrl} alt="avatar" class="border-border/60 mb-2 size-20 rounded-full border object-cover" />
+						<img
+							src={data.avatarUrl}
+							alt="avatar"
+							class="mb-2 size-20 rounded-full border border-border/60 object-cover"
+						/>
 						<label class="flex items-center gap-2 font-mono text-xs">
 							<input type="checkbox" name="removeAvatar" />
 							<span>현재 아바타 제거</span>
@@ -142,12 +153,14 @@
 				</label>
 
 				{#if form?.error}
-					<p class="text-destructive font-mono text-sm">{form.error}</p>
+					<p class="font-mono text-sm text-destructive">{form.error}</p>
 				{/if}
 			</Card.Content>
 			<Separator />
 			<Card.Footer class="flex justify-end gap-2 pt-6">
-				<Button href="/members" variant="ghost" size="sm" type="button" class="font-mono">cancel</Button>
+				<Button href="/members" variant="ghost" size="sm" type="button" class="font-mono"
+					>cancel</Button
+				>
 				<Button type="submit" size="sm" class="font-mono">{m ? 'save' : 'create'}</Button>
 			</Card.Footer>
 		</form>

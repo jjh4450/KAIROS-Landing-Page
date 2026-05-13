@@ -85,10 +85,10 @@ export const magnetic: Action<HTMLElement, { strength?: number; radius?: number 
  *
  * <Card use:cardTilt={{ max: 8 }}>...</Card>
  * ============================================================ */
-export const cardTilt: Action<
-	HTMLElement,
-	{ max?: number; scale?: number } | undefined
-> = (node, params) => {
+export const cardTilt: Action<HTMLElement, { max?: number; scale?: number } | undefined> = (
+	node,
+	params
+) => {
 	const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 	let max = params?.max ?? 8;
 	let scale = params?.scale ?? 1.02;

@@ -33,7 +33,7 @@
 		<div class="max-w-2xl">
 			<Eyebrow class="mb-4">// members</Eyebrow>
 			<h1 class="!text-5xl md:!text-6xl">roster.</h1>
-			<p class="text-muted-foreground mt-3 text-base md:text-lg">
+			<p class="mt-3 text-base text-muted-foreground md:text-lg">
 				공개 동의한 멤버만 표시됩니다. 본인 프로필은 me 페이지에서 편집하세요.
 			</p>
 		</div>
@@ -54,15 +54,20 @@
 						<Card.Content class="flex flex-col items-center gap-3 py-6 text-center">
 							<Avatar.Root class="size-16">
 								{#if m.avatar}
-									<Avatar.Image src={fileUrl({ id: m.id, collectionId: m.collectionId }, m.avatar)} alt={m.displayName ?? ''} />
+									<Avatar.Image
+										src={fileUrl({ id: m.id, collectionId: m.collectionId }, m.avatar)}
+										alt={m.displayName ?? ''}
+									/>
 								{/if}
-								<Avatar.Fallback class="bg-kairos-cyan/20 text-kairos-cyan font-mono">
+								<Avatar.Fallback class="bg-kairos-cyan/20 font-mono text-kairos-cyan">
 									{initial(m)}
 								</Avatar.Fallback>
 							</Avatar.Root>
 							<div>
-								<div class="font-mono font-semibold">{m.displayName ?? m.expand?.user?.nickname ?? '—'}</div>
-								<div class="text-muted-foreground font-mono text-[11px]">{m.position}</div>
+								<div class="font-mono font-semibold">
+									{m.displayName ?? m.expand?.user?.nickname ?? '—'}
+								</div>
+								<div class="font-mono text-[11px] text-muted-foreground">{m.position}</div>
 							</div>
 							{#if m.tracks && m.tracks.length > 0}
 								<div class="flex flex-wrap justify-center gap-1">

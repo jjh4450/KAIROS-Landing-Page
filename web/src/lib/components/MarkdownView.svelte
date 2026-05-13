@@ -4,7 +4,7 @@
 </script>
 
 <div
-	class="prose prose-invert prose-headings:text-foreground prose-p:text-foreground/85 prose-a:text-kairos-cyan prose-strong:text-foreground prose-code:text-kairos-cyan prose-img:rounded-md max-w-none {extra}"
+	class="prose max-w-none prose-invert prose-headings:text-foreground prose-p:text-foreground/85 prose-a:text-kairos-cyan prose-strong:text-foreground prose-code:text-kairos-cyan prose-img:rounded-md {extra}"
 >
 	{@html html}
 </div>

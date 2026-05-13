@@ -1,0 +1,142 @@
+<script lang="ts">
+	import { onMount } from 'svelte';
+	import { Canvas } from '@threlte/core';
+	import { Button } from '$lib/components/ui/button/index.js';
+	import { Badge } from '$lib/components/ui/badge/index.js';
+	import Eyebrow from './Eyebrow.svelte';
+	import HeroScene from './HeroScene.svelte';
+	import type { SiteSettings } from '$lib/types';
+	import { magnetic } from '$lib/motion/actions';
+	import ArrowDown from 'phosphor-svelte/lib/ArrowDown';
+	import ArrowUpRight from 'phosphor-svelte/lib/ArrowUpRight';
+
+	type Props = { settings?: SiteSettings | null };
+	let { settings }: Props = $props();
+
+	const subtitle = $derived(
+		settings?.heroSubtitle ?? '함께 배우고, 함께 공격하고, 함께 방어합니다.'
+	);
+	const recruiting = $derived(!!settings?.recruitmentOpen && !!settings?.recruitmentFormUrl);
+
+	let sectionEl: HTMLElement | undefined = $state();
+	let copyEl: HTMLDivElement | undefined = $state();
+	let sceneEl: HTMLDivElement | undefined = $state();
+
+	onMount(() => {
+		const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		if (reduced || !sectionEl || !copyEl || !sceneEl) return;
+
+		let ctx: { revert: () => void } | undefined;
+		Promise.all([import('gsap'), import('gsap/ScrollTrigger')]).then(
+			([{ gsap }, { ScrollTrigger }]) => {
+				gsap.registerPlugin(ScrollTrigger);
+				ctx = gsap.context(() => {
+					// 헤드라인 단어 stagger drop
+					gsap.utils.toArray<HTMLElement>('[data-hero-word]').forEach((word, i) => {
+						gsap.from(word, {
+							y: 60,
+							opacity: 0,
+							rotateX: -40,
+							duration: 0.8,
+							ease: 'power3.out',
+							delay: 0.15 + i * 0.08
+						});
+					});
+
+					// 스크롤 시 카피 위로 사라짐
+					gsap.to(copyEl!, {
+						y: -100,
+						opacity: 0,
+						ease: 'power1.in',
+						scrollTrigger: {
+							trigger: sectionEl!,
+							start: 'top top',
+							end: 'bottom top',
+							scrub: 0.8
+						}
+					});
+
+					// 3D 씬 줌인 + 살짝 기울임
+					gsap.fromTo(
+						sceneEl!,
+						{ y: 0, scale: 1, rotate: 0 },
+						{
+							y: 40,
+							scale: 1.1,
+							rotate: -2,
+							ease: 'none',
+							scrollTrigger: {
+								trigger: sectionEl!,
+								start: 'top top',
+								end: 'bottom top',
+								scrub: 0.8
+							}
+						}
+					);
+				}, sectionEl!);
+			}
+		);
+
+		return () => ctx?.revert();
+	});
+</script>
+
+<section
+	bind:this={sectionEl}
+	id="top"
+	class="relative mx-auto grid w-full max-w-7xl grid-cols-1 gap-12 px-6 pt-40 pb-24 lg:grid-cols-12 lg:gap-10 lg:pb-32"
+>
+	<div bind:this={copyEl} class="reveal relative z-10 lg:col-span-7">
+		<Eyebrow class="mb-7">
+			KAIROS
+			<span class="text-muted-foreground">· est. 2025</span>
+		</Eyebrow>
+
+		<h1 class="mb-10 max-w-[14ch]">
+			<span class="text-foreground inline-block" data-hero-word>we</span>
+			<span class="text-foreground inline-block" data-hero-word>hack</span>
+			<span class="text-foreground inline-block" data-hero-word>to</span>
+			<br />
+			<span class="text-gradient-aurora inline-block" data-hero-word>understand.</span>
+		</h1>
+
+		<p class="text-muted-foreground max-w-2xl text-base md:text-lg">{subtitle}</p>
+
+		<div class="mt-10 flex flex-wrap items-center gap-3">
+			<Button href="#about" variant="outline" size="lg" class="font-mono">
+				explore <ArrowDown />
+			</Button>
+			{#if recruiting}
+				<div use:magnetic={{ strength: 0.24 }}>
+					<Button href={settings?.recruitmentFormUrl} variant="default" size="lg" class="font-mono">
+						지원하기 <ArrowUpRight />
+					</Button>
+				</div>
+			{/if}
+		</div>
+	</div>
+
+	<div
+		bind:this={sceneEl}
+		class="reveal relative h-[420px] w-full lg:col-span-5 lg:h-[560px]"
+		aria-hidden="true"
+	>
+		<Canvas>
+			<HeroScene />
+		</Canvas>
+
+		<div class="glass pointer-events-none absolute right-4 bottom-4 px-3 py-2">
+			<div class="flex items-center gap-2 font-mono text-[10px]">
+				<span
+					class="bg-kairos-lime inline-block h-1.5 w-1.5 rounded-full"
+					style="box-shadow: 0 0 8px var(--kairos-lime)"
+				></span>
+				<span class="text-kairos-lime tracking-widest uppercase">live</span>
+				<span class="text-muted-foreground">· 60fps</span>
+			</div>
+		</div>
+		<Badge variant="outline" class="absolute top-4 left-4 z-10 font-mono backdrop-blur-md">
+			[ kairos.core ]
+		</Badge>
+	</div>
+</section>

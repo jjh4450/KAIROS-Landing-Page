@@ -111,3 +111,23 @@ onRecordViewRequest((e) => {
     $app.logger().warn("viewCount update failed", "error", err);
   }
 }, "posts");
+
+// ============================================================
+// 5) members: 본인 옵트인 시 user.id 강제, 운영진은 임의 지정 허용
+// ============================================================
+onRecordCreateRequest((e) => {
+  const auth = e.auth;
+  if (!auth) {
+    throw new ForbiddenError("로그인이 필요합니다.");
+  }
+
+  const role = auth.get("role") || "";
+  const isStaff = role === "admin" || role === "staff";
+
+  // 운영진이 아니면 user 필드는 본인으로 강제 (스푸핑 방지)
+  if (!isStaff) {
+    e.record.set("user", auth.id);
+  }
+
+  e.next();
+}, "members");

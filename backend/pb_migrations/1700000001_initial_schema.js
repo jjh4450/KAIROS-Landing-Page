@@ -116,6 +116,8 @@ migrate(
       fields: [
         { type: "text", name: "title", required: true, max: 200 },
         { type: "editor", name: "content", required: true },
+        { type: "autodate", name: "created", onCreate: true },
+        { type: "autodate", name: "updated", onCreate: true, onUpdate: true },
         {
           type: "relation",
           name: "author",
@@ -191,6 +193,8 @@ migrate(
           cascadeDelete: false,
         },
         { type: "text", name: "content", required: true, max: 2000 },
+        { type: "autodate", name: "created", onCreate: true },
+        { type: "autodate", name: "updated", onCreate: true, onUpdate: true },
       ],
       indexes: ["CREATE INDEX `idx_comments_post` ON `comments` (`post`)"],
     });

@@ -1,131 +1,337 @@
 @import 'tailwindcss';
-@import "tw-animate-css";
-@import "shadcn-svelte/tailwind.css";
-@import "@fontsource-variable/jetbrains-mono";
+@import 'tw-animate-css';
+@import 'shadcn-svelte/tailwind.css';
+@import '@fontsource-variable/jetbrains-mono';
+@import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
 
 @custom-variant dark (&:is(.dark *));
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
+/* ============================================================
+ * KAIROS — "Aurora Glassmorphism" tokens (dark default)
+ *
+ * Design system pillars:
+ *   1. Layered translucency (glass panels = info hierarchy)
+ *   2. Aurora mesh gradient backdrop (atmospheric)
+ *   3. Pretendard body + JetBrains Mono labels
+ *   4. Apple-style scroll choreography
+ *   5. KAIROS cyan / violet / magenta accents
+ * ============================================================ */
 :root {
-	--background: oklch(1 0 0);
-	--foreground: oklch(0.145 0 0);
-	--card: oklch(1 0 0);
-	--card-foreground: oklch(0.145 0 0);
-	--popover: oklch(1 0 0);
-	--popover-foreground: oklch(0.145 0 0);
-	--primary: oklch(0.205 0 0);
-	--primary-foreground: oklch(0.985 0 0);
-	--secondary: oklch(0.97 0 0);
-	--secondary-foreground: oklch(0.205 0 0);
-	--muted: oklch(0.97 0 0);
-	--muted-foreground: oklch(0.556 0 0);
-	--accent: oklch(0.97 0 0);
-	--accent-foreground: oklch(0.205 0 0);
-	--destructive: oklch(0.577 0.245 27.325);
-	--border: oklch(0.922 0 0);
-	--input: oklch(0.922 0 0);
-	--ring: oklch(0.708 0 0);
-	--chart-1: oklch(0.87 0 0);
-	--chart-2: oklch(0.556 0 0);
-	--chart-3: oklch(0.439 0 0);
-	--chart-4: oklch(0.371 0 0);
-	--chart-5: oklch(0.269 0 0);
-	--radius: 0.625rem;
-	--sidebar: oklch(0.985 0 0);
-	--sidebar-foreground: oklch(0.145 0 0);
-	--sidebar-primary: oklch(0.205 0 0);
-	--sidebar-primary-foreground: oklch(0.985 0 0);
-	--sidebar-accent: oklch(0.97 0 0);
-	--sidebar-accent-foreground: oklch(0.205 0 0);
-	--sidebar-border: oklch(0.922 0 0);
-	--sidebar-ring: oklch(0.708 0 0);
+	/* — Base surface — */
+	--background: oklch(0.135 0.022 270);
+	--foreground: oklch(0.96 0.005 250);
+
+	/* — Card (rendered as glass via .glass-card utility) — */
+	--card: oklch(0.205 0.022 270 / 65%);
+	--card-foreground: oklch(0.96 0.005 250);
+	--popover: oklch(0.205 0.022 270 / 85%);
+	--popover-foreground: oklch(0.96 0.005 250);
+
+	/* — Brand & semantic — */
+	--primary: oklch(0.82 0.16 200);
+	--primary-foreground: oklch(0.13 0.022 270);
+	--secondary: oklch(0.65 0.22 295);
+	--secondary-foreground: oklch(0.96 0.005 250);
+	--muted: oklch(0.25 0.018 270);
+	--muted-foreground: oklch(0.72 0.013 250);
+	--accent: oklch(0.82 0.16 200);
+	--accent-foreground: oklch(0.13 0.022 270);
+	--destructive: oklch(0.68 0.22 25);
+
+	--border: oklch(1 0 0 / 14%);
+	--input: oklch(1 0 0 / 10%);
+	--ring: oklch(0.82 0.16 200 / 60%);
+
+	/* — Corners (Aurora prefers softness) — */
+	--radius: 1rem;
+
+	/* — KAIROS brand accents — */
+	--kairos-cyan: oklch(0.82 0.16 200);
+	--kairos-violet: oklch(0.65 0.22 295);
+	--kairos-magenta: oklch(0.68 0.25 330);
+	--kairos-lime: oklch(0.86 0.22 130);
+
+	/* — Glass system (layered translucency) — */
+	--glass-bg: oklch(1 0 0 / 5%);
+	--glass-bg-strong: oklch(1 0 0 / 9%);
+	--glass-border: oklch(1 0 0 / 11%);
+	--glass-border-strong: oklch(1 0 0 / 18%);
+	--glass-blur: 18px;
+	--glass-blur-strong: 28px;
+	--glass-highlight: oklch(1 0 0 / 8%);
+
+	/* — Brand easing curve (Apple-ish ease-out-cubic) — */
+	--ease-brand: cubic-bezier(0.22, 0.61, 0.36, 1);
+	--ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
 }
 
 .dark {
-	--background: oklch(0.145 0 0);
-	--foreground: oklch(0.985 0 0);
-	--card: oklch(0.205 0 0);
-	--card-foreground: oklch(0.985 0 0);
-	--popover: oklch(0.205 0 0);
-	--popover-foreground: oklch(0.985 0 0);
-	--primary: oklch(0.922 0 0);
-	--primary-foreground: oklch(0.205 0 0);
-	--secondary: oklch(0.269 0 0);
-	--secondary-foreground: oklch(0.985 0 0);
-	--muted: oklch(0.269 0 0);
-	--muted-foreground: oklch(0.708 0 0);
-	--accent: oklch(0.269 0 0);
-	--accent-foreground: oklch(0.985 0 0);
-	--destructive: oklch(0.704 0.191 22.216);
-	--border: oklch(1 0 0 / 10%);
-	--input: oklch(1 0 0 / 15%);
-	--ring: oklch(0.556 0 0);
-	--chart-1: oklch(0.87 0 0);
-	--chart-2: oklch(0.556 0 0);
-	--chart-3: oklch(0.439 0 0);
-	--chart-4: oklch(0.371 0 0);
-	--chart-5: oklch(0.269 0 0);
-	--sidebar: oklch(0.205 0 0);
-	--sidebar-foreground: oklch(0.985 0 0);
-	--sidebar-primary: oklch(0.488 0.243 264.376);
-	--sidebar-primary-foreground: oklch(0.985 0 0);
-	--sidebar-accent: oklch(0.269 0 0);
-	--sidebar-accent-foreground: oklch(0.985 0 0);
-	--sidebar-border: oklch(1 0 0 / 10%);
-	--sidebar-ring: oklch(0.556 0 0);
+	color-scheme: dark;
 }
 
 @theme inline {
-	--font-mono: 'JetBrains Mono Variable', monospace;
-	--color-sidebar-ring: var(--sidebar-ring);
-	--color-sidebar-border: var(--sidebar-border);
-	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-	--color-sidebar-accent: var(--sidebar-accent);
-	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-	--color-sidebar-primary: var(--sidebar-primary);
-	--color-sidebar-foreground: var(--sidebar-foreground);
-	--color-sidebar: var(--sidebar);
-	--color-chart-5: var(--chart-5);
-	--color-chart-4: var(--chart-4);
-	--color-chart-3: var(--chart-3);
-	--color-chart-2: var(--chart-2);
-	--color-chart-1: var(--chart-1);
-	--color-ring: var(--ring);
-	--color-input: var(--input);
-	--color-border: var(--border);
-	--color-destructive: var(--destructive);
-	--color-accent-foreground: var(--accent-foreground);
-	--color-accent: var(--accent);
-	--color-muted-foreground: var(--muted-foreground);
-	--color-muted: var(--muted);
-	--color-secondary-foreground: var(--secondary-foreground);
-	--color-secondary: var(--secondary);
-	--color-primary-foreground: var(--primary-foreground);
-	--color-primary: var(--primary);
-	--color-popover-foreground: var(--popover-foreground);
-	--color-popover: var(--popover);
-	--color-card-foreground: var(--card-foreground);
-	--color-card: var(--card);
-	--color-foreground: var(--foreground);
+	--font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+	--font-sans:
+		'Pretendard Variable', Pretendard, ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+	/* shadcn semantic colors */
 	--color-background: var(--background);
-	--radius-sm: calc(var(--radius) * 0.6);
-	--radius-md: calc(var(--radius) * 0.8);
+	--color-foreground: var(--foreground);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+
+	/* KAIROS brand */
+	--color-kairos-cyan: var(--kairos-cyan);
+	--color-kairos-violet: var(--kairos-violet);
+	--color-kairos-magenta: var(--kairos-magenta);
+	--color-kairos-lime: var(--kairos-lime);
+
+	/* Soft Aurora radii */
+	--radius-sm: calc(var(--radius) * 0.5);
+	--radius-md: calc(var(--radius) * 0.75);
 	--radius-lg: var(--radius);
 	--radius-xl: calc(var(--radius) * 1.4);
 	--radius-2xl: calc(var(--radius) * 1.8);
 	--radius-3xl: calc(var(--radius) * 2.2);
-	--radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* ============================================================
+ * Base layer
+ * ============================================================ */
 @layer base {
 	* {
 		@apply border-border outline-ring/50;
 	}
+	html,
 	body {
 		@apply bg-background text-foreground;
+		font-family: var(--font-sans);
+	}
+	body {
+		min-height: 100dvh;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
 	}
 	html {
-		@apply font-mono;
+		overflow-x: hidden;
+	}
+	code,
+	kbd,
+	samp,
+	.font-mono {
+		font-family: var(--font-mono);
+	}
+
+	/* Fluid type — variable weight + optical-ish leading */
+	h1 {
+		font-family: var(--font-sans);
+		font-size: clamp(2.75rem, 5.5vw + 1rem, 6.25rem);
+		line-height: 0.98;
+		letter-spacing: -0.035em;
+		font-weight: 700;
+	}
+	h2 {
+		font-family: var(--font-sans);
+		font-size: clamp(1.875rem, 3.2vw + 1rem, 3.5rem);
+		line-height: 1.05;
+		letter-spacing: -0.025em;
+		font-weight: 700;
+	}
+	h3 {
+		font-family: var(--font-sans);
+		font-size: clamp(1.0625rem, 1vw + 0.6rem, 1.375rem);
+		line-height: 1.25;
+		font-weight: 600;
+		letter-spacing: -0.005em;
+	}
+	p {
+		line-height: 1.65;
+	}
+
+	::selection {
+		background: var(--kairos-cyan);
+		color: var(--background);
+	}
+
+	/* Lenis required */
+	html.lenis,
+	html.lenis body {
+		height: auto;
+	}
+	.lenis.lenis-smooth {
+		scroll-behavior: auto !important;
+	}
+	.lenis.lenis-smooth [data-lenis-prevent] {
+		overscroll-behavior: contain;
+	}
+}
+
+/* ============================================================
+ * Glass utilities (layered translucency)
+ *   .glass        — default panel, light blur
+ *   .glass-strong — emphasized panel, deeper blur + brighter highlight
+ *   .glass-card   — rounded card surface (overrides shadcn card)
+ * ============================================================ */
+@utility glass {
+	background: var(--glass-bg);
+	backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+	-webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+	border: 1px solid var(--glass-border);
+	border-radius: var(--radius-lg);
+	box-shadow:
+		inset 0 1px 0 var(--glass-highlight),
+		0 24px 60px -28px oklch(0 0 0 / 60%);
+}
+
+@utility glass-strong {
+	background: var(--glass-bg-strong);
+	backdrop-filter: blur(var(--glass-blur-strong)) saturate(170%);
+	-webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(170%);
+	border: 1px solid var(--glass-border-strong);
+	border-radius: var(--radius-xl);
+	box-shadow:
+		inset 0 1px 0 var(--glass-highlight),
+		0 36px 80px -32px oklch(0 0 0 / 65%);
+}
+
+/* Eyebrow label */
+@utility eyebrow {
+	font-family: var(--font-mono);
+	font-size: 0.6875rem;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: var(--kairos-cyan);
+}
+
+/* ============================================================
+ * 3D card system (perspective + tilt + layered depth)
+ *
+ *   .tilt-3d         — perspective container (wrap each tilted card)
+ *   .tilt-3d-card    — the actual card; applies transform from CSS vars (--rx, --ry, --tilt-scale)
+ *   .tilt-3d-layer   — inner element lifted on Z axis
+ *   .tilt-3d-glare   — mouse-tracked highlight (uses --mx, --my)
+ * ============================================================ */
+@utility tilt-3d {
+	perspective: 900px;
+	perspective-origin: center;
+}
+
+@utility tilt-3d-card {
+	transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(var(--tilt-scale, 1));
+	transform-style: preserve-3d;
+	transition:
+		box-shadow 0.4s var(--ease-brand),
+		filter 0.4s var(--ease-brand);
+	will-change: transform;
+}
+@utility tilt-3d-card-hover {
+	box-shadow:
+		0 30px 80px -30px oklch(0 0 0 / 70%),
+		0 1px 0 oklch(1 0 0 / 8%) inset;
+}
+
+@utility tilt-3d-layer {
+	transform: translateZ(28px);
+	transform-style: preserve-3d;
+	will-change: transform;
+}
+@utility tilt-3d-layer-deep {
+	transform: translateZ(46px);
+	transform-style: preserve-3d;
+	will-change: transform;
+}
+
+@utility tilt-3d-glare {
+	pointer-events: none;
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	opacity: 0.45;
+	mix-blend-mode: screen;
+	background: radial-gradient(
+		circle at var(--mx, 50%) var(--my, 50%),
+		oklch(1 0 0 / 22%),
+		transparent 45%
+	);
+}
+
+/* Brand gradient text */
+@utility text-gradient-aurora {
+	background: linear-gradient(115deg, var(--kairos-cyan), var(--kairos-violet), var(--kairos-magenta));
+	background-clip: text;
+	-webkit-background-clip: text;
+	color: transparent;
+}
+
+/* ============================================================
+ * CSS Scroll-driven reveals
+ * ============================================================ */
+@layer utilities {
+	.reveal {
+		opacity: 0;
+		transform: translateY(48px);
+	}
+	@supports (animation-timeline: view()) {
+		.reveal {
+			animation: kairos-reveal linear both;
+			animation-timeline: view();
+			animation-range: entry 5% cover 32%;
+		}
+	}
+	@supports not (animation-timeline: view()) {
+		.reveal {
+			opacity: 1;
+			transform: none;
+		}
+	}
+
+	.reveal-children > * {
+		opacity: 0;
+		transform: translateY(36px);
+	}
+	@supports (animation-timeline: view()) {
+		.reveal-children > * {
+			animation: kairos-reveal linear both;
+			animation-timeline: view();
+			animation-range: entry 5% cover 38%;
+		}
+	}
+	@supports not (animation-timeline: view()) {
+		.reveal-children > * {
+			opacity: 1;
+			transform: none;
+		}
+	}
+
+	@keyframes kairos-reveal {
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.reveal,
+		.reveal-children > * {
+			opacity: 1 !important;
+			transform: none !important;
+			animation: none !important;
+		}
 	}
 }

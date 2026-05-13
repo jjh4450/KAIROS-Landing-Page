@@ -8,5 +8,9 @@ export default defineConfig({
 		tailwindcss(),
 		sveltekit(),
 		paraglideVitePlugin({ project: './project.inlang', outdir: './src/lib/paraglide' })
-	]
+	],
+	ssr: {
+		// bits-ui ships .svelte files; SSR must process them via the Svelte plugin
+		noExternal: ['bits-ui']
+	}
 });

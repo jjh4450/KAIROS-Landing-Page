@@ -1,0 +1,244 @@
+<script lang="ts">
+	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
+	import * as Card from '$lib/components/ui/card/index.js';
+	import { Badge } from '$lib/components/ui/badge/index.js';
+	import { Button } from '$lib/components/ui/button/index.js';
+	import { Input } from '$lib/components/ui/input/index.js';
+	import { Separator } from '$lib/components/ui/separator/index.js';
+	import AmbientBackdrop from '$lib/components/AmbientBackdrop.svelte';
+	import SiteHeader from '$lib/components/SiteHeader.svelte';
+	import SiteFooter from '$lib/components/SiteFooter.svelte';
+	import Eyebrow from '$lib/components/Eyebrow.svelte';
+	import { cardTilt } from '$lib/motion/actions';
+	import MagnifyingGlass from 'phosphor-svelte/lib/MagnifyingGlass';
+	import Plus from 'phosphor-svelte/lib/Plus';
+	import ArrowLeft from 'phosphor-svelte/lib/ArrowLeft';
+	import ArrowRight from 'phosphor-svelte/lib/ArrowRight';
+	import PushPin from 'phosphor-svelte/lib/PushPin';
+	import Eye from 'phosphor-svelte/lib/Eye';
+	import type { PageData } from './$types';
+
+	let { data }: { data: PageData } = $props();
+
+	// 입력값 — 네비게이션 시 URL 쿼리(data.q)와 동기화
+	let queryInput = $state('');
+	$effect(() => {
+		queryInput = data.q;
+	});
+
+	function updateQuery(params: Record<string, string | null>) {
+		const url = new URL(page.url);
+		for (const [k, v] of Object.entries(params)) {
+			if (v === null || v === '') url.searchParams.delete(k);
+			else url.searchParams.set(k, v);
+		}
+		// 페이지 변경이 아니면 page=1 리셋
+		if (!('page' in params)) url.searchParams.delete('page');
+		goto(url.pathname + url.search, { noScroll: false, keepFocus: true });
+	}
+
+	function onSearchSubmit(e: SubmitEvent) {
+		e.preventDefault();
+		updateQuery({ q: queryInput || null });
+	}
+
+	function setCategory(slug: string | null) {
+		updateQuery({ category: slug });
+	}
+
+	function setPage(p: number) {
+		updateQuery({ page: String(p) });
+	}
+
+	function stripHtml(html: string): string {
+		return html
+			.replace(/<[^>]*>/g, ' ')
+			.replace(/\s+/g, ' ')
+			.trim();
+	}
+
+	function excerpt(content: string, max = 140): string {
+		const t = stripHtml(content);
+		return t.length > max ? t.slice(0, max).trim() + '…' : t;
+	}
+
+	function fmtRelative(d: string): string {
+		const dt = new Date(d);
+		const now = Date.now();
+		const diff = (now - dt.getTime()) / 1000;
+		if (diff < 60) return '방금';
+		if (diff < 3600) return Math.floor(diff / 60) + '분 전';
+		if (diff < 86400) return Math.floor(diff / 3600) + '시간 전';
+		if (diff < 86400 * 7) return Math.floor(diff / 86400) + '일 전';
+		return dt.toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' });
+	}
+</script>
+
+<svelte:head>
+	<title>Posts · KAIROS</title>
+	<meta name="description" content="KAIROS 동아리 게시물 모음 — 공지, write-up, 자료, 뉴스." />
+</svelte:head>
+
+<AmbientBackdrop />
+<SiteHeader settings={null} />
+
+<main class="relative mx-auto w-full max-w-7xl px-6 pt-32 pb-16 lg:pt-40">
+	<header class="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+		<div class="max-w-2xl">
+			<Eyebrow class="mb-4">// posts</Eyebrow>
+			<h1 class="!text-5xl md:!text-6xl">archive.</h1>
+			<p class="text-muted-foreground mt-3 text-base md:text-lg">
+				공지·write-up·자료·뉴스를 한 곳에. 카테고리로 필터링하거나 키워드로 검색하세요.
+			</p>
+		</div>
+		<Button href="/posts/new" variant="default" size="lg" class="font-mono">
+			<Plus /> new post
+		</Button>
+	</header>
+
+	<!-- Filter bar -->
+	<div class="mb-8 flex flex-col gap-4">
+		<form onsubmit={onSearchSubmit} class="relative">
+			<MagnifyingGlass
+				class="text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2"
+			/>
+			<Input
+				bind:value={queryInput}
+				name="q"
+				type="search"
+				placeholder="검색 — 제목·본문 (e.g. SQLi, CVE, write-up)"
+				class="bg-card/50 h-11 pl-10 font-mono backdrop-blur-md"
+			/>
+		</form>
+
+		<div class="flex flex-wrap items-center gap-1.5">
+			<button
+				type="button"
+				onclick={() => setCategory(null)}
+				class="cursor-pointer"
+				aria-pressed={!data.categorySlug}
+			>
+				<Badge
+					variant={!data.categorySlug ? 'default' : 'outline'}
+					class="font-mono uppercase tracking-wider"
+				>
+					all
+				</Badge>
+			</button>
+			{#each data.categories as c (c.id)}
+				<button
+					type="button"
+					onclick={() => setCategory(c.slug)}
+					class="cursor-pointer"
+					aria-pressed={data.categorySlug === c.slug}
+				>
+					<Badge
+						variant={data.categorySlug === c.slug ? 'default' : 'outline'}
+						class="font-mono"
+					>
+						{c.name}
+					</Badge>
+				</button>
+			{/each}
+		</div>
+	</div>
+
+	<Separator class="mb-8" />
+
+	<!-- Results -->
+	{#if data.posts.length === 0}
+		<Card.Root>
+			<Card.Content class="py-12 text-center">
+				<p class="text-muted-foreground font-mono text-sm">
+					$ no matches.
+					{#if data.q}
+						<span class="text-kairos-cyan">("{data.q}" 검색 결과 없음)</span>
+					{:else}
+						<span class="text-kairos-cyan">(아직 게시물이 없습니다)</span>
+					{/if}
+				</p>
+			</Card.Content>
+		</Card.Root>
+	{:else}
+		<div class="text-muted-foreground mb-4 font-mono text-xs">
+			$ found <span class="text-foreground">{data.totalItems}</span> entries
+			{#if data.q}
+				· q: <span class="text-kairos-cyan">{data.q}</span>
+			{/if}
+			{#if data.categorySlug}
+				· category: <span class="text-kairos-cyan">{data.categorySlug}</span>
+			{/if}
+		</div>
+
+		<div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+			{#each data.posts as p (p.id)}
+				<a href={`/posts/${p.id}`} class="tilt-3d group block focus-visible:outline-none">
+					<div use:cardTilt={{ max: 5, scale: 1.015 }} class="tilt-3d-card h-full">
+					<Card.Root
+						class="relative h-full overflow-hidden ease-[var(--ease-brand)] group-hover:border-white/20 group-focus-visible:ring-2 group-focus-visible:ring-kairos-cyan"
+					>
+						<div class="tilt-3d-glare"></div>
+						<Card.Header class="tilt-3d-layer relative">
+							<div class="mb-1 flex flex-wrap items-center gap-1.5">
+								{#if p.isPinned}
+									<Badge variant="outline" class="text-kairos-cyan border-kairos-cyan/40 font-mono">
+										<PushPin weight="fill" /> pinned
+									</Badge>
+								{/if}
+								{#if p.expand?.category}
+									<Badge variant="outline" class="font-mono">{p.expand.category.name}</Badge>
+								{/if}
+							</div>
+							<Card.Title class="line-clamp-2 text-balance leading-snug">
+								{p.title}
+							</Card.Title>
+						</Card.Header>
+						<Card.Content class="tilt-3d-layer relative">
+							<p class="text-muted-foreground line-clamp-3 text-sm">{excerpt(p.content)}</p>
+						</Card.Content>
+						<Card.Footer class="tilt-3d-layer relative flex items-center justify-between">
+							<span class="text-muted-foreground font-mono text-[11px]">
+								{p.expand?.author?.nickname ?? 'anon'} · {fmtRelative(p.created)}
+							</span>
+							{#if p.viewCount !== undefined && p.viewCount > 0}
+								<span class="text-muted-foreground flex items-center gap-1 font-mono text-[11px]">
+									<Eye class="size-3" /> {p.viewCount}
+								</span>
+							{/if}
+						</Card.Footer>
+					</Card.Root>
+					</div>
+				</a>
+			{/each}
+		</div>
+
+		{#if data.totalPages > 1}
+			<nav class="mt-10 flex items-center justify-center gap-2" aria-label="페이지네이션">
+				<Button
+					variant="outline"
+					size="sm"
+					disabled={data.page <= 1}
+					onclick={() => setPage(data.page - 1)}
+					class="font-mono"
+				>
+					<ArrowLeft /> prev
+				</Button>
+				<span class="text-muted-foreground px-3 font-mono text-xs">
+					{data.page} / {data.totalPages}
+				</span>
+				<Button
+					variant="outline"
+					size="sm"
+					disabled={data.page >= data.totalPages}
+					onclick={() => setPage(data.page + 1)}
+					class="font-mono"
+				>
+					next <ArrowRight />
+				</Button>
+			</nav>
+		{/if}
+	{/if}
+</main>
+
+<SiteFooter settings={null} />

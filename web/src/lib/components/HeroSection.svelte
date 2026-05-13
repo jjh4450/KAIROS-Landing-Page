@@ -52,6 +52,15 @@
 	let copyEl: HTMLDivElement | undefined = $state();
 	let sceneEl: HTMLDivElement | undefined = $state();
 
+	function scrollToAbout(e: Event) {
+		e.preventDefault();
+		const target = document.getElementById('about');
+		if (!target) return;
+		target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		// 해시 URL 동기화 (브라우저 history 에는 push 하지 않음)
+		history.replaceState(null, '', '#about');
+	}
+
 	onMount(() => {
 		const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 		if (reduced || !sectionEl || !copyEl || !sceneEl) return;
@@ -132,8 +141,8 @@
 		<p class="text-muted-foreground max-w-2xl text-base md:text-lg">{subtitle}</p>
 
 		<div class="mt-10 flex flex-wrap items-center gap-3">
-			<Button href="#about" variant="outline" size="lg" class="font-mono">
-				explore <ArrowDown />
+			<Button href="#about" variant="outline" size="lg" class="font-mono" onclick={scrollToAbout}>
+				더 알아보기 <ArrowDown />
 			</Button>
 			{#if recruiting}
 				<div use:magnetic={{ strength: 0.24 }}>

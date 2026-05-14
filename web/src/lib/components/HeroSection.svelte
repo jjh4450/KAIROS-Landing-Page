@@ -98,18 +98,18 @@
 	class="relative mx-auto grid w-full max-w-7xl grid-cols-1 gap-12 px-6 pt-40 pb-24 lg:grid-cols-12 lg:gap-10 lg:pb-32"
 >
 	<div bind:this={copyEl} class="reveal relative z-10 lg:col-span-7">
-		<Eyebrow class="mb-7">
-			Kangwon Academic Initiative for Research On Security
-			<span class="text-muted-foreground">· est. 2026</span>
-		</Eyebrow>
+		<Eyebrow class="mb-7">// est. 2026</Eyebrow>
 
-		<h1 class="mb-10 max-w-[14ch]">
-			<span class="inline-block text-foreground" data-hero-word>we</span>
-			<span class="inline-block text-foreground" data-hero-word>hack</span>
-			<span class="inline-block text-foreground" data-hero-word>to</span>
-			<br />
-			<span class="inline-block text-gradient-aurora" data-hero-word>understand.</span>
+		<h1 class="mb-6">
+			<span class="inline-block text-gradient-aurora" data-hero-word>KAIROS</span>
 		</h1>
+
+		<p
+			class="mb-8 max-w-2xl font-mono text-sm tracking-[0.18em] text-muted-foreground uppercase md:text-base"
+			data-hero-word
+		>
+			Kangwon Academic Initiative for Research On Security
+		</p>
 
 		<p class="max-w-2xl text-base text-muted-foreground md:text-lg">{subtitle}</p>
 

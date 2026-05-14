@@ -199,7 +199,7 @@ migrate(
     );
     settingsRec.set(
       "heroSubtitle",
-      "보안 동아리입니다. 함께 공부하고, 활동을 기록으로 남깁니다.",
+      "강원권 학생들이 모여 만들어 나가는 보안 동아리입니다.",
     );
     settingsRec.set("recruitmentOpen", false);
     settingsRec.set("footerCopy", "© KAIROS");

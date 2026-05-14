@@ -13,7 +13,7 @@
 
 const OLD_SUBTITLE =
   "강원대학교 보안 동아리. 함께 배우고, 함께 공격하고, 함께 방어합니다.";
-const NEW_SUBTITLE = "보안 동아리입니다. 함께 공부하고, 활동을 기록으로 남깁니다.";
+const NEW_SUBTITLE = "강원권 학생들이 모여 만들어 나가는 보안 동아리입니다.";
 
 migrate(
   (app) => {

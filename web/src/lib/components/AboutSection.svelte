@@ -30,10 +30,10 @@
 <section id="about" class="relative mx-auto w-full max-w-7xl px-6 py-24 lg:py-32">
 	<header class="reveal mb-12 max-w-3xl md:mb-16">
 		<Eyebrow class="mb-4">// about</Eyebrow>
-		<h2>강원대학교 학생 보안 동아리.</h2>
+		<h2>보안 동아리 KAIROS.</h2>
 		<p class="mt-5 max-w-2xl text-base text-muted-foreground md:text-lg">
-			KAIROS는 강원대학교 학생들이 모여 보안을 공부하는 동아리입니다. 정기 스터디를 함께 진행하고,
-			배운 내용과 활동 결과를 기록으로 남깁니다.
+			KAIROS는 보안을 공부하는 사람들이 모여 만든 동아리입니다. 정기 스터디를 함께 진행하고, 배운
+			내용과 활동 결과를 기록으로 남깁니다.
 		</p>
 	</header>
 

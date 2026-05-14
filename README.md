@@ -1,6 +1,6 @@
 # KAIROS Landing Page
 
-강원대학교 보안 동아리 KAIROS 랜딩 페이지 + 게시판.
+보안 동아리 KAIROS (Kangwon Academic Initiative for Research On Security) 랜딩 페이지 + 게시판.
 
 ## 구성
 

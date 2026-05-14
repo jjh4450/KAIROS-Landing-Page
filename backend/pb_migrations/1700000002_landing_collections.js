@@ -193,13 +193,16 @@ migrate(
     // 싱글톤 시드 레코드
     const settingsRec = new Record(siteSettings);
     settingsRec.set("key", "main");
-    settingsRec.set("heroTitle", "KAIROS — KAIROS");
+    settingsRec.set(
+      "heroTitle",
+      "KAIROS — Kangwon Academic Initiative for Research On Security",
+    );
     settingsRec.set(
       "heroSubtitle",
-      "강원대학교 학생 보안 동아리입니다. 함께 공부하고, 활동을 기록으로 남깁니다.",
+      "보안 동아리입니다. 함께 공부하고, 활동을 기록으로 남깁니다.",
     );
     settingsRec.set("recruitmentOpen", false);
-    settingsRec.set("footerCopy", "© KAIROS · KAIROS");
+    settingsRec.set("footerCopy", "© KAIROS");
     app.save(settingsRec);
   },
 

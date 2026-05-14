@@ -67,13 +67,13 @@ migrate(
     const samples = [
       {
         slug: "notice",
-        title: "[공지] KAIROS 25기 정기 모집 안내",
+        title: "[공지] KAIROS 1기 정기 모집 안내",
         daysAgo: 1,
         isPinned: true,
         viewCount: 142,
-        content: `<p>강원대학교 보안 동아리 KAIROS의 25기 정기 모집을 시작합니다.</p>
+        content: `<p>보안 동아리 KAIROS의 1기 정기 모집을 시작합니다.</p>
 <h3>지원 자격</h3>
-<ul><li>강원대학교 재학생 또는 휴학생</li><li>보안에 대한 호기심과 꾸준히 학습할 의지</li></ul>
+<ul><li>추후 공지</li><li>보안에 대한 호기심과 꾸준히 학습할 의지</li></ul>
 <h3>지원 일정</h3>
 <p>지원서 제출 후 면접을 거쳐 최종 합격자를 선발합니다. 자세한 일정은 곧 공지될 예정입니다.</p>`,
       },
@@ -122,10 +122,10 @@ migrate(
       },
       {
         slug: "free",
-        title: "신입 환영 모임 후기 — 강원대 정문 본가네",
+        title: "신입 환영 모임 후기",
         daysAgo: 18,
         viewCount: 29,
-        content: `<p>25기 신입 환영 모임 후기. 운영진 + 신입생 30명 참석.</p>
+        content: `<p>1기 신입 환영 모임 후기. 운영진 + 신입생 30명 참석.</p>
 <p>다음 모임은 다음 주 금요일 동방에서 LT 형식으로 진행됩니다.</p>`,
       },
       {
@@ -147,13 +147,13 @@ migrate(
     // down: 시드 데이터 제거
     try {
       const titles = [
-        "[공지] KAIROS 25기 정기 모집 안내",
+        "[공지] KAIROS 1기 정기 모집 안내",
         "Dreamhack BoB 2025 — Web / Crypto Write-up",
         "웹해킹 스터디 #4 — SQLi 심화 (UNION / Blind / Time-based)",
         "[자료실] The Web Application Hacker's Handbook 추천 사유",
         "OpenSSH regreSSHion (CVE-2024-6387) 요약과 영향",
         "BoB 14기 모집 — 일정 / 지원서 팁",
-        "신입 환영 모임 후기 — 강원대 정문 본가네",
+        "신입 환영 모임 후기",
         "[회의록] 25-1 운영진 1차 정기 회의",
       ];
       for (const t of titles) {

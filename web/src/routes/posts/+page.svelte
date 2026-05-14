@@ -150,7 +150,10 @@
 							<Card.Header class="relative tilt-3d-layer">
 								<div class="mb-1 flex flex-wrap items-center gap-1.5">
 									{#if p.isPinned}
-										<Badge variant="outline" class="border-kairos-cyan/40 font-mono text-kairos-cyan">
+										<Badge
+											variant="outline"
+											class="border-kairos-cyan/40 font-mono text-kairos-cyan"
+										>
 											<PushPin weight="fill" /> pinned
 										</Badge>
 									{/if}

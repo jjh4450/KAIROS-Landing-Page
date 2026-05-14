@@ -17,8 +17,7 @@
 	let { settings, threatFeed }: Props = $props();
 
 	const subtitle = $derived(
-		settings?.heroSubtitle ??
-			'보안 동아리입니다. 함께 공부하고, 활동을 기록으로 남깁니다.'
+		settings?.heroSubtitle ?? '보안 동아리입니다. 함께 공부하고, 활동을 기록으로 남깁니다.'
 	);
 	const recruiting = $derived(!!settings?.recruitmentOpen && !!settings?.recruitmentFormUrl);
 
@@ -100,8 +99,8 @@
 >
 	<div bind:this={copyEl} class="reveal relative z-10 lg:col-span-7">
 		<Eyebrow class="mb-7">
-			KAIROS
-			<span class="text-muted-foreground">· est. 2025</span>
+			Kangwon Academic Initiative for Research On Security
+			<span class="text-muted-foreground">· est. 2026</span>
 		</Eyebrow>
 
 		<h1 class="mb-10 max-w-[14ch]">

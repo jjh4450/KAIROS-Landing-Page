@@ -278,7 +278,12 @@
 
 /* Brand gradient text */
 @utility text-gradient-aurora {
-	background: linear-gradient(115deg, var(--kairos-cyan), var(--kairos-violet), var(--kairos-magenta));
+	background: linear-gradient(
+		115deg,
+		var(--kairos-cyan),
+		var(--kairos-violet),
+		var(--kairos-magenta)
+	);
 	background-clip: text;
 	-webkit-background-clip: text;
 	color: transparent;

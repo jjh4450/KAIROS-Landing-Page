@@ -1,0 +1,27 @@
+# 빌드 컨텍스트에 들어가야 할 것은 pb_migrations/, pb_hooks/, litestream.yml,
+# docker-entrypoint.sh 뿐 (Dockerfile의 COPY 기준). 나머지는 전부 제외.
+
+**/.git
+**/.gitignore
+**/.env
+**/.env.*
+
+# Docker 메타 자체
+**/.dockerignore
+**/Dockerfile*
+**/compose*.y*ml
+
+# PB 실행 결과물 / 로컬 바이너리 / 데이터
+pb_data/
+pocketbase
+pocketbase.exe
+pocketbase_*_*.zip
+
+# 문서·라이선스 (런타임 불필요)
+*.md
+LICENSE*
+
+# IDE / OS
+**/.DS_Store
+**/.idea
+**/.vscode

@@ -45,7 +45,7 @@
 				<div class="max-w-2xl">
 					<Eyebrow class="mb-4">// join</Eyebrow>
 					<h2 class="mb-4">
-						{#if open}함께 시작해 보세요.{:else}다음 기수 모집을 기다려 주세요.{/if}
+						{#if open}함께 시작해 보세요.{:else}다음 모집을 기다려 주세요.{/if}
 					</h2>
 					<p class="text-base text-muted-foreground md:text-lg">
 						{#if open}

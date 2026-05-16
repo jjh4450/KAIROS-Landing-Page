@@ -36,6 +36,10 @@ backend/
 
 처음 실행하면 슈퍼유저(관리자) 계정 생성 안내가 나옵니다. 콘솔에 출력되는 URL로 접속해 계정을 만드세요.
 
+### Docker 이미지로 구동
+
+`APP_ENV`는 기본 `production` — R2 자격증명 없으면 즉시 종료. 로컬에서 R2 없이 띄우려면 `APP_ENV=dev`, litestream 끄고 PocketBase만 실행.
+
 ## 스키마
 
 | 컬렉션 | 설명 | 주요 필드 |

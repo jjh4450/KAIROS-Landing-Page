@@ -1,7 +1,7 @@
 /// <reference path="../pb_data/types.d.ts" />
 
 /**
- * KAIROS 동아리 게시판 서버 훅
+ * KAIROS 게시판 서버 훅
  *
  * 마이그레이션 규칙으로 표현하기 까다로운 비즈니스 로직을 여기서 처리합니다.
  */

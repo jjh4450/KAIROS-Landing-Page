@@ -56,7 +56,7 @@
 
 <svelte:head>
 	<title>Posts · KAIROS</title>
-	<meta name="description" content="KAIROS 동아리 게시물 모음 — 공지, write-up, 자료, 뉴스." />
+	<meta name="description" content="KAIROS 게시물 모음 — 공지, write-up, 자료, 뉴스." />
 </svelte:head>
 
 <AmbientBackdrop />

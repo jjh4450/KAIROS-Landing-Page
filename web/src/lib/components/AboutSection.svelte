@@ -12,7 +12,7 @@
 		{
 			idx: '02',
 			title: 'Compete',
-			body: '국내외 CTF에 함께 참여합니다. 풀이(write-up)는 동아리에 기록으로 남겨 후배 기수가 이어서 활용합니다.'
+			body: '국내외 CTF에 함께 참여합니다. 풀이(write-up)는 함께 기록으로 남겨 이어서 활용합니다.'
 		},
 		{
 			idx: '03',
@@ -30,9 +30,9 @@
 <section id="about" class="relative mx-auto w-full max-w-7xl px-6 py-24 lg:py-32">
 	<header class="reveal mb-12 max-w-3xl md:mb-16">
 		<Eyebrow class="mb-4">// about</Eyebrow>
-		<h2>보안 동아리 KAIROS.</h2>
+		<h2>보안 모임 KAIROS.</h2>
 		<p class="mt-5 max-w-2xl text-base text-muted-foreground md:text-lg">
-			KAIROS는 보안을 공부하는 사람들이 모여 만든 동아리입니다. 정기 스터디를 함께 진행하고, 배운
+			KAIROS는 보안을 공부하는 사람들이 모인 자리입니다. 정기 스터디를 함께 진행하고, 배운
 			내용과 활동 결과를 기록으로 남깁니다.
 		</p>
 	</header>

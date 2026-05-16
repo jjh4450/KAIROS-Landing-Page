@@ -17,7 +17,7 @@
 
 <svelte:head>
 	<title>KAIROS · Kangwon Academic Initiative for Research On Security</title>
-	<meta name="description" content="보안 동아리 KAIROS. 함께 공부하고 활동을 기록으로 남깁니다." />
+	<meta name="description" content="보안 모임 KAIROS. 함께 공부하고 활동을 기록으로 남깁니다." />
 </svelte:head>
 
 <AmbientBackdrop />

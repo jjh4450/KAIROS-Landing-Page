@@ -18,7 +18,7 @@
 
 <svelte:head>
 	<title>Achievements · KAIROS</title>
-	<meta name="description" content="KAIROS 동아리의 입상·수상 기록." />
+	<meta name="description" content="KAIROS의 입상·수상 기록." />
 </svelte:head>
 
 <AmbientBackdrop />

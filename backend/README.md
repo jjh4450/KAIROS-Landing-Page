@@ -1,6 +1,6 @@
 # KAIROS PocketBase Backend
 
-모임 게시판용 PocketBase 백엔드. 모노레포 내에서 SvelteKit 프론트엔드(`../web/`)와 **분리 배포**된다.
+게시판용 PocketBase 백엔드. 모노레포 내에서 SvelteKit 프론트엔드(`../web/`)와 **분리 배포**된다.
 
 ## 디렉토리 구조
 

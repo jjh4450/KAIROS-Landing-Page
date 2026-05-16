@@ -30,9 +30,9 @@
 <section id="about" class="relative mx-auto w-full max-w-7xl px-6 py-24 lg:py-32">
 	<header class="reveal mb-12 max-w-3xl md:mb-16">
 		<Eyebrow class="mb-4">// about</Eyebrow>
-		<h2>보안 모임 KAIROS.</h2>
+		<h2>보안 커뮤니티 KAIROS.</h2>
 		<p class="mt-5 max-w-2xl text-base text-muted-foreground md:text-lg">
-			KAIROS는 보안을 공부하는 사람들이 모인 자리입니다. 정기 스터디를 함께 진행하고, 배운
+			KAIROS는 보안을 공부하는 사람들이 만든 커뮤니티입니다. 정기 스터디를 함께 진행하고, 배운
 			내용과 활동 결과를 기록으로 남깁니다.
 		</p>
 	</header>

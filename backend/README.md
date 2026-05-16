@@ -130,6 +130,7 @@ export const pb = new PocketBase(PUBLIC_PB_URL);
 - `pb_data/` 정기 백업
 - Admin UI는 가능하면 VPN/내부망으로만 접근
 - CORS: Admin UI → Settings → Application에서 프론트 도메인 허용
+- Rate limit: `pb_migrations/1700000002_rate_limits.js`. Admin UI에서 조정 시 후속 마이그레이션 자동 생성
 
 ## 참고
 

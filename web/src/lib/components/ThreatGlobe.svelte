@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
+	import { TOUCH } from 'three';
 	import type { ThreatDot } from '$lib/types/threat';
 
 	// 노드 크기/색상 튜닝 상수
@@ -111,8 +112,10 @@
 			controls.autoRotate = true;
 			controls.autoRotateSpeed = 0.45;
 			controls.enableZoom = false;
-			const THREE_TOUCH_ROTATE = 0;
-			controls.touches = { ONE: null, TWO: THREE_TOUCH_ROTATE };
+			// 한 손가락은 OrbitControls 무시 → 페이지 스크롤로 위임. enableZoom=false 라 DOLLY_ROTATE 는 두 손가락 회전만 처리.
+			controls.touches = { ONE: null, TWO: TOUCH.DOLLY_ROTATE };
+			// OrbitControls.connect() 가 강제한 touch-action:none 을 pan-y 로 덮어 한 손가락 native 스크롤 허용.
+			controls.domElement.style.touchAction = 'pan-y';
 
 			setData();
 
@@ -145,12 +148,14 @@
 	});
 </script>
 
+<!-- data-lenis-prevent: Lenis 가 이 영역 touch 를 가로채지 않게 → globe touch-action 과 충돌 회피. -->
 <div
 	bind:this={containerEl}
 	class={['relative h-full w-full', extra]}
 	ontouchstart={onTouchStart}
 	role="region"
 	aria-label="Global threat globe"
+	data-lenis-prevent
 >
 	{#if hintVisible}
 		<div

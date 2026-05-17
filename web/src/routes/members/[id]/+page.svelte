@@ -7,6 +7,7 @@
 	import AmbientBackdrop from '$lib/components/AmbientBackdrop.svelte';
 	import SiteHeader from '$lib/components/SiteHeader.svelte';
 	import SiteFooter from '$lib/components/SiteFooter.svelte';
+	import SiteMeta from '$lib/components/SiteMeta.svelte';
 	import MarkdownView from '$lib/components/MarkdownView.svelte';
 	import ArrowLeft from 'phosphor-svelte/lib/ArrowLeft';
 	import PencilSimple from 'phosphor-svelte/lib/PencilSimple';
@@ -27,7 +28,7 @@
 	);
 </script>
 
-<svelte:head><title>{displayName} · KAIROS</title></svelte:head>
+<SiteMeta title={displayName} description={m.bio ?? `${displayName} · KAIROS 멤버`} />
 
 <AmbientBackdrop />
 <SiteHeader settings={null} user={data.user} />

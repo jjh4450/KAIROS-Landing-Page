@@ -11,6 +11,7 @@
 	import AmbientBackdrop from '$lib/components/AmbientBackdrop.svelte';
 	import SiteHeader from '$lib/components/SiteHeader.svelte';
 	import SiteFooter from '$lib/components/SiteFooter.svelte';
+	import SiteMeta from '$lib/components/SiteMeta.svelte';
 	import Eyebrow from '$lib/components/Eyebrow.svelte';
 	import { cardTilt } from '$lib/motion/actions';
 	import { excerpt, fmtRelative } from '$lib/format';
@@ -56,10 +57,7 @@
 	}
 </script>
 
-<svelte:head>
-	<title>Posts · KAIROS</title>
-	<meta name="description" content="KAIROS 게시물 모음 — 공지, write-up, 자료, 뉴스." />
-</svelte:head>
+<SiteMeta title="Posts" description="KAIROS 게시물 모음 — 공지, write-up, 자료, 뉴스." />
 
 <AmbientBackdrop />
 <SiteHeader settings={null} user={data.user} />
@@ -143,10 +141,7 @@
 
 		<div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
 			{#each data.posts as p (p.id)}
-				<a
-					href={resolve(`/posts/${p.id}`)}
-					class="group block tilt-3d focus-visible:outline-none"
-				>
+				<a href={resolve(`/posts/${p.id}`)} class="group block tilt-3d focus-visible:outline-none">
 					<div use:cardTilt={{ max: 5, scale: 1.015 }} class="h-full tilt-3d-card">
 						<Card.Root
 							class="relative h-full overflow-hidden ease-[var(--ease-brand)] group-hover:border-white/20 group-focus-visible:ring-2 group-focus-visible:ring-kairos-cyan"

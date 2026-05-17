@@ -11,21 +11,12 @@
 	import SponsorsSection from '$lib/components/SponsorsSection.svelte';
 	import JoinCTA from '$lib/components/JoinCTA.svelte';
 	import SiteFooter from '$lib/components/SiteFooter.svelte';
+	import SiteMeta from '$lib/components/SiteMeta.svelte';
 
 	let { data }: { data: PageData } = $props();
 </script>
 
-<svelte:head>
-	<title
-		>{data.settings?.siteTitle ??
-			'KAIROS · Kangwon Academic Initiative for Research On Security'}</title
-	>
-	<meta
-		name="description"
-		content={data.settings?.siteDescription ??
-			'보안 커뮤니티 KAIROS. 함께 공부하고 활동을 기록으로 남깁니다.'}
-	/>
-</svelte:head>
+<SiteMeta title={data.settings?.siteTitle} description={data.settings?.siteDescription} />
 
 <AmbientBackdrop />
 <SiteHeader settings={data.settings} user={data.user} />

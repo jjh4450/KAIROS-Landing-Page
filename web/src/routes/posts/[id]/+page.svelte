@@ -7,22 +7,28 @@
 	import AmbientBackdrop from '$lib/components/AmbientBackdrop.svelte';
 	import SiteHeader from '$lib/components/SiteHeader.svelte';
 	import SiteFooter from '$lib/components/SiteFooter.svelte';
+	import SiteMeta from '$lib/components/SiteMeta.svelte';
 	import MarkdownView from '$lib/components/MarkdownView.svelte';
 	import ArrowLeft from 'phosphor-svelte/lib/ArrowLeft';
 	import Eye from 'phosphor-svelte/lib/Eye';
 	import PushPin from 'phosphor-svelte/lib/PushPin';
 	import Trash from 'phosphor-svelte/lib/Trash';
 	import PencilSimple from 'phosphor-svelte/lib/PencilSimple';
-	import { fmtLongDateTime } from '$lib/format';
+	import { excerpt, fmtLongDateTime } from '$lib/format';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 	const p = $derived(data.post);
+	const summary = $derived(excerpt(data.renderedContent, 160));
 </script>
 
-<svelte:head>
-	<title>{p.title} · KAIROS</title>
-</svelte:head>
+<SiteMeta
+	title={p.title}
+	description={summary}
+	type="article"
+	publishedTime={p.created}
+	modifiedTime={p.updated}
+/>
 
 <AmbientBackdrop />
 <SiteHeader settings={null} user={data.user} />

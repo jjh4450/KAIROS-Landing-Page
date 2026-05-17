@@ -6,6 +6,7 @@
 	import AmbientBackdrop from '$lib/components/AmbientBackdrop.svelte';
 	import SiteHeader from '$lib/components/SiteHeader.svelte';
 	import SiteFooter from '$lib/components/SiteFooter.svelte';
+	import SiteMeta from '$lib/components/SiteMeta.svelte';
 	import MarkdownView from '$lib/components/MarkdownView.svelte';
 	import ArrowLeft from 'phosphor-svelte/lib/ArrowLeft';
 	import Trophy from 'phosphor-svelte/lib/Trophy';
@@ -16,9 +17,7 @@
 	const a = $derived(data.item);
 </script>
 
-<svelte:head>
-	<title>{a.title} · KAIROS</title>
-</svelte:head>
+<SiteMeta title={a.title} description={a.description ?? a.competition} type="article" />
 
 <AmbientBackdrop />
 <SiteHeader settings={null} user={data.user} />

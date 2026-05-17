@@ -6,6 +6,7 @@
 	import AmbientBackdrop from '$lib/components/AmbientBackdrop.svelte';
 	import SiteHeader from '$lib/components/SiteHeader.svelte';
 	import SiteFooter from '$lib/components/SiteFooter.svelte';
+	import SiteMeta from '$lib/components/SiteMeta.svelte';
 	import EmptyStateCard from '$lib/components/EmptyStateCard.svelte';
 	import Eyebrow from '$lib/components/Eyebrow.svelte';
 	import { cardTilt } from '$lib/motion/actions';
@@ -17,10 +18,7 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<svelte:head>
-	<title>Achievements · KAIROS</title>
-	<meta name="description" content="KAIROS의 입상·수상 기록." />
-</svelte:head>
+<SiteMeta title="Achievements" description="KAIROS의 입상·수상 기록." />
 
 <AmbientBackdrop />
 <SiteHeader settings={null} user={data.user} />

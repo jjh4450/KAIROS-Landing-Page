@@ -7,6 +7,7 @@
 	import AmbientBackdrop from '$lib/components/AmbientBackdrop.svelte';
 	import SiteHeader from '$lib/components/SiteHeader.svelte';
 	import SiteFooter from '$lib/components/SiteFooter.svelte';
+	import SiteMeta from '$lib/components/SiteMeta.svelte';
 	import EmptyStateCard from '$lib/components/EmptyStateCard.svelte';
 	import Eyebrow from '$lib/components/Eyebrow.svelte';
 	import { fileUrl } from '$lib/pbHelpers';
@@ -21,10 +22,7 @@
 	}
 </script>
 
-<svelte:head>
-	<title>Members · KAIROS</title>
-	<meta name="description" content="KAIROS 멤버 명단. 공개에 동의한 사람만 표시됩니다." />
-</svelte:head>
+<SiteMeta title="Members" description="KAIROS 멤버 명단. 공개에 동의한 사람만 표시됩니다." />
 
 <AmbientBackdrop />
 <SiteHeader settings={null} user={data.user} />

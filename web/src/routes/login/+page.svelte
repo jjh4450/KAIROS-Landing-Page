@@ -12,6 +12,7 @@
 	} from '$lib/components/ui/field/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import AuthShell from '$lib/components/AuthShell.svelte';
+	import SiteMeta from '$lib/components/SiteMeta.svelte';
 	import AppleLogo from 'phosphor-svelte/lib/AppleLogo';
 	import GoogleLogo from 'phosphor-svelte/lib/GoogleLogo';
 	import type { PageData, ActionData } from './$types';
@@ -21,9 +22,7 @@
 	const id = $props.id();
 </script>
 
-<svelte:head>
-	<title>로그인 · KAIROS</title>
-</svelte:head>
+<SiteMeta title="로그인" noindex />
 
 <AuthShell>
 	<Card.Root class="glass">

@@ -9,3 +9,9 @@ Thumbs.db
 .env.*
 !.env.example
 !.env.test
+
+# Agent / AI tooling (local-only)
+CLAUDE.md
+AGENTS.md
+.claude/
+.mcp.json

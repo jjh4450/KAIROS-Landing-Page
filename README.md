@@ -1,7 +1,5 @@
 # KAIROS Landing Page
 
-보안 동아리 KAIROS (Kangwon Academic Initiative for Research On Security) 랜딩 페이지 + 게시판.
-
 ## 구성
 
 ```

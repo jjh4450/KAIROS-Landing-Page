@@ -15,3 +15,9 @@ vite.config.ts.timestamp-*
 # Paraglide (generated)
 src/lib/paraglide
 project.inlang/cache/
+
+# Agent / AI tooling (local-only)
+CLAUDE.md
+AGENTS.md
+.claude/
+.mcp.json

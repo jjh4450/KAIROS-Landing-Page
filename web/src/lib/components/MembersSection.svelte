@@ -5,11 +5,17 @@
 	import Eyebrow from './Eyebrow.svelte';
 	import { cardTilt } from '$lib/motion/actions';
 	import EmptyStateCard from './EmptyStateCard.svelte';
-	import type { Member } from '$lib/types';
+	import type { Member, Section } from '$lib/types';
 	import { PUBLIC_PB_URL } from '$env/static/public';
 
-	type Props = { members: Member[] };
-	let { members }: Props = $props();
+	type Props = { members: Member[]; section?: Section | null };
+	let { members, section }: Props = $props();
+
+	const eyebrow = $derived(section?.eyebrow ?? '// roster');
+	const title = $derived(section?.title ?? '공개 명단.');
+	const description = $derived(
+		section?.description ?? '공개에 동의한 운영진과 멤버입니다.'
+	);
 
 	const positionOrder: Record<Member['position'], number> = {
 		president: 0,
@@ -49,9 +55,9 @@
 
 <section id="members" class="relative mx-auto w-full max-w-7xl px-6 py-24 lg:py-32">
 	<header class="reveal mb-12 flex max-w-3xl flex-col gap-4 md:mb-16">
-		<Eyebrow>// roster</Eyebrow>
-		<h2>공개 명단.</h2>
-		<p class="text-base text-muted-foreground md:text-lg">공개에 동의한 운영진과 멤버입니다.</p>
+		<Eyebrow>{eyebrow}</Eyebrow>
+		<h2>{title}</h2>
+		<p class="text-base text-muted-foreground md:text-lg">{description}</p>
 	</header>
 
 	{#if sorted.length === 0}

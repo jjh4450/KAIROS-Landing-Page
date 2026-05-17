@@ -8,7 +8,10 @@
 	type Props = { settings?: SiteSettings | null; user?: User | null };
 	let { settings, user = null }: Props = $props();
 
-	const navItems = [
+	// 공개 사이트의 라우트는 frontend 코드에 1:1 매핑되어 있어서 nav를 별도
+	// admin 편집 가능 데이터로 두는 게 redundant. 새 라우트를 추가하려면
+	// 어차피 SvelteKit 페이지를 같이 만들어야 함 — 그때 이 배열도 같이 갱신.
+	const navItems: { label: string; href: string }[] = [
 		{ href: '/#about', label: 'about' },
 		{ href: '/posts', label: 'posts' },
 		{ href: '/achievements', label: 'achievements' },

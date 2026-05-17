@@ -2,13 +2,40 @@ import type { PageServerLoad } from './$types';
 import { getThreatFeed } from '$lib/server/threatFeed';
 import type {
 	Achievement,
+	AboutPillar,
 	Category,
 	EventRecord,
+	HeroSettings,
 	Member,
 	Post,
+	Section,
+	SectionSlug,
 	SiteSettings,
 	Sponsor
 } from '$lib/types';
+
+// 프론트가 dispatch할 수 있는 slug만 통과 — admin이 임의 slug를 만들어도
+// 화면에서 누락되는 일이 명시적으로 차단되고, 후속 코드의 타입이 좁혀짐.
+const KNOWN_SLUGS = new Set<SectionSlug>([
+	'about',
+	'posts',
+	'activities',
+	'achievements',
+	'members',
+	'sponsors'
+]);
+const isKnownSection = (s: Section): s is Section & { slug: SectionSlug } =>
+	KNOWN_SLUGS.has(s.slug);
+
+// PB 미적용/다운 시 화면이 비지 않게 — 각 컴포넌트가 하드코딩 카피 폴백
+const DEFAULT_SECTIONS: Section[] = [
+	{ id: 'default-about', slug: 'about', order: 10, visible: true },
+	{ id: 'default-posts', slug: 'posts', order: 20, visible: true },
+	{ id: 'default-activities', slug: 'activities', order: 30, visible: true },
+	{ id: 'default-achievements', slug: 'achievements', order: 40, visible: true },
+	{ id: 'default-members', slug: 'members', order: 50, visible: true },
+	{ id: 'default-sponsors', slug: 'sponsors', order: 60, visible: true }
+];
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const emptyList = <T>() => ({
@@ -21,6 +48,9 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 	const [
 		settings,
+		hero,
+		sectionList,
+		pillars,
 		achievementsRes,
 		eventsRes,
 		sponsorsRes,
@@ -33,6 +63,18 @@ export const load: PageServerLoad = async ({ locals }) => {
 			.collection('siteSettings')
 			.getFirstListItem<SiteSettings>("key='main'")
 			.catch(() => null),
+		locals.pb
+			.collection('main_heroSettings')
+			.getFirstListItem<HeroSettings>("key='main'")
+			.catch(() => null),
+		locals.pb
+			.collection('main_sections')
+			.getFullList<Section>({ sort: 'order' })
+			.catch(() => [] as Section[]),
+		locals.pb
+			.collection('main_aboutPillars')
+			.getFullList<AboutPillar>({ sort: 'sortOrder' })
+			.catch(() => [] as AboutPillar[]),
 		locals.pb
 			.collection('achievements')
 			.getList<Achievement>(1, 8, { sort: '-date,-created' })
@@ -65,8 +107,16 @@ export const load: PageServerLoad = async ({ locals }) => {
 		getThreatFeed()
 	]);
 
+	const sections =
+		sectionList.length > 0
+			? sectionList.filter((s) => s.visible !== false && isKnownSection(s))
+			: DEFAULT_SECTIONS;
+
 	return {
 		settings,
+		hero,
+		sections,
+		pillars,
 		achievements: achievementsRes.items,
 		events: eventsRes.items,
 		sponsors: sponsorsRes.items,

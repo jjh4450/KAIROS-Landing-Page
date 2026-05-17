@@ -21,8 +21,8 @@ export type User = {
 export type SiteSettings = {
 	id: string;
 	key: string;
-	heroTitle?: string;
-	heroSubtitle?: string;
+	siteTitle?: string;
+	siteDescription?: string;
 	recruitmentOpen?: boolean;
 	recruitmentDeadline?: string;
 	recruitmentFormUrl?: string;
@@ -32,6 +32,43 @@ export type SiteSettings = {
 	instagramUrl?: string;
 	contactEmail?: string;
 	footerCopy?: string;
+};
+
+export type HeroSettings = {
+	id: string;
+	key: string;
+	eyebrow?: string;
+	title?: string;
+	tagline?: string;
+	subtitle?: string;
+	primaryCtaLabel?: string;
+	secondaryCtaLabel?: string;
+};
+
+export type SectionSlug =
+	| 'about'
+	| 'posts'
+	| 'activities'
+	| 'achievements'
+	| 'members'
+	| 'sponsors';
+
+export type Section = {
+	id: string;
+	slug: SectionSlug;
+	eyebrow?: string;
+	title?: string;
+	description?: string;
+	order: number;
+	visible: boolean;
+};
+
+export type AboutPillar = {
+	id: string;
+	idx: string;
+	title: string;
+	body: string;
+	sortOrder?: number;
 };
 
 export type Achievement = {

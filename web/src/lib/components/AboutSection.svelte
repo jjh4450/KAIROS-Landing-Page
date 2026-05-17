@@ -2,8 +2,12 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import Eyebrow from './Eyebrow.svelte';
 	import { cardTilt } from '$lib/motion/actions';
+	import type { AboutPillar, Section } from '$lib/types';
 
-	const pillars: { idx: string; title: string; body: string }[] = [
+	type Props = { section?: Section | null; pillars?: AboutPillar[] };
+	let { section, pillars }: Props = $props();
+
+	const fallbackPillars = [
 		{
 			idx: '01',
 			title: 'Learn',
@@ -25,20 +29,27 @@
 			body: '세미나·컨퍼런스에 참여하고, 가능한 자리에서는 외부 발표도 합니다.'
 		}
 	];
+
+	const eyebrow = $derived(section?.eyebrow ?? '// about');
+	const title = $derived(section?.title ?? '보안 커뮤니티 KAIROS.');
+	const description = $derived(
+		section?.description ??
+			'KAIROS는 보안을 공부하는 사람들이 만든 커뮤니티입니다. 정기 스터디를 함께 진행하고, 배운 내용과 활동 결과를 기록으로 남깁니다.'
+	);
+	const items = $derived(pillars && pillars.length > 0 ? pillars : fallbackPillars);
 </script>
 
 <section id="about" class="relative mx-auto w-full max-w-7xl px-6 py-24 lg:py-32">
 	<header class="reveal mb-12 max-w-3xl md:mb-16">
-		<Eyebrow class="mb-4">// about</Eyebrow>
-		<h2>보안 커뮤니티 KAIROS.</h2>
+		<Eyebrow class="mb-4">{eyebrow}</Eyebrow>
+		<h2>{title}</h2>
 		<p class="mt-5 max-w-2xl text-base text-muted-foreground md:text-lg">
-			KAIROS는 보안을 공부하는 사람들이 만든 커뮤니티입니다. 정기 스터디를 함께 진행하고, 배운
-			내용과 활동 결과를 기록으로 남깁니다.
+			{description}
 		</p>
 	</header>
 
 	<div class="reveal-children grid grid-cols-1 gap-4 md:grid-cols-2">
-		{#each pillars as p (p.idx)}
+		{#each items as p (p.idx)}
 			<div class="tilt-3d">
 				<div use:cardTilt={{ max: 7, scale: 1.02 }} class="h-full tilt-3d-card">
 					<Card.Root class="relative h-full overflow-hidden">

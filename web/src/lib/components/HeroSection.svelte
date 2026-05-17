@@ -3,7 +3,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import Eyebrow from './Eyebrow.svelte';
 	import ThreatDashboard from './ThreatDashboard.svelte';
-	import type { SiteSettings } from '$lib/types';
+	import type { HeroSettings, SiteSettings } from '$lib/types';
 	import { magnetic } from '$lib/motion/actions';
 	import ArrowDown from 'phosphor-svelte/lib/ArrowDown';
 	import ArrowUpRight from 'phosphor-svelte/lib/ArrowUpRight';
@@ -11,14 +11,22 @@
 	import type { ThreatFeed } from '$lib/types/threat';
 
 	type Props = {
+		hero?: HeroSettings | null;
 		settings?: SiteSettings | null;
 		threatFeed: ThreatFeed;
 	};
-	let { settings, threatFeed }: Props = $props();
+	let { hero, settings, threatFeed }: Props = $props();
 
-	const subtitle = $derived(
-		settings?.heroSubtitle ?? '강원권 학생들이 모여 만들어 나가는 보안 커뮤니티입니다.'
+	const eyebrow = $derived(hero?.eyebrow ?? '// est. 2026');
+	const title = $derived(hero?.title ?? 'KAIROS');
+	const tagline = $derived(
+		hero?.tagline ?? 'Kangwon Academic Initiative for Research On Security'
 	);
+	const subtitle = $derived(
+		hero?.subtitle ?? '강원권 학생들이 모여 만들어 나가는 보안 커뮤니티입니다.'
+	);
+	const primaryCtaLabel = $derived(hero?.primaryCtaLabel ?? '더 알아보기');
+	const secondaryCtaLabel = $derived(hero?.secondaryCtaLabel ?? '지원하기');
 	const recruiting = $derived(!!settings?.recruitmentOpen && !!settings?.recruitmentFormUrl);
 
 	let sectionEl: HTMLElement | undefined = $state();
@@ -98,29 +106,29 @@
 	class="relative mx-auto grid w-full max-w-7xl grid-cols-1 gap-12 px-6 pt-40 pb-24 lg:grid-cols-12 lg:gap-10 lg:pb-32"
 >
 	<div bind:this={copyEl} class="reveal relative z-10 lg:col-span-7">
-		<Eyebrow class="mb-7">// est. 2026</Eyebrow>
+		<Eyebrow class="mb-7">{eyebrow}</Eyebrow>
 
 		<h1 class="mb-6">
-			<span class="inline-block text-gradient-aurora" data-hero-word>KAIROS</span>
+			<span class="inline-block text-gradient-aurora" data-hero-word>{title}</span>
 		</h1>
 
 		<p
 			class="mb-8 max-w-2xl font-mono text-sm tracking-[0.18em] text-muted-foreground uppercase md:text-base"
 			data-hero-word
 		>
-			Kangwon Academic Initiative for Research On Security
+			{tagline}
 		</p>
 
 		<p class="max-w-2xl text-base text-muted-foreground md:text-lg">{subtitle}</p>
 
 		<div class="mt-10 flex flex-wrap items-center gap-3">
 			<Button href="#about" variant="outline" size="lg" class="font-mono" onclick={scrollToAbout}>
-				더 알아보기 <ArrowDown />
+				{primaryCtaLabel} <ArrowDown />
 			</Button>
 			{#if recruiting}
 				<div use:magnetic={{ strength: 0.24 }}>
 					<Button href={settings?.recruitmentFormUrl} variant="default" size="lg" class="font-mono">
-						지원하기 <ArrowUpRight />
+						{secondaryCtaLabel} <ArrowUpRight />
 					</Button>
 				</div>
 			{/if}

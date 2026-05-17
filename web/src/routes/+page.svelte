@@ -16,21 +16,39 @@
 </script>
 
 <svelte:head>
-	<title>KAIROS · Kangwon Academic Initiative for Research On Security</title>
-	<meta name="description" content="보안 커뮤니티 KAIROS. 함께 공부하고 활동을 기록으로 남깁니다." />
+	<title
+		>{data.settings?.siteTitle ??
+			'KAIROS · Kangwon Academic Initiative for Research On Security'}</title
+	>
+	<meta
+		name="description"
+		content={data.settings?.siteDescription ??
+			'보안 커뮤니티 KAIROS. 함께 공부하고 활동을 기록으로 남깁니다.'}
+	/>
 </svelte:head>
 
 <AmbientBackdrop />
 <SiteHeader settings={data.settings} user={data.user} />
 
 <main class="relative">
-	<HeroSection settings={data.settings} threatFeed={data.threatFeed} />
-	<AboutSection />
-	<PostsSection posts={data.posts} />
-	<ActivitiesSection events={data.events} />
-	<AchievementsSection achievements={data.achievements} />
-	<MembersSection members={data.members} />
-	<SponsorsSection sponsors={data.sponsors} />
+	<HeroSection hero={data.hero} threatFeed={data.threatFeed} settings={data.settings} />
+
+	{#each data.sections as s (s.id)}
+		{#if s.slug === 'about'}
+			<AboutSection section={s} pillars={data.pillars} />
+		{:else if s.slug === 'posts'}
+			<PostsSection section={s} posts={data.posts} />
+		{:else if s.slug === 'activities'}
+			<ActivitiesSection section={s} events={data.events} />
+		{:else if s.slug === 'achievements'}
+			<AchievementsSection section={s} achievements={data.achievements} />
+		{:else if s.slug === 'members'}
+			<MembersSection section={s} members={data.members} />
+		{:else if s.slug === 'sponsors'}
+			<SponsorsSection section={s} sponsors={data.sponsors} />
+		{/if}
+	{/each}
+
 	<JoinCTA settings={data.settings} />
 </main>
 

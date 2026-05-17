@@ -5,10 +5,16 @@
 	import { cardTilt } from '$lib/motion/actions';
 	import { fmtNumericDate } from '$lib/format';
 	import EmptyStateCard from './EmptyStateCard.svelte';
-	import type { EventRecord } from '$lib/types';
+	import type { EventRecord, Section } from '$lib/types';
 
-	type Props = { events: EventRecord[] };
-	let { events }: Props = $props();
+	type Props = { events: EventRecord[]; section?: Section | null };
+	let { events, section }: Props = $props();
+
+	const eyebrow = $derived(section?.eyebrow ?? '// activities');
+	const title = $derived(section?.title ?? '이번 학기 활동.');
+	const description = $derived(
+		section?.description ?? '정기 스터디, CTF, 세미나, 외부 행사 일정입니다.'
+	);
 
 	const typeColor: Record<EventRecord['type'], string> = {
 		seminar: 'var(--kairos-cyan)',
@@ -22,10 +28,10 @@
 
 <section id="activities" class="relative mx-auto w-full max-w-7xl px-6 py-24 lg:py-32">
 	<header class="reveal mb-12 flex max-w-3xl flex-col gap-4 md:mb-16">
-		<Eyebrow>// activities</Eyebrow>
-		<h2>이번 학기 활동.</h2>
+		<Eyebrow>{eyebrow}</Eyebrow>
+		<h2>{title}</h2>
 		<p class="text-base text-muted-foreground md:text-lg">
-			정기 스터디, CTF, 세미나, 외부 행사 일정입니다.
+			{description}
 		</p>
 	</header>
 

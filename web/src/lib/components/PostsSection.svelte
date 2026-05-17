@@ -7,13 +7,19 @@
 	import { cardTilt } from '$lib/motion/actions';
 	import { excerpt, fmtRelative } from '$lib/format';
 	import EmptyStateCard from './EmptyStateCard.svelte';
-	import type { Post } from '$lib/types';
+	import type { Post, Section } from '$lib/types';
 	import ArrowUpRight from 'phosphor-svelte/lib/ArrowUpRight';
 	import Eye from 'phosphor-svelte/lib/Eye';
 	import PushPin from 'phosphor-svelte/lib/PushPin';
 
-	type Props = { posts: Post[] };
-	let { posts }: Props = $props();
+	type Props = { posts: Post[]; section?: Section | null };
+	let { posts, section }: Props = $props();
+
+	const eyebrow = $derived(section?.eyebrow ?? '// posts');
+	const title = $derived(section?.title ?? '최근 글.');
+	const description = $derived(
+		section?.description ?? '공지, 풀이(write-up), 자료, 뉴스가 올라옵니다.'
+	);
 
 	// 최신 3개만 하이라이트
 	const highlights = $derived(posts.slice(0, 3));
@@ -85,10 +91,10 @@
 	class="relative mx-auto w-full max-w-7xl px-6 py-24 lg:py-32"
 >
 	<header class="mb-12 flex max-w-3xl flex-col gap-4 md:mb-16">
-		<Eyebrow>// posts</Eyebrow>
-		<h2>최근 글.</h2>
+		<Eyebrow>{eyebrow}</Eyebrow>
+		<h2>{title}</h2>
 		<p class="text-base text-muted-foreground md:text-lg">
-			공지, 풀이(write-up), 자료, 뉴스가 올라옵니다.
+			{description}
 		</p>
 	</header>
 

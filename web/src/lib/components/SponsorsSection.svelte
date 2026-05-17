@@ -4,11 +4,14 @@
 	import Eyebrow from './Eyebrow.svelte';
 	import { cardTilt } from '$lib/motion/actions';
 	import EmptyStateCard from './EmptyStateCard.svelte';
-	import type { Sponsor } from '$lib/types';
+	import type { Section, Sponsor } from '$lib/types';
 	import { PUBLIC_PB_URL } from '$env/static/public';
 
-	type Props = { sponsors: Sponsor[] };
-	let { sponsors }: Props = $props();
+	type Props = { sponsors: Sponsor[]; section?: Section | null };
+	let { sponsors, section }: Props = $props();
+
+	const eyebrow = $derived(section?.eyebrow ?? '// supported by');
+	const title = $derived(section?.title ?? '후원사 & 파트너');
 
 	const tierOrder: Record<Sponsor['tier'], number> = {
 		platinum: 0,
@@ -32,8 +35,8 @@
 
 <section id="sponsors" class="relative mx-auto w-full max-w-7xl px-6 py-24 lg:py-32">
 	<header class="reveal mb-10 flex max-w-3xl flex-col gap-4">
-		<Eyebrow>// supported by</Eyebrow>
-		<h2>후원사 & 파트너</h2>
+		<Eyebrow>{eyebrow}</Eyebrow>
+		<h2>{title}</h2>
 	</header>
 
 	{#if sorted.length === 0}

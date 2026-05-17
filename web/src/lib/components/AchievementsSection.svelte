@@ -6,10 +6,16 @@
 	import { cardTilt } from '$lib/motion/actions';
 	import { fmtYear } from '$lib/format';
 	import EmptyStateCard from './EmptyStateCard.svelte';
-	import type { Achievement } from '$lib/types';
+	import type { Achievement, Section } from '$lib/types';
 
-	type Props = { achievements: Achievement[] };
-	let { achievements }: Props = $props();
+	type Props = { achievements: Achievement[]; section?: Section | null };
+	let { achievements, section }: Props = $props();
+
+	const eyebrow = $derived(section?.eyebrow ?? '// wall of fame');
+	const title = $derived(section?.title ?? '학기별 활동 기록.');
+	const description = $derived(
+		section?.description ?? '대회 입상, CVE 발견, 외부 발표 기록입니다.'
+	);
 
 	let sectionEl: HTMLElement | undefined = $state();
 
@@ -56,10 +62,10 @@
 	class="relative mx-auto w-full max-w-7xl px-6 py-24 lg:py-32"
 >
 	<header class="reveal mb-12 flex max-w-3xl flex-col gap-4 md:mb-16">
-		<Eyebrow>// wall of fame</Eyebrow>
-		<h2>학기별 활동 기록.</h2>
+		<Eyebrow>{eyebrow}</Eyebrow>
+		<h2>{title}</h2>
 		<p class="text-base text-muted-foreground md:text-lg">
-			대회 입상, CVE 발견, 외부 발표 기록입니다.
+			{description}
 		</p>
 	</header>
 

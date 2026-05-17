@@ -2,7 +2,6 @@
  * 사이트 전체에서 공유하는 포매팅 헬퍼.
  */
 
-const SECOND = 1;
 const MINUTE = 60;
 const HOUR = 3600;
 const DAY = 86400;

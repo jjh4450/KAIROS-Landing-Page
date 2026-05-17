@@ -18,7 +18,7 @@ export const magnetic: Action<HTMLElement, { strength?: number; radius?: number 
 	let radius = params?.radius ?? 1.2;
 	let raf = 0;
 	let target = { x: 0, y: 0 };
-	let current = { x: 0, y: 0 };
+	const current = { x: 0, y: 0 };
 
 	function loop() {
 		current.x += (target.x - current.x) * 0.18;
@@ -94,8 +94,8 @@ export const cardTilt: Action<HTMLElement, { max?: number; scale?: number } | un
 	let scale = params?.scale ?? 1.02;
 
 	let raf = 0;
-	let target = { rx: 0, ry: 0, mx: 50, my: 50, s: 1 };
-	let current = { rx: 0, ry: 0, mx: 50, my: 50, s: 1 };
+	const target = { rx: 0, ry: 0, mx: 50, my: 50, s: 1 };
+	const current = { rx: 0, ry: 0, mx: 50, my: 50, s: 1 };
 
 	function loop() {
 		const lerp = 0.16;

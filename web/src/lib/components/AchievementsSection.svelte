@@ -29,7 +29,7 @@
 				gsap.registerPlugin(ScrollTrigger);
 				ctx = gsap.context(() => {
 					// 타임라인의 점들을 스크롤에 맞춰 살짝 좌→우로 슬라이드
-					gsap.utils.toArray<HTMLElement>('[data-timeline-item]').forEach((el, i) => {
+					gsap.utils.toArray<HTMLElement>('[data-timeline-item]').forEach((el) => {
 						gsap.fromTo(
 							el,
 							{ x: -24, opacity: 0.6 },

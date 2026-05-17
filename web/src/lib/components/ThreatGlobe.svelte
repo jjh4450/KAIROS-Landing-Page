@@ -111,8 +111,9 @@
 
 	// dots / selectedCountry 변경 시 globe.gl 데이터 바인딩 갱신
 	$effect(() => {
-		dots;
-		selectedCountry;
+		// 명시적 reactive dependency — setData() 내부 access만으로는 globe null 단계에서 누락
+		void dots;
+		void selectedCountry;
 		if (globe) setData();
 	});
 </script>

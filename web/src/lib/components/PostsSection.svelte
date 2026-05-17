@@ -39,7 +39,7 @@
 					// Apple 풍 카드 시퀀스 reveal:
 					//   y, scale, opacity, blur 4축으로 부드럽게 등장
 					//   각 카드마다 자체 ScrollTrigger (시차 효과)
-					gsap.utils.toArray<HTMLElement>('[data-highlight-card]').forEach((card, i) => {
+					gsap.utils.toArray<HTMLElement>('[data-highlight-card]').forEach((card) => {
 						gsap.fromTo(
 							card,
 							{

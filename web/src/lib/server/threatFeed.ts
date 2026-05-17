@@ -95,7 +95,7 @@ async function fetchFeodo(byCountry: Map<string, Bucket>): Promise<AggregateResu
 		port?: number;
 		first_seen?: string;
 	};
-	let rows: FeodoRow[] = [];
+	let rows: FeodoRow[];
 	try {
 		rows = (await res.json()) as FeodoRow[];
 	} catch (err) {
@@ -147,7 +147,7 @@ async function fetchThreatFox(byCountry: Map<string, Bucket>): Promise<Aggregate
 
 	// csv-parse 의 `trim: true` 가 abuse.ch 의 비표준 `, "value"` (쉼표 뒤 공백) 포맷을
 	// 정상 처리. `comment: '#'` 로 abuse.ch 가 헤더처럼 쓰는 # 주석 라인 자동 skip.
-	let rows: string[][] = [];
+	let rows: string[][];
 	try {
 		rows = parseCsv(csv, {
 			comment: '#',

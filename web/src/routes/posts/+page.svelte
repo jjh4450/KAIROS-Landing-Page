@@ -24,7 +24,9 @@
 
 	let { data }: { data: PageData } = $props();
 
-	// 입력값 — 네비게이션 시 URL 쿼리(data.q)와 동기화
+	// 입력값 — URL 쿼리(data.q)에서 시작하지만 사용자가 직접 편집할 수 있어야 함 → bind 필요.
+	// derived는 read-only라 양방향 binding 불가. $state + $effect 동기화가 의도된 패턴.
+	// eslint-disable-next-line svelte/prefer-writable-derived
 	let queryInput = $state('');
 	$effect(() => {
 		queryInput = data.q;

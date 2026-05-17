@@ -8,7 +8,7 @@ import type { Member } from '$lib/types';
 
 export const load: PageServerLoad = async ({ locals, url }) => {
 	const user = requireUser(locals, url);
-	let member: (Member & { collectionId: string }) | null = null;
+	let member: (Member & { collectionId: string }) | null;
 	try {
 		member = await locals.pb
 			.collection('members')
@@ -67,7 +67,7 @@ export const actions: Actions = {
 		const user = requireUser(locals, url);
 		const form = await request.formData();
 
-		let existing: { id: string } | null = null;
+		let existing: { id: string } | null;
 		try {
 			existing = await locals.pb.collection('members').getFirstListItem(`user="${user.id}"`);
 		} catch {

@@ -6,7 +6,6 @@
  * 실제 작업은 ./_lib/ 모듈로 분리:
  *   collections.js  — 14개 컬렉션 정의/생성
  *   seeds.js        — 운영 시드 (카테고리 9개 + 4 싱글톤/리스트)
- *   dev_data.js     — dev 데모 유저 + 샘플 게시물 (운영 전 정리 검토)
  *   rate_limits.js  — 빌트인 rate limiter 룰
  *   teardown.js     — down 역순 삭제
  *
@@ -19,7 +18,6 @@
 const _libBase = `${__hooks}/../pb_migrations/_lib`;
 const { createCollections } = require(`${_libBase}/collections.js`);
 const { seedProduction } = require(`${_libBase}/seeds.js`);
-const { seedDevData } = require(`${_libBase}/dev_data.js`);
 const { applyRateLimits, resetRateLimits } = require(`${_libBase}/rate_limits.js`);
 const { teardown } = require(`${_libBase}/teardown.js`);
 
@@ -27,7 +25,6 @@ migrate(
   (app) => {
     const cols = createCollections(app);
     seedProduction(app, cols);
-    seedDevData(app, cols);
     applyRateLimits(app);
   },
 

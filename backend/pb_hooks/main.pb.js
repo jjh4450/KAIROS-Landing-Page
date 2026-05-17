@@ -8,21 +8,17 @@
 
 // ============================================================
 // 0) 부팅 시 PocketBase 파일 저장소 → S3(호환) 버킷 자동 sync
-//    env(S3_* 우선, R2_* fallback)를 settings.s3 에 반영. 변경 있을
-//    때만 save → idempotent. Litestream(SQLite 백업)과는 별개로,
-//    첨부 파일을 S3_FILES_BUCKET 으로 직행.
+//    env(S3_*)를 settings.s3 에 반영. 변경 있을 때만 save → idempotent.
+//    Litestream(SQLite 백업)과는 별개로, 첨부 파일을 S3_FILES_BUCKET 으로 직행.
 // ============================================================
 onBootstrap((e) => {
   e.next();
 
-  // S3_* 가 1차, R2_* 는 구버전/대체 명명용 fallback
-  const accessKey =
-    $os.getenv("S3_ACCESS_KEY_ID") || $os.getenv("R2_ACCESS_KEY_ID");
-  const secret =
-    $os.getenv("S3_SECRET_ACCESS_KEY") || $os.getenv("R2_SECRET_ACCESS_KEY");
-  const bucket = $os.getenv("S3_FILES_BUCKET") || $os.getenv("R2_FILES_BUCKET");
-  const endpoint = $os.getenv("S3_ENDPOINT") || $os.getenv("R2_ENDPOINT");
-  const region = $os.getenv("S3_REGION") || $os.getenv("R2_REGION") || "auto";
+  const accessKey = $os.getenv("S3_ACCESS_KEY_ID");
+  const secret = $os.getenv("S3_SECRET_ACCESS_KEY");
+  const bucket = $os.getenv("S3_FILES_BUCKET");
+  const endpoint = $os.getenv("S3_ENDPOINT");
+  const region = $os.getenv("S3_REGION") || "auto";
 
   if (!accessKey || !secret || !bucket || !endpoint) {
     $app

@@ -80,19 +80,6 @@ S3-호환 storage라면 AWS / Cloudflare R2 / MinIO / Wasabi / Backblaze B2 어�
 | `GOMEMLIMIT` | Go 메모리 soft limit | `256MiB` |
 | `TZ` | timezone | `Asia/Seoul` |
 
-**Fallback 명명** — 기존 코드/PaaS와의 하위 호환:
-
-| 1차 (권장) | Fallback |
-|---|---|
-| `S3_ACCESS_KEY_ID` | `R2_ACCESS_KEY_ID` → `AWS_ACCESS_KEY_ID` |
-| `S3_SECRET_ACCESS_KEY` | `R2_SECRET_ACCESS_KEY` → `AWS_SECRET_ACCESS_KEY` |
-| `S3_ENDPOINT` | `R2_ENDPOINT` |
-| `S3_REGION` | `R2_REGION` → `AWS_REGION` (없으면 `auto`) |
-| `S3_BACKUP_BUCKET` | `R2_BACKUP_BUCKET` → `R2_BUCKET` (구버전) |
-| `S3_FILES_BUCKET` | `R2_FILES_BUCKET` |
-
-새 배포는 `S3_*`로 통일 권장. 기존 PaaS에 `R2_*`로 박혀 있으면 그대로 둬도 동작 — entrypoint와 hook이 fallback chain으로 인식.
-
 #### dev 모드
 
 S3 자격증명 없이 띄우려면 `APP_ENV=dev`. Litestream 비활성, PocketBase 단독 실행, 첨부는 로컬 디스크(`pb_data/storage/`).

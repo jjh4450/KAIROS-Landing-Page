@@ -10,16 +10,14 @@ DB_PATH="${PB_DATA_DIR}/data.db"
 mkdir -p "${PB_DATA_DIR}"
 
 # PaaS에 GHCR 이미지를 직접 띄우면 compose.yml의 S3_*→LITESTREAM_* 매핑이
-# 일어나지 않음. 어떤 이름으로 주입되든 컨테이너 안에서는 LITESTREAM_* 로
-# 통일되게 fallback 체인 적용. 이미 LITESTREAM_* 가 set이면 그쪽이 우선.
-#
-# 우선순위: LITESTREAM_* > S3_* > R2_*(구버전) > AWS_*(SDK 기본)
-# PocketBase 파일 저장은 hook이 S3_*/R2_* 를 직접 읽으므로 여기 안 거침.
-: "${LITESTREAM_ACCESS_KEY_ID:=${S3_ACCESS_KEY_ID:-${R2_ACCESS_KEY_ID:-${AWS_ACCESS_KEY_ID:-}}}}"
-: "${LITESTREAM_SECRET_ACCESS_KEY:=${S3_SECRET_ACCESS_KEY:-${R2_SECRET_ACCESS_KEY:-${AWS_SECRET_ACCESS_KEY:-}}}}"
-: "${LITESTREAM_BUCKET:=${S3_BACKUP_BUCKET:-${R2_BACKUP_BUCKET:-${R2_BUCKET:-}}}}"
-: "${LITESTREAM_ENDPOINT:=${S3_ENDPOINT:-${R2_ENDPOINT:-}}}"
-: "${LITESTREAM_REGION:=${S3_REGION:-${R2_REGION:-${AWS_REGION:-auto}}}}"
+# 일어나지 않음. S3_* 를 컨테이너에서 LITESTREAM_* 로 alias.
+# 이미 LITESTREAM_* 가 set이면 그쪽이 우선.
+# PocketBase 파일 저장은 hook이 S3_* 를 직접 읽으므로 여기 안 거침.
+: "${LITESTREAM_ACCESS_KEY_ID:=${S3_ACCESS_KEY_ID:-}}"
+: "${LITESTREAM_SECRET_ACCESS_KEY:=${S3_SECRET_ACCESS_KEY:-}}"
+: "${LITESTREAM_BUCKET:=${S3_BACKUP_BUCKET:-}}"
+: "${LITESTREAM_ENDPOINT:=${S3_ENDPOINT:-}}"
+: "${LITESTREAM_REGION:=${S3_REGION:-auto}}"
 : "${LITESTREAM_PATH:=pb}"
 export LITESTREAM_ACCESS_KEY_ID LITESTREAM_SECRET_ACCESS_KEY \
        LITESTREAM_BUCKET LITESTREAM_ENDPOINT LITESTREAM_REGION LITESTREAM_PATH
@@ -31,7 +29,7 @@ fi
 
 if [ "${HAS_S3_CREDS}" = "0" ]; then
   if [ "${APP_ENV}" = "production" ]; then
-    echo "[entrypoint] FATAL: APP_ENV=production requires S3 credentials (S3_ACCESS_KEY_ID / R2_ACCESS_KEY_ID / AWS_ACCESS_KEY_ID 중 하나)" >&2
+    echo "[entrypoint] FATAL: APP_ENV=production requires S3_ACCESS_KEY_ID" >&2
     exit 1
   fi
   echo "[entrypoint] WARN: APP_ENV=${APP_ENV}, S3 자격증명 없음 — litestream 비활성, PocketBase 단독 실행"

@@ -1,6 +1,3 @@
-import { readFile } from 'node:fs/promises';
-import { dirname, join } from 'node:path';
-import { createRequire } from 'node:module';
 import satori from 'satori';
 import { html as toSatoriNode } from 'satori-html';
 import { Resvg } from '@resvg/resvg-js';
@@ -9,24 +6,26 @@ import { SITE } from '$lib/seo';
 
 export const prerender = false;
 
-const require = createRequire(import.meta.url);
-const pretendardDir = dirname(require.resolve('pretendard/package.json'));
+const FONT_PATHS = ['/fonts/Pretendard-Bold.otf', '/fonts/Pretendard-Regular.otf'] as const;
 
-let fontBoldPromise: Promise<ArrayBuffer> | null = null;
-let fontRegularPromise: Promise<ArrayBuffer> | null = null;
+let fontsPromise: Promise<[ArrayBuffer, ArrayBuffer]> | null = null;
 
-function readFontAsArrayBuffer(rel: string): Promise<ArrayBuffer> {
-	return readFile(join(pretendardDir, rel)).then(
-		(buf) => buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength) as ArrayBuffer
-	);
+async function fetchFont(fetch: typeof globalThis.fetch, path: string) {
+	const r = await fetch(path);
+	if (!r.ok) throw new Error(`font fetch ${path} → ${r.status}`);
+	return r.arrayBuffer();
 }
 
-function loadFonts() {
-	if (!fontBoldPromise)
-		fontBoldPromise = readFontAsArrayBuffer('dist/public/static/Pretendard-Bold.otf');
-	if (!fontRegularPromise)
-		fontRegularPromise = readFontAsArrayBuffer('dist/public/static/Pretendard-Regular.otf');
-	return Promise.all([fontBoldPromise, fontRegularPromise]);
+function loadFonts(fetch: typeof globalThis.fetch) {
+	// reject 가 캐시되면 영구 실패하므로 실패 시 캐시를 비워 다음 요청에서 재시도 가능.
+	fontsPromise ??= Promise.all([
+		fetchFont(fetch, FONT_PATHS[0]),
+		fetchFont(fetch, FONT_PATHS[1])
+	]).catch((e) => {
+		fontsPromise = null;
+		throw e;
+	});
+	return fontsPromise;
 }
 
 function clamp(s: string, max: number) {
@@ -34,11 +33,11 @@ function clamp(s: string, max: number) {
 	return s.slice(0, max - 1) + '…';
 }
 
-export const GET: RequestHandler = async ({ url, setHeaders }) => {
+export const GET: RequestHandler = async ({ url, setHeaders, fetch }) => {
 	const title = clamp(url.searchParams.get('t')?.trim() || SITE.name, 80);
 	const description = clamp(url.searchParams.get('d')?.trim() || SITE.tagline, 140);
 
-	const [fontBold, fontRegular] = await loadFonts();
+	const [fontBold, fontRegular] = await loadFonts(fetch);
 
 	const outer =
 		'display:flex;flex-direction:column;justify-content:space-between;width:100%;height:100%;padding:72px 80px;background:#08080c;font-family:Pretendard;color:#fff;position:relative;overflow:hidden;';

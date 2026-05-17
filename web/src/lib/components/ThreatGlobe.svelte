@@ -33,6 +33,29 @@
 	let resizeObs: ResizeObserver | null = null;
 	let disposed = false;
 
+	let hintVisible = $state(false);
+	let hintTimer: ReturnType<typeof setTimeout> | null = null;
+
+	function clearHintTimer() {
+		if (!hintTimer) return;
+		clearTimeout(hintTimer);
+		hintTimer = null;
+	}
+
+	function onTouchStart(e: TouchEvent) {
+		if (e.touches.length >= 2) {
+			hintVisible = false;
+			clearHintTimer();
+			return;
+		}
+		if (!hintVisible) hintVisible = true;
+		clearHintTimer();
+		hintTimer = setTimeout(() => {
+			hintVisible = false;
+			hintTimer = null;
+		}, 1200);
+	}
+
 	const maxCount = $derived(Math.max(1, ...dots.map((d) => d.count)));
 
 	function dotAltitude(count: number) {
@@ -84,9 +107,12 @@
 				.width(containerEl.clientWidth)
 				.height(containerEl.clientHeight);
 
-			globe.controls().autoRotate = true;
-			globe.controls().autoRotateSpeed = 0.45;
-			globe.controls().enableZoom = false;
+			const controls = globe.controls();
+			controls.autoRotate = true;
+			controls.autoRotateSpeed = 0.45;
+			controls.enableZoom = false;
+			const THREE_TOUCH_ROTATE = 0;
+			controls.touches = { ONE: null, TWO: THREE_TOUCH_ROTATE };
 
 			setData();
 
@@ -102,6 +128,7 @@
 	onDestroy(() => {
 		disposed = true;
 		resizeObs?.disconnect();
+		clearHintTimer();
 		try {
 			globe?._destructor?.();
 		} catch {
@@ -121,5 +148,20 @@
 <div
 	bind:this={containerEl}
 	class={['relative h-full w-full', extra]}
+	ontouchstart={onTouchStart}
+	role="region"
 	aria-label="Global threat globe"
-></div>
+>
+	{#if hintVisible}
+		<div
+			class="pointer-events-none absolute inset-0 z-20 flex items-center justify-center bg-background/40 backdrop-blur-[1px] transition-opacity duration-200"
+			aria-hidden="true"
+		>
+			<span
+				class="rounded-md border border-kairos-cyan/40 bg-background/90 px-3 py-1.5 text-xs text-foreground/90 backdrop-blur-lg"
+			>
+				두 손가락으로 회전
+			</span>
+		</div>
+	{/if}
+</div>

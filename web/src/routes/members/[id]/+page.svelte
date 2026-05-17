@@ -74,17 +74,14 @@
 			{#if socials.length > 0}
 				<div class="flex flex-wrap gap-2">
 					{#each socials as s (s.label)}
-						<!-- 외부 소셜 링크(github/blog 등) -->
-						<!-- eslint-disable svelte/no-navigation-without-resolve -->
 						<a
 							href={s.url}
 							target="_blank"
-							rel="noopener noreferrer"
+							rel="external noopener noreferrer"
 							class="font-mono text-xs text-kairos-cyan hover:underline"
 						>
 							{s.label} ↗
 						</a>
-						<!-- eslint-enable svelte/no-navigation-without-resolve -->
 					{/each}
 				</div>
 			{/if}

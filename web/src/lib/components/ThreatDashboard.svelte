@@ -118,12 +118,10 @@
 			<!-- sample IOC -->
 			<div class="max-h-[200px] space-y-0.5 overflow-y-auto font-mono text-[10px]">
 				{#each selected.samples as s (s.ioc)}
-					<!-- 외부 IOC 추적 사이트(abuse.ch 등) -->
-					<!-- eslint-disable svelte/no-navigation-without-resolve -->
 					<a
 						href={iocLink(s)}
 						target="_blank"
-						rel="noopener noreferrer"
+						rel="external noopener noreferrer"
 						class="flex items-center justify-between gap-2 rounded px-1 py-0.5 hover:bg-kairos-cyan/10"
 						title="abuse.ch 상세로 이동 (IOC 자체로는 접속하지 마세요)"
 					>
@@ -131,7 +129,6 @@
 						<span class="shrink-0 text-muted-foreground">{s.malware}</span>
 						<ArrowSquareOut class="size-3 shrink-0 text-muted-foreground" />
 					</a>
-					<!-- eslint-enable svelte/no-navigation-without-resolve -->
 				{:else}
 					<div class="text-muted-foreground">no samples</div>
 				{/each}

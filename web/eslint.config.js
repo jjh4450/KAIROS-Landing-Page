@@ -37,8 +37,18 @@ export default defineConfig(
 		}
 	},
 	{
-		// Override or add rule settings here, such as:
-		// 'svelte/button-has-type': 'error'
-		rules: {}
+		// shadcn-svelte 자동 생성 UI primitive. generic href 받는 wrapper라
+		// internal/external 판단을 호출자에 위임 → 룰을 호출자 측에서만 강제.
+		files: ['**/components/ui/**'],
+		rules: {
+			'svelte/no-navigation-without-resolve': 'off'
+		}
+	},
+	{
+		// 호출자가 DOMPurify로 sanitize한 HTML만 받는 얇은 래퍼. component 책임 == 안전 출력.
+		files: ['**/MarkdownView.svelte'],
+		rules: {
+			'svelte/no-at-html-tags': 'off'
+		}
 	}
 );

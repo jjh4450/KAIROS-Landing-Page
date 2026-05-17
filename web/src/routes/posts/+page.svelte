@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
+	import type { ResolvedPathname } from '$app/types';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -24,13 +25,8 @@
 
 	let { data }: { data: PageData } = $props();
 
-	// 입력값 — URL 쿼리(data.q)에서 시작하지만 사용자가 직접 편집할 수 있어야 함 → bind 필요.
-	// derived는 read-only라 양방향 binding 불가. $state + $effect 동기화가 의도된 패턴.
-	// eslint-disable-next-line svelte/prefer-writable-derived
-	let queryInput = $state('');
-	$effect(() => {
-		queryInput = data.q;
-	});
+	// svelte 5.25+의 writable $derived: data.q 변경 시 리셋되고, bind:value로 사용자 입력도 받음.
+	let queryInput = $derived(data.q);
 
 	function updateQuery(params: Record<string, string | null>) {
 		const url = new URL(page.url);
@@ -40,9 +36,10 @@
 		}
 		// 페이지 변경이 아니면 page=1 리셋
 		if (!('page' in params)) url.searchParams.delete('page');
-		// same-page query 갱신 — URL 객체를 그대로 넘김 (룰은 internal로 인식 못해서 false positive)
-		// eslint-disable-next-line svelte/no-navigation-without-resolve
-		goto(url, { noScroll: false, keepFocus: true });
+		goto(`${resolve('/posts')}${url.search}` as ResolvedPathname, {
+			noScroll: false,
+			keepFocus: true
+		});
 	}
 
 	function onSearchSubmit(e: SubmitEvent) {

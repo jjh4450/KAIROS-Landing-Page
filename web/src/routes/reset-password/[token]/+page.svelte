@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { resolve } from '$app/paths';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import {
@@ -57,7 +58,7 @@
 
 	{#snippet footer()}
 		<FieldDescription class="px-6 text-center">
-			<a href="/login" class="underline">로그인으로 돌아가기</a>
+			<a href={resolve('/login')} class="underline">로그인으로 돌아가기</a>
 		</FieldDescription>
 	{/snippet}
 </AuthShell>

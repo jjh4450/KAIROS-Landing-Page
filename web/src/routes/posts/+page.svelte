@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
@@ -37,7 +38,9 @@
 		}
 		// 페이지 변경이 아니면 page=1 리셋
 		if (!('page' in params)) url.searchParams.delete('page');
-		goto(url.pathname + url.search, { noScroll: false, keepFocus: true });
+		// same-page query 갱신 — URL 객체를 그대로 넘김 (룰은 internal로 인식 못해서 false positive)
+		// eslint-disable-next-line svelte/no-navigation-without-resolve
+		goto(url, { noScroll: false, keepFocus: true });
 	}
 
 	function onSearchSubmit(e: SubmitEvent) {
@@ -141,7 +144,10 @@
 
 		<div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
 			{#each data.posts as p (p.id)}
-				<a href={`/posts/${p.id}`} class="group block tilt-3d focus-visible:outline-none">
+				<a
+					href={resolve(`/posts/${p.id}`)}
+					class="group block tilt-3d focus-visible:outline-none"
+				>
 					<div use:cardTilt={{ max: 5, scale: 1.015 }} class="h-full tilt-3d-card">
 						<Card.Root
 							class="relative h-full overflow-hidden ease-[var(--ease-brand)] group-hover:border-white/20 group-focus-visible:ring-2 group-focus-visible:ring-kairos-cyan"

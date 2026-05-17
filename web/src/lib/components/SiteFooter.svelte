@@ -42,6 +42,8 @@
 						<li aria-hidden="true" class="text-muted-foreground/50">/</li>
 					{/if}
 					<li>
+						<!-- 외부 채널(github/discord/email 등). $app/paths의 resolve()는 internal route용 -->
+						<!-- eslint-disable svelte/no-navigation-without-resolve -->
 						<a
 							href={c.url}
 							target="_blank"
@@ -50,6 +52,7 @@
 						>
 							{c.label}
 						</a>
+						<!-- eslint-enable svelte/no-navigation-without-resolve -->
 					</li>
 				{/each}
 			</ul>

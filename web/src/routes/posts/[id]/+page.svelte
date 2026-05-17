@@ -80,6 +80,8 @@
 				</h2>
 				<div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
 					{#each data.attachments as att (att.name)}
+						<!-- PocketBase 첨부 URL (외부 origin) -->
+						<!-- eslint-disable svelte/no-navigation-without-resolve -->
 						<a
 							href={att.url}
 							target="_blank"
@@ -99,6 +101,7 @@
 								{att.name}
 							</span>
 						</a>
+						<!-- eslint-enable svelte/no-navigation-without-resolve -->
 					{/each}
 				</div>
 			</section>

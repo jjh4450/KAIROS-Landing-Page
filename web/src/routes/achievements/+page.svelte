@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -45,7 +46,10 @@
 	{:else}
 		<div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
 			{#each data.achievements as a (a.id)}
-				<a href={`/achievements/${a.id}`} class="group block tilt-3d focus-visible:outline-none">
+				<a
+					href={resolve(`/achievements/${a.id}`)}
+					class="group block tilt-3d focus-visible:outline-none"
+				>
 					<div use:cardTilt={{ max: 5, scale: 1.015 }} class="h-full tilt-3d-card">
 						<Card.Root class="relative h-full overflow-hidden">
 							<div class="tilt-3d-glare"></div>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { resolve } from '$app/paths';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -104,7 +105,7 @@
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-3">
 			{#each highlights as p, i (p.id)}
 				<a
-					href={`/posts/${p.id}`}
+					href={resolve(`/posts/${p.id}`)}
 					data-highlight-card
 					class="group block tilt-3d focus-visible:outline-none"
 					style="opacity: 1"

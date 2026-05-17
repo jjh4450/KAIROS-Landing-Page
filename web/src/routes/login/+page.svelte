@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { resolve } from '$app/paths';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import {
@@ -75,7 +76,10 @@
 					<Field>
 						<div class="flex items-center">
 							<FieldLabel for="password-{id}">Password</FieldLabel>
-							<a href="/forgot-password" class="ms-auto text-sm underline-offset-4 hover:underline">
+							<a
+								href={resolve('/forgot-password')}
+								class="ms-auto text-sm underline-offset-4 hover:underline"
+							>
 								Forgot your password?
 							</a>
 						</div>

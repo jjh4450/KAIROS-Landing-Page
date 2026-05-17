@@ -88,6 +88,8 @@
 </script>
 
 {#if href}
+	<!-- generic href — 호출자가 internal/external 모두 전달할 수 있음. resolve()는 호출자 책임 -->
+	<!-- eslint-disable svelte/no-navigation-without-resolve -->
 	<a
 		bind:this={ref}
 		data-slot="button"
@@ -100,6 +102,7 @@
 	>
 		{@render children?.()}
 	</a>
+	<!-- eslint-enable svelte/no-navigation-without-resolve -->
 {:else}
 	<button
 		bind:this={ref}

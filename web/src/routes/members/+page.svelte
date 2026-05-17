@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
@@ -49,7 +50,7 @@
 	{:else}
 		<div class="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
 			{#each data.members as m (m.id)}
-				<a href={`/members/${m.id}`} class="group block focus-visible:outline-none">
+				<a href={resolve(`/members/${m.id}`)} class="group block focus-visible:outline-none">
 					<Card.Root class="h-full transition-colors group-hover:border-white/20">
 						<Card.Content class="flex flex-col items-center gap-3 py-6 text-center">
 							<Avatar.Root class="size-16">

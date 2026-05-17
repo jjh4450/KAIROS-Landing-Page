@@ -54,6 +54,8 @@
 			</div>
 			<h1 class="!text-4xl text-balance md:!text-5xl">{a.title}</h1>
 			{#if a.link}
+				<!-- 사용자 입력 외부 링크(대회 페이지 등) -->
+				<!-- eslint-disable svelte/no-navigation-without-resolve -->
 				<a
 					href={a.link}
 					target="_blank"
@@ -62,6 +64,7 @@
 				>
 					{a.link} ↗
 				</a>
+				<!-- eslint-enable svelte/no-navigation-without-resolve -->
 			{/if}
 		</header>
 

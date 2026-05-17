@@ -2,6 +2,7 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import type { User } from '$lib/types';
 	import GearSix from 'phosphor-svelte/lib/GearSix';
 	import SignOut from 'phosphor-svelte/lib/SignOut';
@@ -12,7 +13,7 @@
 
 	async function logout() {
 		await fetch('/logout', { method: 'POST', redirect: 'manual' });
-		await goto('/', { invalidateAll: true });
+		await goto(resolve('/'), { invalidateAll: true });
 	}
 </script>
 
@@ -32,10 +33,10 @@
 			{user.nickname ?? user.email}
 		</DropdownMenu.Label>
 		<DropdownMenu.Separator />
-		<DropdownMenu.Item onSelect={() => goto('/members/me')}>
+		<DropdownMenu.Item onSelect={() => goto(resolve('/members/me'))}>
 			<UserCircle /> my profile
 		</DropdownMenu.Item>
-		<DropdownMenu.Item onSelect={() => goto('/account')}>
+		<DropdownMenu.Item onSelect={() => goto(resolve('/account'))}>
 			<GearSix /> account
 		</DropdownMenu.Item>
 		<DropdownMenu.Item onSelect={logout}>

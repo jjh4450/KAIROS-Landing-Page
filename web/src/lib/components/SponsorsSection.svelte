@@ -50,6 +50,8 @@
 				<div class="tilt-3d">
 					<div use:cardTilt={{ max: 10, scale: 1.05 }} class="tilt-3d-card">
 						{#if s.link}
+							<!-- 외부 스폰서 사이트 -->
+							<!-- eslint-disable svelte/no-navigation-without-resolve -->
 							<a
 								href={s.link}
 								target="_blank"
@@ -66,6 +68,7 @@
 									{/if}
 								</span>
 							</a>
+							<!-- eslint-enable svelte/no-navigation-without-resolve -->
 						{:else}
 							<div
 								class="relative inline-flex h-16 min-w-[140px] items-center justify-center overflow-hidden rounded-[var(--radius-md)] px-5 ring-1 ring-foreground/10"

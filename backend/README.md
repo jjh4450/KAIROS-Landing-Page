@@ -38,7 +38,64 @@ backend/
 
 ### Docker 이미지로 구동
 
-`APP_ENV`는 기본 `production` — R2 자격증명 없으면 즉시 종료. 로컬에서 R2 없이 띄우려면 `APP_ENV=dev`, litestream 끄고 PocketBase만 실행.
+```bash
+cp .env.example .env       # 값 채우기
+docker compose up -d
+docker compose logs -f
+```
+
+PaaS(GHCR 이미지 직접 띄움) 환경에서는 `.env` 대신 호스트 환경변수로 주입. 컨테이너 시작은 `docker-entrypoint.sh`가 처리합니다.
+
+#### 데이터 흐름
+
+```
+[사용자] ── 게시글 작성 ──→ [PocketBase 컨테이너]
+                              ├── 메타데이터 ──Litestream→ S3_BACKUP_BUCKET   (SQLite WAL stream)
+                              └── 첨부 파일  ──PocketBase→ S3_FILES_BUCKET    (서명 URL로 노출)
+```
+
+두 버킷은 같은 S3 자격증명으로 접근. 토큰 발급 시 두 버킷 모두에 Object Read+Write 권한.
+
+#### 환경변수
+
+S3-호환 storage라면 AWS / Cloudflare R2 / MinIO / Wasabi / Backblaze B2 어느 것이든 endpoint·region만 바꿔서 작동합니다.
+
+**필수**
+
+| 변수 | 용도 | 예시 |
+|---|---|---|
+| `APP_ENV` | `production`(기본) \| `dev`. production은 S3 자격증명 누락 시 컨테이너 종료 | `production` |
+| `S3_ACCESS_KEY_ID` | S3 access key (양쪽 버킷 R/W 권한) | `AKIA...` 또는 R2 토큰의 Access Key ID |
+| `S3_SECRET_ACCESS_KEY` | S3 secret | 발급 시 한 번만 표시 |
+| `S3_ENDPOINT` | S3 endpoint URL | AWS: 공란 또는 `https://s3.<region>.amazonaws.com`<br>R2: `https://<account-id>.r2.cloudflarestorage.com`<br>MinIO: 본인 호스트 |
+| `S3_REGION` | region | AWS: `us-east-1` 등 / R2·MinIO: `auto` |
+| `S3_BACKUP_BUCKET` | Litestream이 SQLite WAL을 stream backup하는 버킷 | `pocketbase-backup` |
+| `S3_FILES_BUCKET` | PocketBase 첨부(이미지 등)가 직접 저장되는 버킷 | `pocketbase-files` |
+
+**선택**
+
+| 변수 | 용도 | 기본값 |
+|---|---|---|
+| `PB_ENCRYPTION_KEY` | PocketBase settings 암호화 (`openssl rand -hex 16`로 생성, **분실 시 복호화 불가**) | 비활성 |
+| `GOMEMLIMIT` | Go 메모리 soft limit | `256MiB` |
+| `TZ` | timezone | `Asia/Seoul` |
+
+**Fallback 명명** — 기존 코드/PaaS와의 하위 호환:
+
+| 1차 (권장) | Fallback |
+|---|---|
+| `S3_ACCESS_KEY_ID` | `R2_ACCESS_KEY_ID` → `AWS_ACCESS_KEY_ID` |
+| `S3_SECRET_ACCESS_KEY` | `R2_SECRET_ACCESS_KEY` → `AWS_SECRET_ACCESS_KEY` |
+| `S3_ENDPOINT` | `R2_ENDPOINT` |
+| `S3_REGION` | `R2_REGION` → `AWS_REGION` (없으면 `auto`) |
+| `S3_BACKUP_BUCKET` | `R2_BACKUP_BUCKET` → `R2_BUCKET` (구버전) |
+| `S3_FILES_BUCKET` | `R2_FILES_BUCKET` |
+
+새 배포는 `S3_*`로 통일 권장. 기존 PaaS에 `R2_*`로 박혀 있으면 그대로 둬도 동작 — entrypoint와 hook이 fallback chain으로 인식.
+
+#### dev 모드
+
+S3 자격증명 없이 띄우려면 `APP_ENV=dev`. Litestream 비활성, PocketBase 단독 실행, 첨부는 로컬 디스크(`pb_data/storage/`).
 
 ## 스키마
 

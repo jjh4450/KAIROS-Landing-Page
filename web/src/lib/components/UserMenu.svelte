@@ -4,17 +4,11 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import type { User } from '$lib/types';
-	import GearSix from 'phosphor-svelte/lib/GearSix';
 	import SignOut from 'phosphor-svelte/lib/SignOut';
-	import UserCircle from 'phosphor-svelte/lib/UserCircle';
+	import { USER_MENU_LINKS, clientLogout } from '$lib/userMenu';
 
 	let { user }: { user: User } = $props();
 	const initial = $derived((user.nickname ?? user.email).charAt(0).toUpperCase());
-
-	async function logout() {
-		await fetch('/logout', { method: 'POST', redirect: 'manual' });
-		await goto(resolve('/'), { invalidateAll: true });
-	}
 </script>
 
 <DropdownMenu.Root>
@@ -33,13 +27,12 @@
 			{user.nickname ?? user.email}
 		</DropdownMenu.Label>
 		<DropdownMenu.Separator />
-		<DropdownMenu.Item onSelect={() => goto(resolve('/members/me'))}>
-			<UserCircle /> my profile
-		</DropdownMenu.Item>
-		<DropdownMenu.Item onSelect={() => goto(resolve('/account'))}>
-			<GearSix /> account
-		</DropdownMenu.Item>
-		<DropdownMenu.Item onSelect={logout}>
+		{#each USER_MENU_LINKS as { href, label, Icon } (href)}
+			<DropdownMenu.Item onSelect={() => goto(resolve(href))}>
+				<Icon /> {label}
+			</DropdownMenu.Item>
+		{/each}
+		<DropdownMenu.Item onSelect={clientLogout}>
 			<SignOut /> logout
 		</DropdownMenu.Item>
 	</DropdownMenu.Content>

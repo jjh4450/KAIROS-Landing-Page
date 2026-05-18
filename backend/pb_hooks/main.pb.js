@@ -146,6 +146,24 @@ onRecordCreateRequest((e) => {
 }, "comments");
 
 // ============================================================
+// 3.5) posts/comments 수정 시 author 필드 변경 차단
+//      updateRule이 author.id 기준이라, 수정 도중 author를 바꿔치우면
+//      다른 사람 글의 주인을 자기로 옮기는 우회가 가능. 원본 author로 강제 복구.
+// ============================================================
+function lockAuthorOnUpdate(collection) {
+  onRecordUpdateRequest((e) => {
+    const original = e.record.original();
+    const originalAuthor = original.get("author");
+    if (e.record.get("author") !== originalAuthor) {
+      e.record.set("author", originalAuthor);
+    }
+    e.next();
+  }, collection);
+}
+lockAuthorOnUpdate("posts");
+lockAuthorOnUpdate("comments");
+
+// ============================================================
 // 4) 게시글 조회 시 viewCount 증가
 // ============================================================
 onRecordViewRequest((e) => {

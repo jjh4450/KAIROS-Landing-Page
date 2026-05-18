@@ -87,15 +87,6 @@
 					{#if form?.error}
 						<p class="font-mono text-sm text-destructive">{form.error}</p>
 					{/if}
-					<!-- TEMP DIAG: prod 로그인 실패 원인 진단용. 원인 확인되는 대로 제거. -->
-					{#if form?.debug}
-						<pre
-							class="max-h-64 overflow-auto rounded-md border border-destructive/40 bg-destructive/5 p-3 font-mono text-[11px] whitespace-pre-wrap text-destructive">{JSON.stringify(
-								form.debug,
-								null,
-								2
-							)}</pre>
-					{/if}
 					<Field>
 						<Button type="submit">Login</Button>
 					</Field>

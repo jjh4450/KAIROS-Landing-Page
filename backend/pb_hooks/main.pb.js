@@ -152,11 +152,7 @@ onRecordCreateRequest((e) => {
 // ============================================================
 function lockAuthorOnUpdate(collection) {
   onRecordUpdateRequest((e) => {
-    const original = e.record.original();
-    const originalAuthor = original.get("author");
-    if (e.record.get("author") !== originalAuthor) {
-      e.record.set("author", originalAuthor);
-    }
+    e.record.set("author", e.record.original().get("author"));
     e.next();
   }, collection);
 }

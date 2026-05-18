@@ -30,6 +30,8 @@ export async function fileToWebp(file: File): Promise<File> {
 
 		const blob = await canvasToBlob(canvas, 'image/webp', QUALITY);
 		if (!blob) return file;
+		// 재인코딩 결과가 더 크면 원본 유지 — 작은 PNG·icon 류는 WebP 변환이 손해
+		if (blob.size >= file.size) return file;
 
 		const stem = stripExt(file.name) || 'image';
 		return new File([blob], `${stem}.webp`, { type: 'image/webp' });
@@ -51,14 +53,13 @@ export async function convertImageFields(form: FormData, fields: string[]): Prom
 		const values = form.getAll(field);
 		if (values.length === 0) continue;
 
+		// Promise.all 로 동시 디코딩/인코딩 — 브라우저 내부 파이프라인이 겹쳐 multi-file 시 wall time 절감
+		const converted = await Promise.all(
+			values.map((v) => (v instanceof File && v.size > 0 ? fileToWebp(v) : Promise.resolve(v)))
+		);
+
 		form.delete(field);
-		for (const v of values) {
-			if (v instanceof File && v.size > 0) {
-				form.append(field, await fileToWebp(v));
-			} else {
-				form.append(field, v);
-			}
-		}
+		for (const v of converted) form.append(field, v);
 	}
 }
 

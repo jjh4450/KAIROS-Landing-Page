@@ -11,6 +11,25 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 	const pb = new PocketBase(PUBLIC_PB_URL);
 	// SSR: 같은 인스턴스에서 동시 실행되는 호출들이 서로 cancel 되는 것 방지
 	pb.autoCancellation(false);
+
+	const sanitize = (v: string | null, maxLen: number): string | null => {
+		if (!v) return null;
+		const cleaned = v.replace(/[\x00-\x1F\x7F]/g, '').trim();
+		if (!cleaned || cleaned.length > maxLen) return null;
+		return cleaned;
+	};
+	const ua = sanitize(event.request.headers.get('user-agent'), 512);
+	const acceptLang = sanitize(event.request.headers.get('accept-language'), 256);
+	if (ua || acceptLang) {
+		pb.beforeSend = (url, options) => {
+			const headers = new Headers(options.headers as HeadersInit | undefined);
+			if (ua) headers.set('User-Agent', ua);
+			if (acceptLang) headers.set('Accept-Language', acceptLang);
+			options.headers = Object.fromEntries(headers);
+			return { url, options };
+		};
+	}
+
 	pb.authStore.loadFromCookie(event.request.headers.get('cookie') ?? '');
 
 	try {

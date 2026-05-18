@@ -21,20 +21,26 @@ function loadDotenv(file) {
 	return out;
 }
 
-const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development';
-const env = {
-	...loadDotenv('.env'),
-	...loadDotenv(`.env.${mode}`),
-	...loadDotenv('.env.local'),
-	...loadDotenv(`.env.${mode}.local`),
-	...process.env
-};
+// Vercel·CI 등 배포 환경에선 process.env 에 이미 주입돼 있음 — 그쪽이 최우선.
+// 로컬 개발 편의를 위해 .env / .env.local 도 폴백으로 읽음 (Vite 와 동일한 우선순위).
+function resolveEnv(name) {
+	if (process.env[name]) return process.env[name];
+	const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development';
+	for (const file of [`.env.${mode}.local`, '.env.local', `.env.${mode}`, '.env']) {
+		const v = loadDotenv(file)[name];
+		if (v) return v;
+	}
+	return undefined;
+}
 
-const url = env.PUBLIC_PB_URL;
+const url = resolveEnv('PUBLIC_PB_URL');
 if (!url) {
 	console.error('[pb-health] PUBLIC_PB_URL is not set — refusing to build.');
 	process.exit(1);
 }
+
+const source = process.env.PUBLIC_PB_URL ? 'process.env' : '.env';
+console.log(`[pb-health] PUBLIC_PB_URL = ${url}  (source: ${source})`);
 
 const healthUrl = `${url.replace(/\/+$/, '')}/api/health`;
 console.log(`[pb-health] checking ${healthUrl}`);

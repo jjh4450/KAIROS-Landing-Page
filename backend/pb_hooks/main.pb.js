@@ -58,34 +58,38 @@ onBootstrap((e) => {
 });
 
 // ============================================================
-// 1) 신규 가입 사용자에게 기본 role = 'member' 자동 할당
+// 1) users: role 위·변조 차단
+//    - create 시 role 은 항상 'member' 로 덮어씀 (요청 페이로드 무시).
+//    - update 시 role 변경 시도는 ForbiddenError. self-promotion 차단.
+//    슈퍼유저(관리자)만 임의 role 지정·변경 가능.
 // ============================================================
 onRecordCreateRequest((e) => {
-  // 슈퍼유저(관리자)가 직접 만든 경우엔 role을 임의 지정할 수 있게 우회
   if (e.hasSuperuserAuth && e.hasSuperuserAuth()) {
     return e.next();
   }
+  e.record.set("role", "member");
+  e.next();
+}, "users");
 
-  if (!e.record.get("role")) {
-    e.record.set("role", "member");
+onRecordUpdateRequest((e) => {
+  if (e.hasSuperuserAuth && e.hasSuperuserAuth()) {
+    return e.next();
   }
-
+  const original = e.record.original();
+  if (e.record.get("role") !== original.get("role")) {
+    throw new ForbiddenError("role 변경은 슈퍼유저만 가능합니다.");
+  }
   e.next();
 }, "users");
 
 // ============================================================
-// 2) 게시글 작성 시 카테고리별 권한 검사 & 작성자 강제 지정
+// 2) 게시글 작성/수정 시 카테고리별 권한 검사 & 작성자 강제 지정
+//    - create: author 강제 + writePermission 검사
+//    - update: 카테고리가 바뀌면 **새 카테고리** 의 writePermission 으로 재검사.
+//      (lockAuthorOnUpdate 가 author 는 잠그지만, category 이동을 통한
+//       admin-only 카테고리(공지사항 등) 게시 우회를 막기 위함)
 // ============================================================
-onRecordCreateRequest((e) => {
-  const auth = e.auth;
-  if (!auth) {
-    throw new ForbiddenError("로그인이 필요합니다.");
-  }
-
-  // 작성자는 항상 현재 로그인 사용자로 강제 설정 (스푸핑 방지)
-  e.record.set("author", auth.id);
-
-  const categoryId = e.record.get("category");
+function assertCategoryWritePermission(auth, categoryId) {
   if (!categoryId) {
     throw new BadRequestError("카테고리를 선택해야 합니다.");
   }
@@ -98,7 +102,7 @@ onRecordCreateRequest((e) => {
   }
 
   const perm = category.get("writePermission");
-  const role = auth.get("role") || "";
+  const role = auth ? (auth.get("role") || "") : "";
 
   // 권한 위계: admin > staff > member > 비로그인
   const rolePower = { admin: 3, staff: 2, member: 1 };
@@ -109,6 +113,33 @@ onRecordCreateRequest((e) => {
 
   if (userPower < requiredPower) {
     throw new ForbiddenError("이 카테고리에 작성 권한이 없습니다.");
+  }
+}
+
+onRecordCreateRequest((e) => {
+  const auth = e.auth;
+  if (!auth) {
+    throw new ForbiddenError("로그인이 필요합니다.");
+  }
+
+  // 작성자는 항상 현재 로그인 사용자로 강제 설정 (스푸핑 방지)
+  e.record.set("author", auth.id);
+
+  assertCategoryWritePermission(auth, e.record.get("category"));
+
+  e.next();
+}, "posts");
+
+onRecordUpdateRequest((e) => {
+  if (e.hasSuperuserAuth && e.hasSuperuserAuth()) {
+    return e.next();
+  }
+
+  const original = e.record.original();
+  const newCat = e.record.get("category");
+
+  if (newCat !== original.get("category")) {
+    assertCategoryWritePermission(e.auth, newCat);
   }
 
   e.next();

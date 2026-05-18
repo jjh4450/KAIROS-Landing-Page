@@ -10,6 +10,7 @@
 	import SiteFooter from '$lib/components/SiteFooter.svelte';
 	import Eyebrow from '$lib/components/Eyebrow.svelte';
 	import MarkdownEditor from '$lib/components/MarkdownEditor.svelte';
+	import { convertImageFields } from '$lib/image/toWebp';
 	import ArrowLeft from 'phosphor-svelte/lib/ArrowLeft';
 	import type { PageData, ActionData } from './$types';
 
@@ -33,7 +34,13 @@
 	</header>
 
 	<Card.Root>
-		<form method="POST" enctype="multipart/form-data" use:enhance>
+		<form
+			method="POST"
+			enctype="multipart/form-data"
+			use:enhance={async ({ formData }) => {
+				await convertImageFields(formData, ['coverImage']);
+			}}
+		>
 			<Card.Content class="space-y-5 py-6">
 				<div class="space-y-2">
 					<FieldLabel for="title">title</FieldLabel>

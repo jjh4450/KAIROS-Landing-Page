@@ -12,6 +12,7 @@
 	import Eyebrow from '$lib/components/Eyebrow.svelte';
 	import MarkdownEditor from '$lib/components/MarkdownEditor.svelte';
 	import AttachmentUploader from '$lib/components/AttachmentUploader.svelte';
+	import { convertImageFields } from '$lib/image/toWebp';
 	import ArrowLeft from 'phosphor-svelte/lib/ArrowLeft';
 	import Trash from 'phosphor-svelte/lib/Trash';
 	import type { PageData, ActionData } from './$types';
@@ -42,7 +43,14 @@
 	</header>
 
 	<Card.Root>
-		<form method="POST" action="?/update" enctype="multipart/form-data" use:enhance>
+		<form
+			method="POST"
+			action="?/update"
+			enctype="multipart/form-data"
+			use:enhance={async ({ formData }) => {
+				await convertImageFields(formData, ['newAttachments']);
+			}}
+		>
 			<input type="hidden" name="categoryId" value={categoryId} />
 			<Card.Content class="space-y-5 py-6">
 				<div class="space-y-2">

@@ -12,6 +12,7 @@
 	import Eyebrow from '$lib/components/Eyebrow.svelte';
 	import MarkdownEditor from '$lib/components/MarkdownEditor.svelte';
 	import { TRACKS } from '$lib/memberOptions';
+	import { convertImageFields } from '$lib/image/toWebp';
 	import ArrowLeft from 'phosphor-svelte/lib/ArrowLeft';
 	import Trash from 'phosphor-svelte/lib/Trash';
 	import type { PageData, ActionData } from './$types';
@@ -60,7 +61,14 @@
 	</header>
 
 	<Card.Root>
-		<form method="POST" action="?/save" enctype="multipart/form-data" use:enhance>
+		<form
+			method="POST"
+			action="?/save"
+			enctype="multipart/form-data"
+			use:enhance={async ({ formData }) => {
+				await convertImageFields(formData, ['avatar']);
+			}}
+		>
 			{#each tracks as t (t)}
 				<input type="hidden" name="tracks" value={t} />
 			{/each}

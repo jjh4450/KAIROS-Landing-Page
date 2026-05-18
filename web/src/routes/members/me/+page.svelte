@@ -11,7 +11,7 @@
 	import SiteFooter from '$lib/components/SiteFooter.svelte';
 	import Eyebrow from '$lib/components/Eyebrow.svelte';
 	import MarkdownEditor from '$lib/components/MarkdownEditor.svelte';
-	import { POSITIONS, TRACKS } from '$lib/memberOptions';
+	import { TRACKS } from '$lib/memberOptions';
 	import ArrowLeft from 'phosphor-svelte/lib/ArrowLeft';
 	import Trash from 'phosphor-svelte/lib/Trash';
 	import type { PageData, ActionData } from './$types';
@@ -21,7 +21,6 @@
 
 	let displayName = $state(m?.displayName ?? '');
 	let realName = $state(m?.realName ?? '');
-	let position = $state(m?.position ?? 'member');
 	let year = $state(m?.year ?? '');
 	let bio = $state(m?.bio ?? '');
 	let githubUrl = $state(m?.githubUrl ?? '');
@@ -72,17 +71,10 @@
 						<Input id="realName" name="realName" bind:value={realName} />
 					</div>
 					<div class="space-y-2">
-						<FieldLabel for="position">position</FieldLabel>
-						<select
-							id="position"
-							name="position"
-							bind:value={position}
-							class="h-9 w-full rounded-md border border-input bg-background px-3 font-mono text-sm"
-						>
-							{#each POSITIONS as p (p)}
-								<option value={p}>{p}</option>
-							{/each}
-						</select>
+						<FieldLabel>position</FieldLabel>
+						<div class="flex h-9 items-center">
+							<Badge variant="outline" class="font-mono">{m?.position ?? 'member'}</Badge>
+						</div>
 					</div>
 					<div class="space-y-2">
 						<FieldLabel for="year">year (입학년도)</FieldLabel>

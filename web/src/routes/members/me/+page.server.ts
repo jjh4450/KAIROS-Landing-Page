@@ -1,7 +1,7 @@
 import { fail, redirect, isRedirect } from '@sveltejs/kit';
 import { requireUser } from '$lib/auth';
 import { fileUrl } from '$lib/pbHelpers';
-import { isPosition, isTrack } from '$lib/memberOptions';
+import { isTrack } from '$lib/memberOptions';
 import { formBool, formFile, formStr } from '$lib/formHelpers';
 import type { Actions, PageServerLoad } from './$types';
 import type { Member } from '$lib/types';
@@ -25,7 +25,10 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 
 function buildFormData(form: FormData, userId: string, isCreate: boolean) {
 	const data = new FormData();
-	if (isCreate) data.set('user', userId);
+	if (isCreate) {
+		data.set('user', userId);
+		data.set('position', 'member');
+	}
 
 	for (const f of [
 		'displayName',
@@ -39,9 +42,6 @@ function buildFormData(form: FormData, userId: string, isCreate: boolean) {
 	] as const) {
 		data.set(f, formStr(form, f));
 	}
-
-	const pos = formStr(form, 'position');
-	data.set('position', isPosition(pos) ? pos : 'member');
 
 	const year = formStr(form, 'year');
 	if (year) data.set('year', year);

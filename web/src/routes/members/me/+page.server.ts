@@ -3,7 +3,7 @@ import { requireUser } from '$lib/auth';
 import { fileUrl } from '$lib/pbHelpers';
 import { isTrack } from '$lib/memberOptions';
 import { formBool, formFile, formStr } from '$lib/formHelpers';
-import { sanitizeImageUpload, UploadRejected } from '$lib/server/sanitizeUpload';
+import { safeSanitizeImageUpload } from '$lib/server/sanitizeUpload';
 import type { Actions, PageServerLoad } from './$types';
 import type { Member } from '$lib/types';
 
@@ -69,14 +69,8 @@ export const actions: Actions = {
 		const user = requireUser(locals, url);
 		const form = await request.formData();
 
-		let avatar: File | null;
-		try {
-			const raw = formFile(form, 'avatar');
-			avatar = raw ? await sanitizeImageUpload(raw) : null;
-		} catch (err) {
-			const msg = err instanceof UploadRejected ? err.message : '이미지 처리 실패';
-			return fail(400, { error: msg });
-		}
+		const sanitized = await safeSanitizeImageUpload(formFile(form, 'avatar'));
+		if (!sanitized.ok) return fail(400, { error: sanitized.error });
 
 		let existing: { id: string } | null;
 		try {
@@ -87,7 +81,7 @@ export const actions: Actions = {
 			existing = null;
 		}
 
-		const data = buildFormData(form, user.id, !existing, avatar);
+		const data = buildFormData(form, user.id, !existing, sanitized.file);
 
 		try {
 			if (existing) {

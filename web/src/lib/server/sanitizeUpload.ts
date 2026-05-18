@@ -2,6 +2,7 @@ import { Buffer } from 'node:buffer';
 import DOMPurify from 'isomorphic-dompurify';
 import { fileTypeFromBuffer } from 'file-type';
 import sharp from 'sharp';
+import { stripExt } from '$lib/format';
 
 /**
  * 업로드 이미지 server-side 검증·세정 파이프라인.
@@ -30,8 +31,6 @@ const RASTER_INPUT_MIME = new Set([
 	'image/avif'
 ]);
 
-export const ALLOWED_IMAGE_MIME = new Set<string>([...RASTER_INPUT_MIME, 'image/svg+xml']);
-
 export class UploadRejected extends Error {
 	constructor(message: string) {
 		super(message);
@@ -45,11 +44,11 @@ export async function sanitizeImageUpload(file: File): Promise<File> {
 	}
 
 	const buf = Buffer.from(await file.arrayBuffer());
+	// File.size 가 거짓일 가능성에 대한 2차 방어 — buffer 실측으로 재확인
 	if (buf.length > MAX_BYTES) {
 		throw new UploadRejected('파일이 너무 큽니다 (10MB 한도).');
 	}
 
-	// SVG 는 텍스트 기반이라 file-type 이 누락될 수 있음 — 텍스트 시그니처 우선 검사
 	if (looksLikeSvg(buf, file.type)) {
 		return sanitizeSvg(buf, file.name);
 	}
@@ -81,6 +80,10 @@ export async function sanitizeImageUpload(file: File): Promise<File> {
 	return new File([new Uint8Array(out)], `${stem}.webp`, { type: 'image/webp' });
 }
 
+/**
+ * SVG 감지 — file-type 는 XML 기반 SVG 의 magic byte 가 없어 감지 못함. 헤드 256B 의
+ * 텍스트 시그니처로 분기시켜 raster 파이프라인 대신 DOMPurify 로 보냄.
+ */
 function looksLikeSvg(buf: Buffer, declaredMime: string): boolean {
 	if (declaredMime === 'image/svg+xml') return true;
 	const head = buf.subarray(0, 256).toString('utf8').trimStart().toLowerCase();
@@ -89,9 +92,6 @@ function looksLikeSvg(buf: Buffer, declaredMime: string): boolean {
 
 function sanitizeSvg(buf: Buffer, originalName: string): File {
 	const raw = buf.toString('utf-8');
-	if (!raw.includes('<svg')) {
-		throw new UploadRejected('유효하지 않은 SVG 입니다.');
-	}
 
 	const clean = DOMPurify.sanitize(raw, {
 		USE_PROFILES: { svg: true, svgFilters: true },
@@ -120,31 +120,52 @@ function sanitizeSvg(buf: Buffer, originalName: string): File {
 		ALLOWED_URI_REGEXP: /^(?:data:image\/|#)/i
 	});
 
+	// DOMPurify 가 non-SVG XML 을 비우는 경우 + 입력이 처음부터 깨진 SVG 인 경우 모두 여기서 차단
 	if (!clean.includes('<svg')) {
-		throw new UploadRejected('SVG sanitize 결과가 비어 있습니다.');
+		throw new UploadRejected('유효하지 않은 SVG 입니다.');
 	}
 
 	const stem = stripExt(originalName) || 'image';
 	return new File([clean], `${stem}.svg`, { type: 'image/svg+xml' });
 }
 
-function stripExt(name: string): string {
-	const i = name.lastIndexOf('.');
-	return i > 0 ? name.slice(0, i) : name;
-}
-
 export async function sanitizeFiles(form: FormData, field: string): Promise<File[]> {
-	const out: File[] = [];
-	for (const v of form.getAll(field)) {
-		if (v instanceof File && v.size > 0) {
-			out.push(await sanitizeImageUpload(v));
-		}
-	}
-	return out;
+	// Promise.all 로 디코딩·인코딩을 동시 진행 — sharp 가 libvips 자체 threadpool 사용
+	const tasks = form
+		.getAll(field)
+		.filter((v): v is File => v instanceof File && v.size > 0)
+		.map((v) => sanitizeImageUpload(v));
+	return Promise.all(tasks);
 }
 
-export async function sanitizeFile(form: FormData, field: string): Promise<File | null> {
-	const v = form.get(field);
-	if (!(v instanceof File) || v.size === 0) return null;
-	return sanitizeImageUpload(v);
+/**
+ * sanitizeFiles 의 try/catch 보일러플레이트를 한 곳에 모은 wrapper.
+ * UploadRejected 는 사용자 노출 메시지로 살리고, 그 외 예외는 `fallback` 로 일반화.
+ * fail() 객체 빌드는 호출부 책임 — 각 route 가 추가 페이로드(title, content 등)를 끼울 수 있게.
+ */
+export async function safeSanitizeFiles(
+	form: FormData,
+	field: string,
+	fallback = '파일 처리 실패'
+): Promise<{ ok: true; files: File[] } | { ok: false; error: string }> {
+	try {
+		return { ok: true, files: await sanitizeFiles(form, field) };
+	} catch (err) {
+		return { ok: false, error: err instanceof UploadRejected ? err.message : fallback };
+	}
+}
+
+/**
+ * 단일 File 용 wrapper. avatar/coverImage 등 single-file field.
+ */
+export async function safeSanitizeImageUpload(
+	file: File | null,
+	fallback = '이미지 처리 실패'
+): Promise<{ ok: true; file: File | null } | { ok: false; error: string }> {
+	if (!file) return { ok: true, file: null };
+	try {
+		return { ok: true, file: await sanitizeImageUpload(file) };
+	} catch (err) {
+		return { ok: false, error: err instanceof UploadRejected ? err.message : fallback };
+	}
 }

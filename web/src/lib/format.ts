@@ -58,3 +58,11 @@ export function fmtYear(input?: string | Date): string {
 	const dt = typeof input === 'string' ? new Date(input) : input;
 	return String(dt.getFullYear());
 }
+
+/**
+ * 파일명에서 마지막 확장자를 제거. `a.b.png` → `a.b`, `noext` → `noext`.
+ */
+export function stripExt(name: string): string {
+	const i = name.lastIndexOf('.');
+	return i > 0 ? name.slice(0, i) : name;
+}

@@ -89,6 +89,7 @@ onRecordUpdateRequest((e) => {
 //      (lockAuthorOnUpdate 가 author 는 잠그지만, category 이동을 통한
 //       admin-only 카테고리(공지사항 등) 게시 우회를 막기 위함)
 // ============================================================
+// 두 호출부(create/update) 모두 auth non-null 을 보장한 뒤 진입.
 function assertCategoryWritePermission(auth, categoryId) {
   if (!categoryId) {
     throw new BadRequestError("카테고리를 선택해야 합니다.");
@@ -102,16 +103,13 @@ function assertCategoryWritePermission(auth, categoryId) {
   }
 
   const perm = category.get("writePermission");
-  const role = auth ? (auth.get("role") || "") : "";
+  const role = auth.get("role") || "";
 
   // 권한 위계: admin > staff > member > 비로그인
   const rolePower = { admin: 3, staff: 2, member: 1 };
   const permPower = { all: 0, member: 1, staff: 2, admin: 3 };
 
-  const userPower = rolePower[role] ?? 0;
-  const requiredPower = permPower[perm] ?? 0;
-
-  if (userPower < requiredPower) {
+  if ((rolePower[role] ?? 0) < (permPower[perm] ?? 0)) {
     throw new ForbiddenError("이 카테고리에 작성 권한이 없습니다.");
   }
 }

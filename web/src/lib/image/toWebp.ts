@@ -5,6 +5,8 @@
  * 보안 sanitize 가 아님. SVG/GIF 는 변환하지 않고 그대로 (각각 텍스트·애니메이션 보존).
  */
 
+import { stripExt } from '$lib/format';
+
 const MAX_DIM = 2000;
 const QUALITY = 0.85;
 
@@ -84,9 +86,4 @@ function fitInside(w: number, h: number, max: number): { width: number; height: 
 	if (w <= max && h <= max) return { width: w, height: h };
 	const r = Math.min(max / w, max / h);
 	return { width: Math.round(w * r), height: Math.round(h * r) };
-}
-
-function stripExt(name: string): string {
-	const i = name.lastIndexOf('.');
-	return i > 0 ? name.slice(0, i) : name;
 }

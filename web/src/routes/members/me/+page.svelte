@@ -19,17 +19,17 @@
 	let { data, form }: { data: PageData; form: ActionData } = $props();
 	const m = $derived(data.member);
 
-	let displayName = $state(m?.displayName ?? '');
-	let realName = $state(m?.realName ?? '');
-	let year = $state(m?.year ?? '');
-	let bio = $state(m?.bio ?? '');
-	let githubUrl = $state(m?.githubUrl ?? '');
-	let blogUrl = $state(m?.blogUrl ?? '');
-	let linkedinUrl = $state(m?.linkedinUrl ?? '');
-	let twitterUrl = $state(m?.twitterUrl ?? '');
-	let personalUrl = $state(m?.personalUrl ?? '');
-	let publicProfile = $state(m?.publicProfile ?? false);
-	let tracks = $state<string[]>(m?.tracks ?? []);
+	let displayName = $state(data.member?.displayName ?? '');
+	let realName = $state(data.member?.realName ?? '');
+	let year = $state(data.member?.year ?? '');
+	let bio = $state(data.member?.bio ?? '');
+	let githubUrl = $state(data.member?.githubUrl ?? '');
+	let blogUrl = $state(data.member?.blogUrl ?? '');
+	let linkedinUrl = $state(data.member?.linkedinUrl ?? '');
+	let twitterUrl = $state(data.member?.twitterUrl ?? '');
+	let personalUrl = $state(data.member?.personalUrl ?? '');
+	let publicProfile = $state(data.member?.publicProfile ?? false);
+	let tracks = $state<string[]>(data.member?.tracks ?? []);
 
 	function toggleTrack(t: string) {
 		tracks = tracks.includes(t) ? tracks.filter((x) => x !== t) : [...tracks, t];

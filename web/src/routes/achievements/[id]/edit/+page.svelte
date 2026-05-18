@@ -17,13 +17,13 @@
 	let { data, form }: { data: PageData; form: ActionData } = $props();
 	const a = $derived(data.item);
 
-	let title = $state(a.title);
-	let competition = $state(a.competition ?? '');
-	let rank = $state(a.rank ?? '');
-	let date = $state(a.date ?? '');
-	let link = $state(a.link ?? '');
-	let description = $state(a.description ?? '');
-	let membersCsv = $state((a.members ?? []).join(', '));
+	let title = $state(data.item.title);
+	let competition = $state(data.item.competition ?? '');
+	let rank = $state(data.item.rank ?? '');
+	let date = $state(data.item.date ?? '');
+	let link = $state(data.item.link ?? '');
+	let description = $state(data.item.description ?? '');
+	let membersCsv = $state((data.item.members ?? []).join(', '));
 </script>
 
 <svelte:head><title>편집 · {a.title}</title></svelte:head>

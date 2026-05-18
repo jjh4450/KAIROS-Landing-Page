@@ -1,6 +1,7 @@
 import { fail, redirect, isRedirect } from '@sveltejs/kit';
 import { requireUser } from '$lib/auth';
 import { formBool, formStr } from '$lib/formHelpers';
+import { sanitizeFiles, UploadRejected } from '$lib/server/sanitizeUpload';
 import type { Actions, PageServerLoad } from './$types';
 import type { Category } from '$lib/types';
 
@@ -28,15 +29,21 @@ export const actions: Actions = {
 			return fail(400, { title, content, categoryId, error: '카테고리를 선택해주세요.' });
 		if (!content) return fail(400, { title, content, categoryId, error: '본문을 입력해주세요.' });
 
+		let attachments: File[];
+		try {
+			attachments = await sanitizeFiles(form, 'newAttachments');
+		} catch (err) {
+			const msg = err instanceof UploadRejected ? err.message : '첨부 파일 처리 실패';
+			return fail(400, { title, content, categoryId, error: msg });
+		}
+
 		const data = new FormData();
 		data.set('title', title);
 		data.set('content', content);
 		data.set('category', categoryId);
 		data.set('isPrivate', String(isPrivate));
-		for (const file of form.getAll('newAttachments')) {
-			if (file instanceof File && file.size > 0) {
-				data.append('attachments', file);
-			}
+		for (const file of attachments) {
+			data.append('attachments', file);
 		}
 
 		try {

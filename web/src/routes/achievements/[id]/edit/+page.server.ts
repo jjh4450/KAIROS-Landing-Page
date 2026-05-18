@@ -2,6 +2,7 @@ import { error, fail, redirect, isRedirect } from '@sveltejs/kit';
 import { isAdmin, requireStaff } from '$lib/auth';
 import { fileUrl } from '$lib/pbHelpers';
 import { formBool, formFile, formStr } from '$lib/formHelpers';
+import { sanitizeImageUpload, UploadRejected } from '$lib/server/sanitizeUpload';
 import type { Actions, PageServerLoad } from './$types';
 import type { Achievement } from '$lib/types';
 
@@ -45,8 +46,15 @@ export const actions: Actions = {
 			data.set('members', '');
 		}
 
-		const cover = formFile(form, 'coverImage');
-		if (cover) data.set('coverImage', cover);
+		const coverRaw = formFile(form, 'coverImage');
+		if (coverRaw) {
+			try {
+				data.set('coverImage', await sanitizeImageUpload(coverRaw));
+			} catch (err) {
+				const msg = err instanceof UploadRejected ? err.message : '이미지 처리 실패';
+				return fail(400, { error: msg });
+			}
+		}
 		if (formBool(form, 'removeCover')) data.set('coverImage', '');
 
 		try {

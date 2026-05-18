@@ -2,6 +2,7 @@ import { error, fail, redirect, isRedirect } from '@sveltejs/kit';
 import { isStaff, requireUser } from '$lib/auth';
 import { fileUrls } from '$lib/pbHelpers';
 import { formBool, formStr } from '$lib/formHelpers';
+import { sanitizeFiles, UploadRejected } from '$lib/server/sanitizeUpload';
 import type { Actions, PageServerLoad } from './$types';
 import type { Category, Post } from '$lib/types';
 
@@ -47,6 +48,14 @@ export const actions: Actions = {
 		if (!categoryId) return fail(400, { error: '카테고리를 선택해주세요.' });
 		if (!content) return fail(400, { error: '본문을 입력해주세요.' });
 
+		let attachments: File[];
+		try {
+			attachments = await sanitizeFiles(form, 'newAttachments');
+		} catch (err) {
+			const msg = err instanceof UploadRejected ? err.message : '첨부 파일 처리 실패';
+			return fail(400, { error: msg });
+		}
+
 		const data = new FormData();
 		data.set('title', title);
 		data.set('content', content);
@@ -54,10 +63,8 @@ export const actions: Actions = {
 		data.set('isPrivate', String(isPrivate));
 
 		// 새로 추가된 파일들 (기존 첨부는 유지)
-		for (const file of form.getAll('newAttachments')) {
-			if (file instanceof File && file.size > 0) {
-				data.append('attachments+', file);
-			}
+		for (const file of attachments) {
+			data.append('attachments+', file);
 		}
 
 		// 제거 요청된 파일들

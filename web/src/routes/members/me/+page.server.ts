@@ -3,6 +3,7 @@ import { requireUser } from '$lib/auth';
 import { fileUrl } from '$lib/pbHelpers';
 import { isTrack } from '$lib/memberOptions';
 import { formBool, formFile, formStr } from '$lib/formHelpers';
+import { sanitizeImageUpload, UploadRejected } from '$lib/server/sanitizeUpload';
 import type { Actions, PageServerLoad } from './$types';
 import type { Member } from '$lib/types';
 
@@ -12,7 +13,9 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 	try {
 		member = await locals.pb
 			.collection('members')
-			.getFirstListItem<Member & { collectionId: string }>(`user="${user.id}"`);
+			.getFirstListItem<
+				Member & { collectionId: string }
+			>(locals.pb.filter('user = {:id}', { id: user.id }));
 	} catch {
 		member = null;
 	}
@@ -23,7 +26,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 	};
 };
 
-function buildFormData(form: FormData, userId: string, isCreate: boolean) {
+function buildFormData(form: FormData, userId: string, isCreate: boolean, avatar: File | null) {
 	const data = new FormData();
 	if (isCreate) {
 		data.set('user', userId);
@@ -55,7 +58,6 @@ function buildFormData(form: FormData, userId: string, isCreate: boolean) {
 		for (const t of allTracks) data.append('tracks', t);
 	}
 
-	const avatar = formFile(form, 'avatar');
 	if (avatar) data.set('avatar', avatar);
 	if (formBool(form, 'removeAvatar')) data.set('avatar', '');
 
@@ -67,14 +69,25 @@ export const actions: Actions = {
 		const user = requireUser(locals, url);
 		const form = await request.formData();
 
+		let avatar: File | null;
+		try {
+			const raw = formFile(form, 'avatar');
+			avatar = raw ? await sanitizeImageUpload(raw) : null;
+		} catch (err) {
+			const msg = err instanceof UploadRejected ? err.message : '이미지 처리 실패';
+			return fail(400, { error: msg });
+		}
+
 		let existing: { id: string } | null;
 		try {
-			existing = await locals.pb.collection('members').getFirstListItem(`user="${user.id}"`);
+			existing = await locals.pb
+				.collection('members')
+				.getFirstListItem(locals.pb.filter('user = {:id}', { id: user.id }));
 		} catch {
 			existing = null;
 		}
 
-		const data = buildFormData(form, user.id, !existing);
+		const data = buildFormData(form, user.id, !existing, avatar);
 
 		try {
 			if (existing) {
@@ -92,7 +105,9 @@ export const actions: Actions = {
 	delete: async ({ locals, url }) => {
 		const user = requireUser(locals, url);
 		try {
-			const existing = await locals.pb.collection('members').getFirstListItem(`user="${user.id}"`);
+			const existing = await locals.pb
+				.collection('members')
+				.getFirstListItem(locals.pb.filter('user = {:id}', { id: user.id }));
 			await locals.pb.collection('members').delete(existing.id);
 		} catch {
 			return fail(400, { error: '삭제 실패' });

@@ -1,6 +1,7 @@
 import { fail, redirect, isRedirect } from '@sveltejs/kit';
 import { requireStaff } from '$lib/auth';
 import { formFile, formStr } from '$lib/formHelpers';
+import { sanitizeImageUpload, UploadRejected } from '$lib/server/sanitizeUpload';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals, url }) => {
@@ -38,8 +39,15 @@ export const actions: Actions = {
 				data.append('members', id);
 			}
 		}
-		const cover = formFile(form, 'coverImage');
-		if (cover) data.set('coverImage', cover);
+		const coverRaw = formFile(form, 'coverImage');
+		if (coverRaw) {
+			try {
+				data.set('coverImage', await sanitizeImageUpload(coverRaw));
+			} catch (err) {
+				const msg = err instanceof UploadRejected ? err.message : '이미지 처리 실패';
+				return fail(400, { error: msg });
+			}
+		}
 
 		try {
 			const rec = await locals.pb.collection('achievements').create(data);

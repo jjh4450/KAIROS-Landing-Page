@@ -15,14 +15,16 @@ export const load: PageServerLoad = async ({ url, locals }) => {
 		.getFullList<Category>({ sort: 'sortOrder' })
 		.catch(() => [] as Category[]);
 
+	// pb.filter() 로 파라미터 바인딩 — 수동 escape 대신 SDK 가 안전하게 직렬화.
 	const filterParts: string[] = ['isPrivate = false'];
 	if (q) {
-		const safe = q.replace(/"/g, '\\"');
-		filterParts.push(`(title ~ "${safe}" || content ~ "${safe}")`);
+		filterParts.push(locals.pb.filter('(title ~ {:q} || content ~ {:q})', { q }));
 	}
 	if (categorySlug) {
 		const cat = categories.find((c) => c.slug === categorySlug);
-		if (cat) filterParts.push(`category = "${cat.id}"`);
+		if (cat) {
+			filterParts.push(locals.pb.filter('category = {:id}', { id: cat.id }));
+		}
 		// unknown slug → filter dropped, treat as "all"
 	}
 

@@ -34,6 +34,11 @@
 	function toggleTrack(t: string) {
 		tracks = tracks.includes(t) ? tracks.filter((x) => x !== t) : [...tracks, t];
 	}
+
+	const YEAR_OPTIONS = (() => {
+		const now = new Date().getFullYear();
+		return Array.from({ length: 11 }, (_, i) => now - i);
+	})();
 </script>
 
 <svelte:head><title>내 프로필 · KAIROS</title></svelte:head>
@@ -78,7 +83,17 @@
 					</div>
 					<div class="space-y-2">
 						<FieldLabel for="year">year (입학년도)</FieldLabel>
-						<Input id="year" name="year" type="number" bind:value={year} />
+						<select
+							id="year"
+							name="year"
+							bind:value={year}
+							class="h-9 w-full rounded-md border border-input bg-background px-3 font-mono text-sm"
+						>
+							<option value="">—</option>
+							{#each YEAR_OPTIONS as y (y)}
+								<option value={y}>{y}</option>
+							{/each}
+						</select>
 					</div>
 				</div>
 

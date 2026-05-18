@@ -62,7 +62,7 @@
 			<Card.Description>새 비밀번호는 8자 이상이어야 합니다.</Card.Description>
 		</Card.Header>
 		<form method="POST" action="?/changePassword" use:enhance>
-			<Card.Content class="space-y-4">
+			<Card.Content class="space-y-4 pb-6">
 				<div class="space-y-2">
 					<Label for="oldPassword" class="font-mono text-[11px] tracking-[0.18em] uppercase"
 						>current password</Label
